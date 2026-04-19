@@ -1,0 +1,43 @@
+# Credenciales y secretos
+credentials/.env
+credentials/*.key
+credentials/*.pem
+credentials/*.json
+!credentials/.env.example
+!credentials/README.md
+.env
+.env.local
+.env.*.local
+*.secret
+
+# Outputs grandes / generados
+outputs/*
+!outputs/.gitkeep
+
+# Datos originales pesados (descomenta si aplica)
+# originaldata/*
+# !originaldata/.gitkeep
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+build/
+
+# Claude Code - configuración local por usuario
+.claude/settings.local.json
