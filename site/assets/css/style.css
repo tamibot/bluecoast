@@ -715,35 +715,162 @@ p{margin:0 0 1em}
 /* ==========================================================================
    Responsive
    ========================================================================== */
-@media (max-width: 960px){
-  .grid--contact{grid-template-columns:1fr; gap:2.5rem}
-  .process{grid-template-columns:1fr}
-  .products{grid-template-columns:repeat(auto-fit, minmax(240px,1fr))}
-  .footer__inner{grid-template-columns:1fr}
-  .footer__cols{grid-template-columns:repeat(3,1fr)}
 
+/* ---------- Tablet ≤ 960px ---------- */
+@media (max-width: 960px){
+  .wrap{width:min(1200px, 94%)}
+
+  /* Nav becomes hamburger */
   .nav__toggle{display:flex}
   .nav__links{
     position:absolute; top:100%; left:0; right:0;
     flex-direction:column; align-items:stretch; gap:0;
     background:rgba(26,35,52,.97);
-    backdrop-filter:blur(18px);
-    padding:1rem 5%;
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    padding:1rem 5% 1.5rem;
     transform:translateY(-12px); opacity:0; pointer-events:none;
     transition:all .25s var(--ease);
+    box-shadow:0 20px 40px -20px rgba(0,0,0,.4);
   }
   .nav__links.is-open{transform:none; opacity:1; pointer-events:auto}
-  .nav__links a{padding:1rem 0; border-bottom:1px solid rgba(255,255,255,.05)}
+  .nav__links a{padding:1.05rem 0; border-bottom:1px solid rgba(255,255,255,.06); font-size:1rem}
+  .nav__links a:last-child{border-bottom:none}
   .nav__links a::after{display:none}
+
+  /* Stack most two-column grids */
+  .grid--contact{grid-template-columns:1fr; gap:2.5rem}
+  .process{grid-template-columns:1fr; gap:1.2rem}
+  .products{grid-template-columns:repeat(auto-fit, minmax(240px,1fr))}
+  .footer__inner{grid-template-columns:1fr; gap:2rem}
+  .footer__cols{grid-template-columns:repeat(3,1fr)}
+
+  /* Section heads tighter */
+  .section{padding:5.5rem 0}
+  .section__head{margin-bottom:3rem}
+
+  /* Slightly lower hero waves */
+  .hero__waves{height:140px}
+
+  /* Testimonials nicely stacked */
+  .testimonials{grid-template-columns:repeat(auto-fit, minmax(260px,1fr))}
 }
 
-@media (max-width:560px){
-  .section{padding:4.5rem 0}
-  .hero{padding:5rem 0 3rem}
-  .hero__scroll{bottom:3rem}
-  .form{padding:1.5rem}
-  .form__row--2{grid-template-columns:1fr}
-  .footer__cols{grid-template-columns:1fr}
-  .testimonials__cta{padding:2rem 1rem}
-  .testimonials__cta h3{font-size:1.4rem}
+/* ---------- Mobile ≤ 720px ---------- */
+@media (max-width: 720px){
+  /* Single-column everything */
+  .products,
+  .species,
+  .testimonials{grid-template-columns:1fr; gap:1rem}
+
+  .footer__cols{grid-template-columns:1fr; gap:1.8rem}
+
+  /* Hero title stays tight on narrow screens */
+  .hero__title-bold{font-size:clamp(2.5rem, 12vw, 4.5rem)}
+  .hero__title-thin{font-size:clamp(2rem, 10vw, 4rem)}
+}
+
+/* ---------- Phone ≤ 560px ---------- */
+@media (max-width: 560px){
+  body{font-size:15px}
+  .wrap{width:min(1200px, 92%)}
+
+  .section{padding:4rem 0}
+  .section__head{margin-bottom:2.5rem}
+
+  /* Hero */
+  .hero{padding:5.5rem 0 1rem; min-height:85vh; min-height:85svh}
+  .hero__sub{margin-bottom:2rem; font-size:1rem}
+  .hero__cta{flex-direction:column; align-items:stretch; gap:.7rem; padding:0 .5rem}
+  .hero__cta .btn{justify-content:center; padding:1rem 1.3rem; font-size:.92rem}
+  .hero__scroll{display:none}
+  .hero__waves{height:100px}
+  .bubble{display:none} /* keep hero clean on small screens */
+
+  /* Brand: hide word, show only logo */
+  .brand__text{display:none}
+  .brand__mark{width:54px; height:24px}
+  .nav__inner{padding:.85rem 0}
+
+  /* Process cards */
+  .process__step{padding:1rem 1rem 1.6rem}
+  .process__num{top:1.5rem; left:1.5rem}
+  .process__step h3{padding:0 .4rem}
+  .process__step p{padding:0 .4rem}
+
+  /* Products */
+  .product__body{padding:1.5rem}
+  .product__img img{padding:1.5rem}
+
+  /* Species */
+  .sp{padding:1.4rem 1.4rem 1.1rem}
+  .sp h3{font-size:1.1rem}
+
+  /* Testimonials */
+  .tcard{padding:1.8rem 1.5rem 1.5rem}
+  .testimonials__cta{padding:2.2rem 1.2rem}
+  .testimonials__cta h3{font-size:1.3rem}
+  .testimonials__cta .btn{width:100%; justify-content:center}
+
+  /* Contact */
+  .contact__info h3{font-size:1.3rem}
+  .contact__list li{gap:.85rem}
+  .contact__icon{width:40px; height:40px}
+  .contact__person{padding:1rem 1.1rem; gap:.85rem}
+  .contact__avatar{width:46px; height:46px; font-size:.95rem}
+
+  /* Form */
+  .form{padding:1.6rem 1.3rem; border-radius:18px}
+  .form h3{font-size:1.25rem; margin-bottom:1.3rem}
+  .form__row--2{grid-template-columns:1fr; gap:0}
+  .field{margin-bottom:.95rem}
+  .field input, .field textarea{padding:.95rem 1rem; font-size:1rem; /* avoids iOS zoom */}
+  .btn--full{padding:1.05rem 1.3rem}
+
+  /* Footer */
+  .footer{padding-top:3rem}
+  .footer__inner{padding-bottom:2rem; gap:1.8rem}
+  .footer__brand p{max-width:none}
+  .footer__bottom .wrap{justify-content:center; text-align:center; flex-direction:column; gap:.4rem}
+  .footer__bottom small{font-size:.78rem}
+
+  /* Nav dropdown on mobile sits flush */
+  .nav.is-solid{background:rgba(26,35,52,.96)}
+}
+
+/* ---------- Tiny phone ≤ 380px ---------- */
+@media (max-width: 380px){
+  .hero__title-bold{font-size:2.4rem; letter-spacing:-.03em}
+  .hero__title-thin{font-size:1.9rem}
+  .btn{padding:.9rem 1.2rem; font-size:.88rem}
+  .sp__list li{font-size:.82rem; padding:.5rem .7rem}
+  .hero__sub{font-size:.95rem}
+}
+
+/* ---------- Landscape phone (short heights) ---------- */
+@media (max-height: 520px) and (max-width: 960px){
+  .hero{min-height:560px; padding:5rem 0 2rem}
+  .hero__waves{height:90px}
+  .hero__scroll{display:none}
+}
+
+/* iPhone safe-area support */
+@supports (padding:max(0px)){
+  .nav__inner{
+    padding-left:max(0px, env(safe-area-inset-left));
+    padding-right:max(0px, env(safe-area-inset-right));
+  }
+  .footer__bottom .wrap{
+    padding-bottom:max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Prevent iOS text auto-zoom on orientation change */
+html{-webkit-text-size-adjust:100%}
+
+/* Touch-friendly cards: bigger tap targets, no hover-only transforms on touch */
+@media (hover:none){
+  .vcard:hover, .process__step:hover, .product:hover, .sp:hover, .tcard:hover, .feature:hover{
+    transform:none; box-shadow:var(--shadow-sm);
+  }
+  .sp__btn:hover, .btn:hover{transform:none}
 }
