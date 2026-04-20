@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120" role="img" aria-label="Blue Coast S.A.C.">
+  <defs>
+    <linearGradient id="wl1" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#7bcce0"/>
+      <stop offset="1" stop-color="#5ab6d1"/>
+    </linearGradient>
+    <linearGradient id="wl2" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#2c8cbf"/>
+      <stop offset="1" stop-color="#1978b8"/>
+    </linearGradient>
+    <linearGradient id="wl3" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#1665a0"/>
+      <stop offset="1" stop-color="#004b82"/>
+    </linearGradient>
+    <linearGradient id="wl4" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#003d6b"/>
+      <stop offset="1" stop-color="#002d55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Stack of 4 waves -->
+  <g class="logo-waves" fill="none" stroke-linecap="round">
+    <path class="logo-wave logo-wave--1" d="M10 24 Q 55 6, 110 24 T 210 24" stroke="url(#wl1)" stroke-width="5"/>
+    <path class="logo-wave logo-wave--2" d="M10 42 Q 55 22, 110 42 T 210 42" stroke="url(#wl2)" stroke-width="6"/>
+    <path class="logo-wave logo-wave--3" d="M10 62 Q 55 40, 110 62 T 210 62" stroke="url(#wl3)" stroke-width="8"/>
+    <path class="logo-wave logo-wave--4" d="M10 82 Q 55 60, 110 82 T 210 82" stroke="url(#wl4)" stroke-width="7"/>
+  </g>
+
+  <text x="110" y="110" text-anchor="middle"
+        font-family="'Fraunces','Georgia',serif" font-weight="700" font-size="14"
+        fill="#002d55" letter-spacing="2.2">BLUE COAST S.A.C.</text>
+</svg>

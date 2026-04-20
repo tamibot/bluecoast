@@ -2,6 +2,7 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasHover = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
   // --- Footer year ---
   const yearEl = $('#year');
@@ -44,7 +45,42 @@
     });
   }
 
-  // --- Scroll-reveal with stagger ---
+  // --- Hero: word-by-word title reveal ---
+  const heroTitle = $('.hero__title');
+  if (heroTitle && !heroTitle.dataset.split) {
+    heroTitle.dataset.split = '1';
+    heroTitle.classList.add('word-reveal');
+    // Walk text nodes; wrap each word in <span class="word">
+    const wrapWords = (node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const frag = document.createDocumentFragment();
+        const parts = node.textContent.split(/(\s+)/);
+        parts.forEach((p) => {
+          if (!p) return;
+          if (/^\s+$/.test(p)) {
+            frag.appendChild(document.createTextNode(p));
+          } else {
+            const s = document.createElement('span');
+            s.className = 'word';
+            s.textContent = p;
+            frag.appendChild(s);
+          }
+        });
+        node.parentNode.replaceChild(frag, node);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(wrapWords);
+      }
+    };
+    wrapWords(heroTitle);
+    // Stagger reveal
+    const words = $$('.word', heroTitle);
+    words.forEach((w, i) => {
+      w.style.transitionDelay = `${200 + i * 70}ms`;
+      requestAnimationFrame(() => w.classList.add('is-visible'));
+    });
+  }
+
+  // --- Scroll-reveal ---
   const reveals = $$('.reveal');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
@@ -94,7 +130,7 @@
     });
   }
 
-  // --- Subtle hero parallax ---
+  // --- Hero parallax + spotlight ---
   const heroImg = $('.hero__media img');
   const heroFloats = $$('.hero__float');
   if (heroImg && !prefersReduced) {
@@ -110,6 +146,13 @@
     document.addEventListener('scroll', () => {
       if (!ticking) { requestAnimationFrame(parallax); ticking = true; }
     }, { passive: true });
+  }
+  if (hero && hasHover && !prefersReduced) {
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+      hero.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+    });
   }
 
   // --- Species cards: expand/collapse ---
@@ -137,8 +180,8 @@
     document.head.appendChild(style);
   }
 
-  // --- Tilt effect on feature / species cards (desktop only) ---
-  if (window.matchMedia('(hover:hover) and (pointer:fine)').matches && !prefersReduced) {
+  // --- 3D tilt on feature / about cards ---
+  if (hasHover && !prefersReduced) {
     const tiltTargets = $$('.feature, .vcard');
     tiltTargets.forEach((card) => {
       card.addEventListener('mousemove', (e) => {
@@ -148,6 +191,19 @@
         card.style.transform = `translateY(-6px) perspective(900px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
       });
       card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  }
+
+  // --- Magnetic buttons (desktop) ---
+  if (hasHover && !prefersReduced) {
+    $$('.btn--primary, .btn--outline, .fab').forEach((btn) => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = `translate(${x * 0.18}px, ${y * 0.18 - 2}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
   }
 

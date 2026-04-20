@@ -29,18 +29,21 @@
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
     <a href="#top" class="brand" aria-label="Blue Coast — inicio">
-      <svg class="brand__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <svg class="brand__mark" viewBox="0 0 220 90" fill="none" aria-hidden="true">
         <defs>
-          <linearGradient id="bg1" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stop-color="#7cdcff"/>
-            <stop offset="1" stop-color="#0a6ab8"/>
-          </linearGradient>
+          <linearGradient id="bnw1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8fd9ea"/><stop offset="1" stop-color="#5ab6d1"/></linearGradient>
+          <linearGradient id="bnw2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4aa6d4"/><stop offset="1" stop-color="#2c8cbf"/></linearGradient>
+          <linearGradient id="bnw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1e7dbd"/><stop offset="1" stop-color="#0b5b95"/></linearGradient>
+          <linearGradient id="bnw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#094d84"/><stop offset="1" stop-color="#002d55"/></linearGradient>
         </defs>
-        <circle cx="20" cy="20" r="19" stroke="url(#bg1)" stroke-width="1.5"/>
-        <path d="M4 24c4 0 4-4 8-4s4 4 8 4 4-4 8-4 4 4 8 4" stroke="url(#bg1)" stroke-width="2" stroke-linecap="round"/>
-        <path d="M4 30c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 8 3" stroke="url(#bg1)" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+        <g class="brand__waves" fill="none" stroke-linecap="round">
+          <path class="bw bw-1" d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#bnw1)" stroke-width="5"/>
+          <path class="bw bw-2" d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#bnw2)" stroke-width="6"/>
+          <path class="bw bw-3" d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#bnw3)" stroke-width="8"/>
+          <path class="bw bw-4" d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#bnw4)" stroke-width="7"/>
+        </g>
       </svg>
-      <span class="brand__text"><strong>Blue</strong>Coast<em>S.A.C.</em></span>
+      <span class="brand__text"><strong>BLUE</strong> COAST <em>S.A.C.</em></span>
     </a>
 
     <nav class="nav__links" aria-label="Navegación principal">
@@ -71,6 +74,11 @@
   <!-- Decorative floating elements -->
   <div class="hero__float hero__float--1" aria-hidden="true"></div>
   <div class="hero__float hero__float--2" aria-hidden="true"></div>
+  <div class="hero__spotlight" aria-hidden="true"></div>
+
+  <!-- Drifting fish silhouettes -->
+  <svg class="fish fish--1" aria-hidden="true" viewBox="0 0 200 80" fill="rgba(139,206,228,.18)"><path d="M10 40 C 35 15, 100 15, 140 30 L 168 15 L 165 38 L 185 40 L 165 42 L 168 65 L 140 50 C 100 65, 35 65, 10 40 Z M 50 35 a 3 3 0 1 1 -.1 0"/></svg>
+  <svg class="fish fish--2" aria-hidden="true" viewBox="0 0 200 80" fill="rgba(139,206,228,.14)"><path d="M14 40 C 34 22, 88 20, 132 34 L 160 22 L 158 38 L 180 40 L 158 42 L 160 58 L 132 46 C 88 60, 34 58, 14 40 Z M 55 36 a 2.5 2.5 0 1 1 -.1 0"/></svg>
 
   <div class="wrap hero__inner">
     <p class="eyebrow reveal"><span class="dot"></span>Productos hidrobiológicos · Perú</p>
@@ -106,6 +114,30 @@
 <!-- wave divider -->
 <div class="wave-divider" aria-hidden="true">
   <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" d="M0,40 C240,100 480,0 720,40 C960,80 1200,10 1440,40 L1440,90 L0,90 Z"/></svg>
+</div>
+
+<!-- ============ MARQUEE / species ticker ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Coryphaena hippurus · Perico</span><span class="marquee__dot">◆</span>
+    <span>Dosidicus gigas · Pota</span><span class="marquee__dot">◆</span>
+    <span>Octopus mimus · Pulpo</span><span class="marquee__dot">◆</span>
+    <span>Loligo gahi · Calamar</span><span class="marquee__dot">◆</span>
+    <span>Cynoscion phoxocephalus · Cherela</span><span class="marquee__dot">◆</span>
+    <span>Odontesthes regia · Pejerrey</span><span class="marquee__dot">◆</span>
+    <span>Sarda chiliensis · Bonito</span><span class="marquee__dot">◆</span>
+    <span>Trachurus murphyi · Jurel</span><span class="marquee__dot">◆</span>
+    <span>Scomber japonicus · Caballa</span><span class="marquee__dot">◆</span>
+    <span>Coryphaena hippurus · Perico</span><span class="marquee__dot">◆</span>
+    <span>Dosidicus gigas · Pota</span><span class="marquee__dot">◆</span>
+    <span>Octopus mimus · Pulpo</span><span class="marquee__dot">◆</span>
+    <span>Loligo gahi · Calamar</span><span class="marquee__dot">◆</span>
+    <span>Cynoscion phoxocephalus · Cherela</span><span class="marquee__dot">◆</span>
+    <span>Odontesthes regia · Pejerrey</span><span class="marquee__dot">◆</span>
+    <span>Sarda chiliensis · Bonito</span><span class="marquee__dot">◆</span>
+    <span>Trachurus murphyi · Jurel</span><span class="marquee__dot">◆</span>
+    <span>Scomber japonicus · Caballa</span><span class="marquee__dot">◆</span>
+  </div>
 </div>
 
 <!-- ============ ABOUT ============ -->
@@ -572,7 +604,7 @@
           </span>
           <div>
             <span class="contact__label">Email</span>
-            <a href="mailto:contacto@bluecoast.pe">contacto@bluecoast.pe</a>
+            <a href="mailto:javier.camino@bluecoastsac.com">javier.camino@bluecoastsac.com</a>
           </div>
         </li>
         <li>
@@ -581,7 +613,8 @@
           </span>
           <div>
             <span class="contact__label">Teléfono</span>
-            <a href="tel:+51999999999">+51 999 999 999</a>
+            <a href="tel:+5173312291">+51 73 312291</a>
+            <a href="tel:+51994076286">+51 994 076 286</a>
           </div>
         </li>
         <li>
@@ -589,11 +622,19 @@
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </span>
           <div>
-            <span class="contact__label">Ubicación</span>
-            <span>Lima, Perú</span>
+            <span class="contact__label">Dirección</span>
+            <span>Calle Bolívar Nº 244<br/>Sullana &mdash; Piura, Perú</span>
           </div>
         </li>
       </ul>
+
+      <div class="contact__person">
+        <div class="contact__avatar">FJ</div>
+        <div>
+          <strong>Francisco Javier Camino Calle</strong>
+          <span>Gerente General</span>
+        </div>
+      </div>
     </div>
 
     <form class="form reveal" id="contactForm" novalidate>
@@ -661,11 +702,21 @@
   <div class="wrap footer__inner">
     <div class="footer__brand">
       <span class="brand">
-        <svg class="brand__mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <circle cx="20" cy="20" r="19" stroke="#7cdcff" stroke-width="1.5"/>
-          <path d="M4 24c4 0 4-4 8-4s4 4 8 4 4-4 8-4 4 4 8 4" stroke="#7cdcff" stroke-width="2" stroke-linecap="round"/>
+        <svg class="brand__mark" viewBox="0 0 220 90" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="fw1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#8fd9ea"/><stop offset="1" stop-color="#5ab6d1"/></linearGradient>
+            <linearGradient id="fw2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#4aa6d4"/><stop offset="1" stop-color="#2c8cbf"/></linearGradient>
+            <linearGradient id="fw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1e7dbd"/><stop offset="1" stop-color="#0b5b95"/></linearGradient>
+            <linearGradient id="fw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#094d84"/><stop offset="1" stop-color="#002d55"/></linearGradient>
+          </defs>
+          <g fill="none" stroke-linecap="round">
+            <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#fw1)" stroke-width="5"/>
+            <path d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#fw2)" stroke-width="6"/>
+            <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#fw3)" stroke-width="8"/>
+            <path d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#fw4)" stroke-width="7"/>
+          </g>
         </svg>
-        <span class="brand__text"><strong>Blue</strong>Coast<em>S.A.C.</em></span>
+        <span class="brand__text"><strong>BLUE</strong> COAST <em>S.A.C.</em></span>
       </span>
       <p>Productos hidrobiológicos premium del mar peruano para el mundo.</p>
     </div>
@@ -681,14 +732,16 @@
       </div>
       <div>
         <h4>Contacto</h4>
-        <a href="mailto:contacto@bluecoast.pe">contacto@bluecoast.pe</a>
-        <a href="tel:+51999999999">+51 999 999 999</a>
-        <span>Lima, Perú</span>
+        <a href="mailto:javier.camino@bluecoastsac.com">javier.camino@bluecoastsac.com</a>
+        <a href="tel:+5173312291">+51 73 312291</a>
+        <a href="tel:+51994076286">+51 994 076 286</a>
+        <span>Calle Bolívar Nº 244</span>
+        <span>Sullana — Piura, Perú</span>
       </div>
       <div>
-        <h4>Legal</h4>
-        <a href="#">Términos y condiciones</a>
-        <a href="#">Política de privacidad</a>
+        <h4>Gerencia</h4>
+        <span>Francisco Javier Camino Calle</span>
+        <span style="color:rgba(139,206,228,.8)">Gerente General</span>
       </div>
     </div>
   </div>
