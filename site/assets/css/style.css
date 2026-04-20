@@ -259,11 +259,11 @@ p{margin:0 0 1em}
   color:#fff;
   text-shadow:0 4px 24px rgba(0,0,0,.25);
 }
-.hero__title-italic{
-  font-family:"Playfair Display", serif;
-  font-style:italic; font-weight:500;
+.hero__title-thin{
+  font-family:"Inter", sans-serif;
+  font-weight:300;
   font-size:clamp(2.4rem, 7vw, 5.4rem);
-  letter-spacing:-.02em;
+  letter-spacing:-.025em;
   line-height:.95;
   color:var(--cream);
   text-shadow:0 4px 24px rgba(0,0,0,.25);
@@ -296,24 +296,54 @@ p{margin:0 0 1em}
 .hero__waves{
   position:absolute; bottom:-1px; left:0; right:0; z-index:1;
   line-height:0; pointer-events:none;
-  height:140px;
+  height:180px;
+  overflow:hidden;
 }
 .hero__wave{
-  position:absolute; left:-5%; right:-5%; bottom:0;
-  width:220%; min-width:2200px; height:140px;
+  position:absolute; left:0; bottom:0;
+  width:200%; height:100%;
   display:block;
+  will-change:transform;
 }
-.hero__wave--1 path{fill:rgba(255,255,255,.28)}
-.hero__wave--2 path{fill:rgba(255,255,255,.45)}
-.hero__wave--3 path{fill:rgba(255,255,255,.7)}
-.hero__wave--4 path{fill:#ffffff}
-.hero__wave--1{animation:waveSlide 14s ease-in-out -2s infinite alternate}
-.hero__wave--2{animation:waveSlide 11s ease-in-out -4s infinite alternate-reverse}
-.hero__wave--3{animation:waveSlide 8s  ease-in-out -1s infinite alternate}
-.hero__wave--4{animation:waveSlide 6s  ease-in-out  0s infinite alternate-reverse}
-@keyframes waveSlide{
-  0%  {transform:translate3d(-6%, 0, 0)}
-  100%{transform:translate3d( 0%, 0, 0)}
+/* Horizontal loop — viewBox is 2880px with 2 wave-pattern repeats,
+   so translateX(-50%) lands exactly on a seam. */
+@keyframes waveScroll{
+  from{transform:translate3d(0,0,0)}
+  to  {transform:translate3d(-50%,0,0)}
+}
+/* Secondary vertical bob on a wrapper to add depth */
+@keyframes waveBob{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-8px)}
+}
+
+/* Each wave: horizontal scroll at different speeds + subtle vertical bob */
+.hero__wave--1{bottom:36px; animation:waveScroll 22s linear infinite, waveBob 7s ease-in-out infinite}
+.hero__wave--2{bottom:22px; animation:waveScroll 16s linear infinite reverse, waveBob 5s ease-in-out -1s infinite}
+.hero__wave--3{bottom:8px;  animation:waveScroll 11s linear infinite, waveBob 4s ease-in-out -2s infinite}
+.hero__wave--4{bottom:0;    animation:waveScroll 8s  linear infinite reverse}
+
+/* ---------- Bubbles rising from the waves ---------- */
+.bubble{
+  position:absolute; bottom:40px;
+  width:8px; height:8px; border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.3) 60%, rgba(255,255,255,0));
+  opacity:0;
+  pointer-events:none;
+  animation:bubbleRise 7s ease-in infinite;
+}
+.bubble--1{left:8%;  width:6px;  height:6px;  animation-duration:6s;   animation-delay:0s}
+.bubble--2{left:22%; width:10px; height:10px; animation-duration:9s;   animation-delay:2.5s}
+.bubble--3{left:36%; width:7px;  height:7px;  animation-duration:7.5s; animation-delay:1.2s}
+.bubble--4{left:52%; width:5px;  height:5px;  animation-duration:5.5s; animation-delay:3.8s}
+.bubble--5{left:68%; width:12px; height:12px; animation-duration:10s;  animation-delay:4.6s}
+.bubble--6{left:81%; width:8px;  height:8px;  animation-duration:7s;   animation-delay:.7s}
+.bubble--7{left:93%; width:6px;  height:6px;  animation-duration:6.5s; animation-delay:2.1s}
+@keyframes bubbleRise{
+  0%  {opacity:0; transform:translate3d(0,0,0) scale(.6)}
+  10% {opacity:.9}
+  70% {opacity:.6}
+  100%{opacity:0; transform:translate3d(18px,-180px,0) scale(1.2)}
 }
 
 /* ==========================================================================

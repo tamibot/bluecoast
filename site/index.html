@@ -16,9 +16,9 @@
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/style.css?v=20260420a" />
+<link rel="stylesheet" href="assets/css/style.css?v=20260420b" />
 </head>
 <body>
 
@@ -79,7 +79,7 @@
   <div class="wrap hero__inner">
     <h1 class="hero__title">
       <span class="hero__title-bold">Productos</span>
-      <span class="hero__title-italic">Hidrobiológicos</span>
+      <span class="hero__title-thin">Hidrobiológicos</span>
     </h1>
     <p class="hero__sub">Tu socio estratégico en productos de alta calidad.</p>
     <div class="hero__cta">
@@ -96,18 +96,47 @@
   </a>
 
   <div class="hero__waves" aria-hidden="true">
-    <svg class="hero__wave hero__wave--1" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,60 C240,120 480,0 720,50 C960,100 1200,10 1440,60 L1440,120 L0,120 Z"/>
+    <!-- Each SVG uses viewBox width of 2880 with the wave pattern repeating twice,
+         so translateX(-50%) loops seamlessly. -->
+    <svg class="hero__wave hero__wave--1" viewBox="0 0 2880 160" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hwg1" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="rgba(255,180,120,.35)"/>
+          <stop offset="1" stop-color="rgba(255,180,120,.6)"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hwg1)" d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1440,120 1440,80 C1620,40 1800,120 1980,80 C2160,40 2340,120 2520,80 C2700,40 2880,120 2880,80 L2880,160 L0,160 Z"/>
     </svg>
-    <svg class="hero__wave hero__wave--2" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,70 C240,30 480,100 720,65 C960,30 1200,105 1440,70 L1440,120 L0,120 Z"/>
+    <svg class="hero__wave hero__wave--2" viewBox="0 0 2880 160" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hwg2" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="rgba(255,210,170,.5)"/>
+          <stop offset="1" stop-color="rgba(255,225,195,.85)"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hwg2)" d="M0,100 C240,60 480,140 720,100 C960,60 1200,140 1440,100 C1680,60 1920,140 2160,100 C2400,60 2640,140 2880,100 L2880,160 L0,160 Z"/>
     </svg>
-    <svg class="hero__wave hero__wave--3" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,85 C240,115 480,45 720,80 C960,115 1200,55 1440,85 L1440,120 L0,120 Z"/>
+    <svg class="hero__wave hero__wave--3" viewBox="0 0 2880 160" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="hwg3" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="rgba(255,240,220,.85)"/>
+          <stop offset="1" stop-color="#fff"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#hwg3)" d="M0,120 C180,95 360,145 540,120 C720,95 900,145 1080,120 C1260,95 1440,145 1620,120 C1800,95 1980,145 2160,120 C2340,95 2520,145 2700,120 C2790,108 2880,130 2880,120 L2880,160 L0,160 Z"/>
     </svg>
-    <svg class="hero__wave hero__wave--4" viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path d="M0,95 C240,75 480,115 720,95 C960,75 1200,115 1440,95 L1440,120 L0,120 Z"/>
+    <svg class="hero__wave hero__wave--4" viewBox="0 0 2880 160" preserveAspectRatio="none">
+      <path fill="#ffffff" d="M0,135 C240,115 480,155 720,135 C960,115 1200,155 1440,135 C1680,115 1920,155 2160,135 C2400,115 2640,155 2880,135 L2880,160 L0,160 Z"/>
     </svg>
+
+    <!-- rising bubbles -->
+    <span class="bubble bubble--1"></span>
+    <span class="bubble bubble--2"></span>
+    <span class="bubble bubble--3"></span>
+    <span class="bubble bubble--4"></span>
+    <span class="bubble bubble--5"></span>
+    <span class="bubble bubble--6"></span>
+    <span class="bubble bubble--7"></span>
   </div>
 </section>
 
@@ -596,6 +625,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=20260420a" defer></script>
+<script src="assets/js/main.js?v=20260420b" defer></script>
 </body>
 </html>
