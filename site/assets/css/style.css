@@ -27,13 +27,15 @@
   --ocean-300:#5ab6d1;
   --ocean-200:#7bcce0;
 
-  /* Sunset accent (hero + primary button) */
-  --sun-600:#e87a3e;
-  --sun-500:#ff8f47;
-  --sun-400:#ffa563;
-  --sun-300:#ffc185;
-  --coral-500:#ff6b5d;
-  --coral-600:#e84d3c;
+  /* Sunset accent — muted "burnt sunset" tones (match original) */
+  --sun-700:#a54a26;
+  --sun-600:#c25d2a;
+  --sun-500:#db6f31;
+  --sun-400:#eb8a4a;
+  --sun-300:#f4a775;
+  --sun-200:#fac89f;
+  --coral-500:#d85a3e;
+  --coral-600:#b64731;
 
   /* Effects */
   --shadow-sm:0 1px 2px rgba(15,23,42,.05), 0 2px 6px rgba(15,23,42,.04);
@@ -73,17 +75,17 @@ h1{font-weight:800; font-size:clamp(2.8rem, 7vw, 5.6rem); letter-spacing:-.03em;
 h2{font-weight:700; font-size:clamp(2.1rem, 4.2vw, 3.3rem); letter-spacing:-.02em}
 h3{font-weight:700; font-size:1.35rem}
 
-/* section-heading accent: kept non-italic, just a sunset color */
+/* section-heading accent: kept non-italic, muted burnt-orange */
 h2 em, h3 em{
   font-style:normal; font-weight:700;
-  color:var(--sun-600);
+  color:var(--sun-700);
   letter-spacing:-.02em;
 }
 p{margin:0 0 1em}
 
 .wrap{width:min(1200px, 92%); margin-inline:auto}
 
-::selection{background:var(--sun-400); color:#fff}
+::selection{background:var(--sun-300); color:var(--ink-900)}
 
 /* ---------- Buttons ---------- */
 .btn{
@@ -102,13 +104,13 @@ p{margin:0 0 1em}
 .btn:active{transform:translateY(0) scale(.98)}
 
 .btn--primary{
-  background:linear-gradient(100deg, var(--sun-500) 0%, var(--coral-500) 100%);
+  background:linear-gradient(100deg, var(--sun-600) 0%, var(--coral-500) 100%);
   color:#fff;
-  box-shadow:0 10px 28px -8px rgba(255,143,71,.55);
+  box-shadow:0 10px 28px -8px rgba(194,93,42,.55);
 }
 .btn--primary:hover{
-  background:linear-gradient(100deg, var(--sun-600) 0%, var(--coral-600) 100%);
-  box-shadow:0 16px 36px -10px rgba(255,143,71,.65);
+  background:linear-gradient(100deg, var(--sun-700) 0%, var(--coral-600) 100%);
+  box-shadow:0 16px 36px -10px rgba(194,93,42,.65);
 }
 .btn--outline{
   background:transparent; color:#fff;
@@ -204,8 +206,8 @@ p{margin:0 0 1em}
   display:block;
 }
 .nw{fill:var(--sun-500); transform-origin:center}
-.nw-1{fill:rgba(255,143,71,.55); animation:navFlow 6s linear infinite}
-.nw-2{fill:rgba(255,143,71,.8);  animation:navFlow 4.5s linear infinite reverse}
+.nw-1{fill:rgba(219,111,49,.5); animation:navFlow 6s linear infinite}
+.nw-2{fill:rgba(219,111,49,.75); animation:navFlow 4.5s linear infinite reverse}
 .nw-3{fill:var(--sun-500);       animation:navFlow 3s linear infinite}
 @keyframes navFlow{
   from{transform:translateX(0)}
@@ -380,7 +382,7 @@ p{margin:0 0 1em}
 .process__step:hover{
   transform:translateY(-8px);
   box-shadow:var(--shadow-lg);
-  border-color:rgba(255,143,71,.3);
+  border-color:rgba(219,111,49,.28);
 }
 .process__media{
   aspect-ratio:4/3;
@@ -397,12 +399,12 @@ p{margin:0 0 1em}
 
 .process__num{
   position:absolute; top:2rem; left:2rem;
-  background:linear-gradient(135deg, var(--sun-500), var(--coral-500));
+  background:linear-gradient(135deg, var(--sun-600), var(--coral-500));
   color:#fff;
   font-weight:800; font-size:.82rem;
   padding:.3rem .7rem; border-radius:999px;
   letter-spacing:.08em;
-  box-shadow:0 4px 14px -4px rgba(255,143,71,.6);
+  box-shadow:0 4px 14px -4px rgba(194,93,42,.55);
 }
 .process__step h3{padding:0 .6rem; margin-bottom:.6em}
 .process__step p{padding:0 .6rem; color:var(--slate); margin:0; font-size:.95rem}
@@ -427,7 +429,7 @@ p{margin:0 0 1em}
 .product:hover{
   transform:translateY(-8px);
   box-shadow:var(--shadow-lg);
-  border-color:rgba(255,143,71,.3);
+  border-color:rgba(219,111,49,.28);
 }
 .product__img{
   aspect-ratio:1/1;
@@ -479,7 +481,7 @@ p{margin:0 0 1em}
 .sp:hover{
   transform:translateY(-4px);
   box-shadow:var(--shadow-md);
-  border-color:rgba(255,143,71,.3);
+  border-color:rgba(219,111,49,.28);
 }
 .sp__kicker{
   display:block; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
@@ -490,7 +492,7 @@ p{margin:0 0 1em}
 .sp h3 em{color:var(--slate-2); font-weight:400; font-size:.82em; font-style:normal}
 .sp__count{color:var(--slate); font-size:.85rem; margin:0 0 1.1rem}
 .sp__count strong{
-  color:var(--sun-600);
+  color:var(--sun-700);
   font-weight:700;
   font-size:1.05rem; margin-right:.35em;
 }
@@ -542,7 +544,7 @@ p{margin:0 0 1em}
   box-shadow:var(--shadow-sm);
   transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s;
 }
-.tcard:hover{transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:rgba(255,143,71,.3)}
+.tcard:hover{transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:rgba(219,111,49,.28)}
 .tcard__q{
   width:36px; height:36px;
   color:var(--sun-500); opacity:.5;
@@ -556,13 +558,13 @@ p{margin:0 0 1em}
 }
 .tcard figcaption{display:flex; flex-direction:column; gap:.1rem}
 .tcard figcaption strong{color:var(--ink-900); font-size:.95rem}
-.tcard figcaption span{color:var(--sun-600); font-size:.82rem; font-weight:500}
+.tcard figcaption span{color:var(--sun-700); font-size:.82rem; font-weight:500}
 
 .testimonials__cta{
   text-align:center;
   padding:3rem 2rem;
   background:
-    linear-gradient(135deg, rgba(255,143,71,.08), rgba(255,107,93,.05)),
+    linear-gradient(135deg, rgba(219,111,49,.08), rgba(216,90,62,.05)),
     var(--paper);
   border:1px solid var(--line);
   border-radius:var(--radius-lg);
@@ -582,7 +584,7 @@ p{margin:0 0 1em}
 .contact__list li > div{display:flex; flex-direction:column; gap:.15rem}
 .contact__icon{
   flex-shrink:0; width:44px; height:44px;
-  display:grid; place-items:center; color:var(--sun-600);
+  display:grid; place-items:center; color:var(--sun-700);
   background:var(--paper-2);
   border:1px solid var(--line);
   border-radius:12px;
@@ -590,7 +592,7 @@ p{margin:0 0 1em}
 }
 .contact__list li:hover .contact__icon{
   transform:scale(1.08) rotate(-5deg);
-  background:linear-gradient(135deg, var(--sun-500), var(--coral-500));
+  background:linear-gradient(135deg, var(--sun-600), var(--coral-500));
   color:#fff;
 }
 .contact__label{
@@ -601,12 +603,12 @@ p{margin:0 0 1em}
   color:var(--ink-800); font-weight:500; line-height:1.4;
   transition:color .2s;
 }
-.contact__list a:hover{color:var(--sun-600)}
+.contact__list a:hover{color:var(--sun-700)}
 
 .contact__person{
   display:flex; align-items:center; gap:1rem;
   padding:1.1rem 1.3rem;
-  background:linear-gradient(135deg, rgba(255,143,71,.06), rgba(255,107,93,.03)), var(--paper);
+  background:linear-gradient(135deg, rgba(219,111,49,.06), rgba(216,90,62,.03)), var(--paper);
   border:1px solid var(--line);
   border-radius:var(--radius);
   transition:transform .3s var(--ease), box-shadow .3s;
@@ -615,14 +617,14 @@ p{margin:0 0 1em}
 .contact__avatar{
   width:50px; height:50px; border-radius:50%;
   display:grid; place-items:center;
-  background:linear-gradient(135deg, var(--sun-500), var(--coral-500));
+  background:linear-gradient(135deg, var(--sun-600), var(--coral-500));
   color:#fff; font-weight:700; font-size:1rem;
   flex-shrink:0;
   letter-spacing:.02em;
-  box-shadow:0 4px 12px rgba(255,143,71,.4);
+  box-shadow:0 4px 12px rgba(194,93,42,.4);
 }
 .contact__person strong{display:block; color:var(--ink-900); font-size:1rem; line-height:1.2}
-.contact__person span{color:var(--sun-600); font-size:.82rem; font-weight:500}
+.contact__person span{color:var(--sun-700); font-size:.82rem; font-weight:500}
 
 /* ---------- Form ---------- */
 .form{
@@ -652,9 +654,9 @@ p{margin:0 0 1em}
 .field textarea{resize:vertical; min-height:120px; font-family:inherit}
 .field input:focus, .field textarea:focus{
   outline:none;
-  border-color:var(--sun-500);
+  border-color:var(--sun-600);
   background:var(--paper);
-  box-shadow:0 0 0 4px rgba(255,143,71,.14);
+  box-shadow:0 0 0 4px rgba(194,93,42,.14);
 }
 .form__msg{margin:1rem 0 0; font-size:.9rem; min-height:1.4em; font-weight:500}
 .form__msg.is-ok{color:#0a6f3a}
@@ -684,7 +686,7 @@ p{margin:0 0 1em}
   display:block; color:rgba(255,255,255,.55);
   margin-bottom:.5rem; transition:color .2s; font-size:.9rem;
 }
-.footer__cols a:hover{color:var(--sun-400)}
+.footer__cols a:hover{color:var(--sun-300)}
 .footer__cols .muted{color:rgba(255,255,255,.4); font-size:.82rem}
 .footer__bottom{padding:1.3rem 0; background:rgba(0,0,0,.25)}
 .footer__bottom .wrap{
