@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Blue Coast S.A.C. — Productos Hidrobiológicos Premium del Perú</title>
-<meta name="description" content="Socio estratégico en productos hidrobiológicos del mar peruano. Perico, pota y más — frescos y congelados para exportación con los más altos estándares de calidad." />
+<meta name="description" content="Socio estratégico en productos hidrobiológicos del mar peruano. Perico, pota, pulpo, calamar, bonito, jurel y más — frescos y congelados para exportación." />
 <meta name="author" content="Blue Coast S.A.C." />
 <meta name="theme-color" content="#041a2e" />
 
@@ -13,15 +13,19 @@
 <meta property="og:type" content="website" />
 <meta property="og:image" content="assets/images/hero-sunset.jpg" />
 
+<link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
 
-<!-- ===== NAV ===== -->
+<!-- ============ PROGRESS BAR ============ -->
+<div class="scroll-progress" id="progress" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
     <a href="#top" class="brand" aria-label="Blue Coast — inicio">
@@ -41,10 +45,10 @@
 
     <nav class="nav__links" aria-label="Navegación principal">
       <a href="#nosotros">Nosotros</a>
-      <a href="#proceso">Proceso</a>
+      <a href="#especies">Especies</a>
       <a href="#productos">Productos</a>
+      <a href="#proceso">Proceso</a>
       <a href="#calidad">Calidad</a>
-      <a href="#testimonios">Testimonios</a>
       <a href="#contacto" class="btn btn--ghost btn--sm">Contacto</a>
     </nav>
 
@@ -56,13 +60,17 @@
 
 <main id="top">
 
-<!-- ===== HERO ===== -->
+<!-- ============ HERO ============ -->
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
     <img src="assets/images/hero-sunset.jpg" alt="" />
     <div class="hero__grain"></div>
     <div class="hero__overlay"></div>
   </div>
+
+  <!-- Decorative floating elements -->
+  <div class="hero__float hero__float--1" aria-hidden="true"></div>
+  <div class="hero__float hero__float--2" aria-hidden="true"></div>
 
   <div class="wrap hero__inner">
     <p class="eyebrow reveal"><span class="dot"></span>Productos hidrobiológicos · Perú</p>
@@ -76,17 +84,17 @@
       estándares de exportación y entrega puntual.
     </p>
     <div class="hero__cta reveal">
-      <a href="#productos" class="btn btn--primary">Ver productos
+      <a href="#especies" class="btn btn--primary">Explora las especies
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a href="#contacto" class="btn btn--outline">Hablemos</a>
     </div>
 
     <ul class="hero__stats reveal" role="list">
-      <li><strong>100%</strong><span>Materia prima peruana</span></li>
-      <li><strong>+15</strong><span>Países de destino</span></li>
-      <li><strong>HACCP</strong><span>Procesos certificados</span></li>
-      <li><strong>24/7</strong><span>Acompañamiento logístico</span></li>
+      <li><strong data-count="9">0</strong><span>Especies en catálogo</span></li>
+      <li><strong data-count="50" data-suffix="+">0</strong><span>Presentaciones</span></li>
+      <li><strong data-count="15" data-suffix="+">0</strong><span>Países destino</span></li>
+      <li><strong>HACCP</strong><span>Plantas certificadas</span></li>
     </ul>
   </div>
 
@@ -95,7 +103,12 @@
   </a>
 </section>
 
-<!-- ===== ABOUT ===== -->
+<!-- wave divider -->
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path fill="currentColor" d="M0,40 C240,100 480,0 720,40 C960,80 1200,10 1440,40 L1440,90 L0,90 Z"/></svg>
+</div>
+
+<!-- ============ ABOUT ============ -->
 <section id="nosotros" class="section section--light">
   <div class="wrap grid grid--about">
     <div class="about__intro reveal">
@@ -105,11 +118,16 @@
         Blue Coast S.A.C. es una empresa peruana dedicada a conectar a importadores
         y distribuidores globales con los mejores procesadores hidrobiológicos del
         Pacífico sur. Traducimos especificaciones técnicas en cadenas de suministro
-        confiables.
+        confiables, con trazabilidad lote-a-lote y entrega a destino.
       </p>
-      <a href="#productos" class="link-arrow">Conoce nuestra oferta
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+      <div class="about__ctas">
+        <a href="#productos" class="link-arrow">Conoce la oferta
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#contacto" class="link-arrow">Solicita cotización
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
     </div>
 
     <div class="about__cards">
@@ -138,11 +156,280 @@
   </div>
 </section>
 
-<!-- ===== PROCESS ===== -->
-<section id="proceso" class="section section--dark">
+<!-- ============ FEATURED PRODUCTS (real photos) ============ -->
+<section id="productos" class="section section--featured">
+  <div class="wrap">
+    <header class="section__head section__head--left reveal">
+      <p class="eyebrow eyebrow--dark"><span class="dot dot--dark"></span>Productos destacados</p>
+      <h2>Cortes y presentaciones <em>listos para exportar</em>.</h2>
+      <p class="lead">
+        Tres de nuestros productos más demandados, procesados bajo especificación
+        del cliente con empaque IQF, IVP o al vacío según el destino.
+      </p>
+    </header>
+
+    <div class="featured">
+      <article class="feature reveal">
+        <div class="feature__img">
+          <img src="assets/images/real-perico-porciones.png" alt="Porciones de perico" loading="lazy" />
+          <span class="feature__badge">Más vendido</span>
+        </div>
+        <div class="feature__body">
+          <span class="feature__kicker">Coryphaena hippurus</span>
+          <h3>Porciones de Perico</h3>
+          <p>Con o sin piel, sin espinas. Presentación IQF o IVP, calibradas según la especificación del cliente y listas para food-service o retail.</p>
+          <ul class="feature__tags">
+            <li>IQF</li><li>IVP</li><li>Sin espinas</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="feature feature--wide reveal">
+        <div class="feature__img">
+          <img src="assets/images/real-perico-filetes.png" alt="Filetes de perico" loading="lazy" />
+          <span class="feature__badge feature__badge--alt">Corte a medida</span>
+        </div>
+        <div class="feature__body">
+          <span class="feature__kicker">Coryphaena hippurus</span>
+          <h3>Filetes de Perico</h3>
+          <p>Filete con piel y sin espina, o sin piel con espina. Corte normal, fletches sin grasa, medallones o trozos — todo congelado y con trazabilidad por lote.</p>
+          <ul class="feature__tags">
+            <li>Congelado</li><li>Corte normal</li><li>Fletches</li><li>Medallones</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <div class="feature__img feature__img--light">
+          <img src="assets/images/real-pota-anillas.png" alt="Anillas de pota" loading="lazy" />
+          <span class="feature__badge">IQF</span>
+        </div>
+        <div class="feature__body">
+          <span class="feature__kicker">Dosidicus gigas</span>
+          <h3>Anillas de Pota</h3>
+          <p>Anillas crudas, con o sin tratamiento, congeladas. Calibradas para tu línea. Disponibles también como rodajas de tentáculo, botones, tiras y rabas.</p>
+          <ul class="feature__tags">
+            <li>Crudas</li><li>Tratadas</li><li>Congeladas</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPECIES CATALOG ============ -->
+<section id="especies" class="section section--dark">
   <div class="wrap">
     <header class="section__head reveal">
-      <p class="eyebrow"><span class="dot"></span>Cómo trabajamos</p>
+      <p class="eyebrow"><span class="dot"></span>Catálogo completo</p>
+      <h2>Nueve <em>especies</em> del Pacífico peruano</h2>
+      <p class="lead">
+        Selecciona una especie para ver sus cortes y presentaciones. Todas se procesan
+        en plantas habilitadas para exportación y con documentación sanitaria completa.
+      </p>
+    </header>
+
+    <div class="species" id="speciesGrid">
+
+      <article class="sp reveal" data-species="perico">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M10 40 C 30 10, 70 10, 110 30 L 150 15 L 148 38 L 178 38 L 148 42 L 150 65 L 110 50 C 70 70, 30 70, 10 40 Z M 60 35 a 3 3 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Coryphaena hippurus</span>
+          <h3>Perico <em>· Mahi-mahi</em></h3>
+          <p class="sp__count"><strong>13</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-perico">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-perico" hidden>
+            <li>Filete con piel, sin espina, corte normal, congelado</li>
+            <li>Filete sin piel, con espina, corte normal, congelado</li>
+            <li>Porciones con/sin piel, sin espinas, congeladas (IQF)</li>
+            <li>Porciones con/sin piel, sin espinas, congeladas (IQF + IVP)</li>
+            <li>Fletches sin grasa, sin espinas, congelados</li>
+            <li>Trozos sin piel, sin espina, congelados</li>
+            <li>Corte GG sin agallas, sin vísceras, sin vena, congelado</li>
+            <li>Corte HG (sin cabeza, sin vísceras), congelado</li>
+            <li>Corte HGT (sin cabeza, sin vísceras, sin cola), congelado</li>
+            <li>Medallones congelados</li>
+            <li>Cabeza congelada</li>
+            <li>Minced, block congelado</li>
+            <li>Huevera congelada</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="pota">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M150 30 C 170 20, 190 30, 180 45 C 190 55, 170 62, 150 55 C 140 70, 120 60, 110 48 L 80 55 L 40 70 L 50 48 L 20 45 L 50 40 L 40 18 L 80 33 L 110 40 C 120 28, 140 18, 150 30 Z M 165 38 a 2.5 2.5 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Dosidicus gigas</span>
+          <h3>Pota <em>· Calamar gigante</em></h3>
+          <p class="sp__count"><strong>13</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-pota">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-pota" hidden>
+            <li>Pota entera, sin víscera, sin ojo, sin pico, congelada</li>
+            <li>Tubo limpio, con/sin piel, congelado</li>
+            <li>Filete laminado o sin laminar, crudo o precocido, congelado</li>
+            <li>Tabletas sin piel, con/sin membrana, congeladas</li>
+            <li>Aleta, con/sin piel, cruda o precocida, congelada</li>
+            <li>Tentáculos, con/sin ventosas, crudos o precocidos, congelados</li>
+            <li>Rodajas de tentáculos, crudos o precocidos, congeladas</li>
+            <li>Nucas crudas, congeladas</li>
+            <li>Anillas crudas, con/sin tratamiento, congeladas</li>
+            <li>Botones, tiras, rabas, congeladas</li>
+            <li>Recortes crudos o precocidos, congelados</li>
+            <li>Minced crudo, congelado</li>
+            <li>Huevera congelada</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="pulpo">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M100 12 C 70 12, 55 30, 55 45 C 40 48, 30 68, 40 75 C 45 68, 55 60, 62 60 C 55 72, 60 78, 70 75 C 72 65, 78 58, 85 60 C 80 75, 95 80, 100 70 C 105 80, 120 75, 115 60 C 122 58, 128 65, 130 75 C 140 78, 145 72, 138 60 C 145 60, 155 68, 160 75 C 170 68, 160 48, 145 45 C 145 30, 130 12, 100 12 Z M 90 35 a 3 3 0 1 1 -.1 0 M 110 35 a 3 3 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Octopus mimus</span>
+          <h3>Pulpo</h3>
+          <p class="sp__count"><strong>2</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-pulpo">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-pulpo" hidden>
+            <li>Pulpo entero eviscerado tipo roseta, congelado</li>
+            <li>Pulpo entero, con/sin ojos, con/sin pico, con/sin baba, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="calamar">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M30 40 L 140 20 L 175 30 L 160 40 L 175 50 L 140 60 Z M 140 35 L 175 40 L 140 45 Z M 150 20 L 158 28 M 155 60 L 162 52"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Loligo gahi</span>
+          <h3>Calamar</h3>
+          <p class="sp__count"><strong>3</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-calamar">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-calamar" hidden>
+            <li>Calamar entero, con/sin víscera, congelado</li>
+            <li>Tubo de calamar, con/sin piel, congelado</li>
+            <li>Calamar entero pelado, con/sin víscera, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="cherela">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M20 40 C 40 15, 90 15, 130 35 L 160 20 L 158 38 L 180 40 L 158 42 L 160 60 L 130 45 C 90 65, 40 65, 20 40 Z M 70 35 a 3 3 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Cynoscion phoxocephalus</span>
+          <h3>Cherela <em>· Cachema</em></h3>
+          <p class="sp__count"><strong>4</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-cherela">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-cherela" hidden>
+            <li>Filete con/sin piel, sin espina, congelado</li>
+            <li>Trozos sin piel, sin espina, congelados</li>
+            <li>Porciones sin espina, congeladas</li>
+            <li>Porciones sin espina, congeladas (envasadas al vacío)</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="pejerrey">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M15 40 C 35 25, 85 25, 125 35 L 155 25 L 153 38 L 180 40 L 153 42 L 155 55 L 125 45 C 85 55, 35 55, 15 40 Z M 60 37 a 2 2 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Odontesthes regia regia</span>
+          <h3>Pejerrey</h3>
+          <p class="sp__count"><strong>3</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-pejerrey">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-pejerrey" hidden>
+            <li>Filete con piel, corte mariposa, congelado</li>
+            <li>Entero, con/sin vísceras, congelado</li>
+            <li>Filete con piel, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="bonito">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M10 40 C 35 15, 100 15, 140 30 L 168 15 L 165 38 L 185 40 L 165 42 L 168 65 L 140 50 C 100 65, 35 65, 10 40 Z M 50 35 a 3 3 0 1 1 -.1 0 M 90 48 L 95 44 M 100 52 L 105 48"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Sarda chiliensis chiliensis</span>
+          <h3>Bonito</h3>
+          <p class="sp__count"><strong>3</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-bonito">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-bonito" hidden>
+            <li>Bonito HG, HGT, GG congelado</li>
+            <li>Filete con piel, sin espinas, congelado</li>
+            <li>Bonito entero, con/sin vísceras, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="jurel">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M12 40 C 32 20, 80 18, 130 35 L 162 18 L 160 38 L 182 40 L 160 42 L 162 62 L 130 45 C 80 62, 32 60, 12 40 Z M 55 36 a 2.5 2.5 0 1 1 -.1 0"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Trachurus murphyi</span>
+          <h3>Jurel</h3>
+          <p class="sp__count"><strong>3</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-jurel">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-jurel" hidden>
+            <li>Jurel corte HG, HGT, GG, congelado</li>
+            <li>Filete con piel, sin espinas, congelado</li>
+            <li>Entero con/sin vísceras, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="sp reveal" data-species="caballa">
+        <div class="sp__head">
+          <svg class="sp__silhouette" viewBox="0 0 200 80" fill="currentColor" aria-hidden="true"><path d="M14 40 C 34 22, 88 20, 132 34 L 160 22 L 158 38 L 180 40 L 158 42 L 160 58 L 132 46 C 88 60, 34 58, 14 40 Z M 55 36 a 2.5 2.5 0 1 1 -.1 0 M 85 32 L 100 34 M 90 42 L 105 44"/></svg>
+        </div>
+        <div class="sp__body">
+          <span class="sp__kicker">Scomber japonicus</span>
+          <h3>Caballa</h3>
+          <p class="sp__count"><strong>2</strong> presentaciones</p>
+          <button class="sp__btn" type="button" aria-expanded="false" aria-controls="sp-caballa">
+            Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <ul class="sp__list" id="sp-caballa" hidden>
+            <li>Filete con piel, sin espinas, congelado</li>
+            <li>Filete con piel, congelado</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section id="proceso" class="section section--light">
+  <div class="wrap">
+    <header class="section__head reveal">
+      <p class="eyebrow eyebrow--dark"><span class="dot dot--dark"></span>Cómo trabajamos</p>
       <h2>Descubre <em>nuestro proceso</em></h2>
       <p class="lead">
         Un flujo transparente y eficiente que conecta tu visión con la realidad
@@ -179,81 +466,7 @@
   </div>
 </section>
 
-<!-- ===== PRODUCTS ===== -->
-<section id="productos" class="section section--light">
-  <div class="wrap">
-    <header class="section__head section__head--left reveal">
-      <p class="eyebrow eyebrow--dark"><span class="dot dot--dark"></span>Portafolio</p>
-      <h2>Nuestros <em>productos de exportación</em></h2>
-      <p class="lead">
-        Especies peruanas seleccionadas, procesadas bajo especificación del cliente
-        en presentaciones frescas y congeladas.
-      </p>
-    </header>
-
-    <div class="products">
-
-      <article class="product reveal">
-        <div class="product__img">
-          <img src="assets/images/product-perico.jpg" alt="Porciones de perico frescas" loading="lazy" />
-          <span class="product__tag">Fresco · Congelado</span>
-        </div>
-        <div class="product__body">
-          <h3>Porciones de Perico</h3>
-          <dl class="product__meta">
-            <div><dt>Nombre común</dt><dd>Perico / Mahi-mahi</dd></div>
-            <div><dt>Nombre científico</dt><dd><i>Coryphaena hippurus</i></dd></div>
-          </dl>
-          <p>Porciones uniformes, sin piel o con piel según especificación. Empaque IQF o al vacío.</p>
-        </div>
-      </article>
-
-      <article class="product reveal">
-        <div class="product__img">
-          <img src="assets/images/product-perico.jpg" alt="Filetes de perico" loading="lazy" />
-          <span class="product__tag product__tag--alt">Corte a medida</span>
-        </div>
-        <div class="product__body">
-          <h3>Filetes de Perico</h3>
-          <dl class="product__meta">
-            <div><dt>Nombre común</dt><dd>Perico / Mahi-mahi</dd></div>
-            <div><dt>Nombre científico</dt><dd><i>Coryphaena hippurus</i></dd></div>
-          </dl>
-          <p>Filetes frescos y congelados en diferentes cortes y calibres. Trazabilidad por lote.</p>
-        </div>
-      </article>
-
-      <article class="product reveal">
-        <div class="product__img">
-          <img src="assets/images/product-pota.jpg" alt="Anillas de pota" loading="lazy" />
-          <span class="product__tag">IQF</span>
-        </div>
-        <div class="product__body">
-          <h3>Anillas de Pota</h3>
-          <dl class="product__meta">
-            <div><dt>Nombre común</dt><dd>Pota / Calamar gigante</dd></div>
-            <div><dt>Nombre científico</dt><dd><i>Dosidicus gigas</i></dd></div>
-          </dl>
-          <p>Anillas frescas y congeladas, procesadas y calibradas según tu línea de producción.</p>
-        </div>
-      </article>
-
-      <article class="product product--ghost reveal">
-        <div class="product__body product__body--center">
-          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="10"/></svg>
-          <h3>¿Buscas otra especie?</h3>
-          <p>Trabajamos también pulpo, perico entero, bonito, caballa y desarrollos bajo especificación.</p>
-          <a href="#contacto" class="link-arrow">Solicita cotización
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== QUALITY ===== -->
+<!-- ============ QUALITY ============ -->
 <section id="calidad" class="section section--quality">
   <div class="wrap grid grid--quality">
     <div class="quality__copy reveal">
@@ -278,14 +491,14 @@
       <div class="badge">BRCGS</div>
       <div class="badge">SANIPES</div>
       <div class="badge">FDA</div>
-      <div class="badge">EU&nbsp;Approved</div>
+      <div class="badge">EU<br/>Approved</div>
       <div class="badge">IFS</div>
     </div>
   </div>
 </section>
 
-<!-- ===== TESTIMONIALS ===== -->
-<section id="testimonios" class="section section--dark">
+<!-- ============ TESTIMONIALS ============ -->
+<section id="testimonios" class="section section--dark section--dark-alt">
   <div class="wrap">
     <header class="section__head reveal">
       <p class="eyebrow"><span class="dot"></span>Testimonios</p>
@@ -298,8 +511,11 @@
         <svg class="tcard__q" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Blue Coast entendió nuestras especificaciones desde la primera reunión. La trazabilidad de cada lote nos simplifica muchísimo la gestión con aduanas.</blockquote>
         <figcaption>
-          <strong>Carla Méndez</strong>
-          <span>Distribuidora Marina SA</span>
+          <div class="tcard__avatar" style="background:linear-gradient(135deg,#0e5490,#7cdcff)">CM</div>
+          <div>
+            <strong>Carla Méndez</strong>
+            <span>Distribuidora Marina SA</span>
+          </div>
         </figcaption>
       </figure>
 
@@ -307,8 +523,11 @@
         <svg class="tcard__q" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Cumplieron plazos ajustados en temporada alta y mantuvieron la calidad que nuestros clientes finales esperan. Son un equipo en el que confiamos.</blockquote>
         <figcaption>
-          <strong>Jorge Paredes</strong>
-          <span>Exportaciones del Pacífico</span>
+          <div class="tcard__avatar" style="background:linear-gradient(135deg,#ff7a59,#ffb567)">JP</div>
+          <div>
+            <strong>Jorge Paredes</strong>
+            <span>Exportaciones del Pacífico</span>
+          </div>
         </figcaption>
       </figure>
 
@@ -316,8 +535,11 @@
         <svg class="tcard__q" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Trabajar con Blue Coast redujo nuestro tiempo de respuesta con proveedores. Comunicación clara, documentación ordenada y precios competitivos.</blockquote>
         <figcaption>
-          <strong>Emma Liu</strong>
-          <span>Ocean Table — Shanghái</span>
+          <div class="tcard__avatar" style="background:linear-gradient(135deg,#127abf,#b5ecff)">EL</div>
+          <div>
+            <strong>Emma Liu</strong>
+            <span>Ocean Table — Shanghái</span>
+          </div>
         </figcaption>
       </figure>
     </div>
@@ -331,12 +553,12 @@
   </div>
 </section>
 
-<!-- ===== CONTACT ===== -->
+<!-- ============ CONTACT ============ -->
 <section id="contacto" class="section section--contact">
   <div class="wrap grid grid--contact">
 
     <div class="contact__info reveal">
-      <p class="eyebrow"><span class="dot"></span>Trabaja con nosotros</p>
+      <p class="eyebrow eyebrow--dark"><span class="dot dot--dark"></span>Trabaja con nosotros</p>
       <h2>Hagamos <em>negocios</em> juntos.</h2>
       <p class="lead">
         ¿Listo para formar parte de nuestra red de proveedores y distribuidores?
@@ -400,13 +622,25 @@
       </div>
 
       <label class="field">
-        <span>Tipo de producto</span>
-        <input type="text" name="producto" placeholder="Ej: Perico en porciones, anillas de pota, etc." />
+        <span>Especie / producto de interés</span>
+        <select name="producto">
+          <option value="">Selecciona una especie...</option>
+          <option>Perico (Coryphaena hippurus)</option>
+          <option>Pota (Dosidicus gigas)</option>
+          <option>Pulpo (Octopus mimus)</option>
+          <option>Calamar (Loligo gahi)</option>
+          <option>Cherela (Cynoscion phoxocephalus)</option>
+          <option>Pejerrey (Odontesthes regia)</option>
+          <option>Bonito (Sarda chiliensis)</option>
+          <option>Jurel (Trachurus murphyi)</option>
+          <option>Caballa (Scomber japonicus)</option>
+          <option>Otros / especificar en mensaje</option>
+        </select>
       </label>
 
       <label class="field">
         <span>Especificaciones y requerimientos</span>
-        <textarea name="mensaje" rows="5" placeholder="Volúmenes, especificaciones técnicas, plazos, destino final..." required></textarea>
+        <textarea name="mensaje" rows="5" placeholder="Volúmenes, especificaciones técnicas, presentación, plazos, destino final..." required></textarea>
       </label>
 
       <button type="submit" class="btn btn--primary btn--full">
@@ -422,7 +656,7 @@
 
 </main>
 
-<!-- ===== FOOTER ===== -->
+<!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="wrap footer__inner">
     <div class="footer__brand">
@@ -440,6 +674,7 @@
       <div>
         <h4>Navegar</h4>
         <a href="#nosotros">Nosotros</a>
+        <a href="#especies">Especies</a>
         <a href="#productos">Productos</a>
         <a href="#proceso">Proceso</a>
         <a href="#calidad">Calidad</a>
@@ -460,10 +695,16 @@
   <div class="footer__bottom">
     <div class="wrap">
       <small>© <span id="year"></span> Blue Coast S.A.C. — Todos los derechos reservados.</small>
-      <small>Hecho en Lima con orgullo peruano.</small>
+      <small>Hecho en Lima con orgullo peruano 🌊</small>
     </div>
   </div>
 </footer>
+
+<!-- ============ FLOATING CONTACT ============ -->
+<a href="#contacto" class="fab" aria-label="Contactar">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8v.5z"/></svg>
+  <span>Contactar</span>
+</a>
 
 <script src="assets/js/main.js" defer></script>
 </body>
