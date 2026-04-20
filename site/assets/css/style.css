@@ -67,16 +67,17 @@ h1,h2,h3,h4{
   margin:0 0 .45em;
   line-height:1.15;
   letter-spacing:-.015em;
+  font-family:"Inter", sans-serif;
 }
 h1{font-weight:800; font-size:clamp(2.8rem, 7vw, 5.6rem); letter-spacing:-.03em; line-height:1.02}
 h2{font-weight:700; font-size:clamp(2.1rem, 4.2vw, 3.3rem); letter-spacing:-.02em}
 h3{font-weight:700; font-size:1.35rem}
 
+/* section-heading accent: kept non-italic, just a sunset color */
 h2 em, h3 em{
-  font-family:"Playfair Display", Georgia, serif;
-  font-style:italic; font-weight:500;
+  font-style:normal; font-weight:700;
   color:var(--sun-600);
-  letter-spacing:-.01em;
+  letter-spacing:-.02em;
 }
 p{margin:0 0 1em}
 
@@ -137,13 +138,33 @@ p{margin:0 0 1em}
   padding:1rem 0;
 }
 
-.brand{display:inline-flex; align-items:center; gap:.6rem; color:#fff}
-.brand__mark{width:44px; height:20px; flex-shrink:0}
+.brand{display:inline-flex; align-items:center; gap:.65rem; color:#fff}
+.brand__mark{width:50px; height:22px; flex-shrink:0; overflow:visible}
 .brand__text{
   font-family:"Inter", sans-serif;
   font-size:.85rem; letter-spacing:.22em; font-weight:700;
   color:#fff;
 }
+
+/* --- Logo wave animation (continuous wave-roll) --- */
+.brand__waves{transform-origin:center}
+.bw{
+  animation:bwBob 3.4s ease-in-out infinite;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+.bw-1{animation-delay:0s}
+.bw-2{animation-delay:.18s}
+.bw-3{animation-delay:.36s}
+.bw-4{animation-delay:.54s}
+@keyframes bwBob{
+  0%,100%{transform:translateY(0) scaleY(1)}
+  50%    {transform:translateY(-1px) scaleY(1.18)}
+}
+/* Hover makes the waves sweep faster & glow */
+.brand:hover .bw{animation-duration:1.6s}
+.brand:hover .brand__mark{filter:drop-shadow(0 0 10px rgba(139,216,232,.55))}
+.brand__mark{transition:filter .3s ease}
 
 .nav__links{display:flex; align-items:center; gap:2rem}
 .nav__links a{
@@ -168,6 +189,37 @@ p{margin:0 0 1em}
 .nav__toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .nav__toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
 .nav__toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* --- Wave strip under the nav (continuous flowing waves) --- */
+.nav__wave{
+  position:absolute; bottom:-1px; left:0; right:0;
+  height:14px; overflow:hidden;
+  opacity:0; transition:opacity .4s var(--ease);
+  pointer-events:none;
+}
+.nav.is-solid .nav__wave{opacity:1}
+.nav__wave svg{
+  position:absolute; left:-5%; right:-5%;
+  width:220%; min-width:2000px; height:100%;
+  display:block;
+}
+.nw{fill:var(--sun-500); transform-origin:center}
+.nw-1{fill:rgba(255,143,71,.55); animation:navFlow 6s linear infinite}
+.nw-2{fill:rgba(255,143,71,.8);  animation:navFlow 4.5s linear infinite reverse}
+.nw-3{fill:var(--sun-500);       animation:navFlow 3s linear infinite}
+@keyframes navFlow{
+  from{transform:translateX(0)}
+  to  {transform:translateX(-8%)}
+}
+
+/* Header entrance on load */
+.nav{
+  animation:navIn .9s var(--ease) both;
+}
+@keyframes navIn{
+  from{opacity:0; transform:translateY(-18px)}
+  to  {opacity:1; transform:translateY(0)}
+}
 
 /* ==========================================================================
    HERO
@@ -240,11 +292,29 @@ p{margin:0 0 1em}
 }
 @keyframes scrollDot{0%,100%{transform:translateY(0); opacity:1} 50%{transform:translateY(14px); opacity:.2}}
 
-.hero__wave{
+/* ---------- Animated layered waves at hero bottom ---------- */
+.hero__waves{
   position:absolute; bottom:-1px; left:0; right:0; z-index:1;
-  line-height:0;
+  line-height:0; pointer-events:none;
+  height:140px;
 }
-.hero__wave svg{width:100%; height:120px; display:block}
+.hero__wave{
+  position:absolute; left:-5%; right:-5%; bottom:0;
+  width:220%; min-width:2200px; height:140px;
+  display:block;
+}
+.hero__wave--1 path{fill:rgba(255,255,255,.28)}
+.hero__wave--2 path{fill:rgba(255,255,255,.45)}
+.hero__wave--3 path{fill:rgba(255,255,255,.7)}
+.hero__wave--4 path{fill:#ffffff}
+.hero__wave--1{animation:waveSlide 14s ease-in-out -2s infinite alternate}
+.hero__wave--2{animation:waveSlide 11s ease-in-out -4s infinite alternate-reverse}
+.hero__wave--3{animation:waveSlide 8s  ease-in-out -1s infinite alternate}
+.hero__wave--4{animation:waveSlide 6s  ease-in-out  0s infinite alternate-reverse}
+@keyframes waveSlide{
+  0%  {transform:translate3d(-6%, 0, 0)}
+  100%{transform:translate3d( 0%, 0, 0)}
+}
 
 /* ==========================================================================
    SECTIONS
@@ -383,15 +453,15 @@ p{margin:0 0 1em}
 }
 .sp__kicker{
   display:block; font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
-  font-style:italic; font-family:"Playfair Display", serif;
+  font-weight:500;
   color:var(--ocean-500); margin-bottom:.35rem;
 }
 .sp h3{font-size:1.2rem; margin-bottom:.2em}
-.sp h3 em{color:var(--slate-2); font-weight:400; font-size:.82em; font-family:"Playfair Display", serif}
+.sp h3 em{color:var(--slate-2); font-weight:400; font-size:.82em; font-style:normal}
 .sp__count{color:var(--slate); font-size:.85rem; margin:0 0 1.1rem}
 .sp__count strong{
   color:var(--sun-600);
-  font-family:"Playfair Display", serif; font-weight:600;
+  font-weight:700;
   font-size:1.05rem; margin-right:.35em;
 }
 .sp__btn{
@@ -450,14 +520,13 @@ p{margin:0 0 1em}
 }
 .tcard blockquote{
   margin:0 0 1.3rem;
-  font-family:"Playfair Display", serif;
-  font-style:italic; font-weight:400;
-  font-size:1.05rem; line-height:1.5;
+  font-weight:400;
+  font-size:1.02rem; line-height:1.55;
   color:var(--ink-800);
 }
 .tcard figcaption{display:flex; flex-direction:column; gap:.1rem}
 .tcard figcaption strong{color:var(--ink-900); font-size:.95rem}
-.tcard figcaption span{color:var(--sun-600); font-size:.82rem; font-style:italic; font-family:"Playfair Display", serif}
+.tcard figcaption span{color:var(--sun-600); font-size:.82rem; font-weight:500}
 
 .testimonials__cta{
   text-align:center;
@@ -519,11 +588,11 @@ p{margin:0 0 1em}
   background:linear-gradient(135deg, var(--sun-500), var(--coral-500));
   color:#fff; font-weight:700; font-size:1rem;
   flex-shrink:0;
-  font-family:"Playfair Display", serif;
+  letter-spacing:.02em;
   box-shadow:0 4px 12px rgba(255,143,71,.4);
 }
 .contact__person strong{display:block; color:var(--ink-900); font-size:1rem; line-height:1.2}
-.contact__person span{color:var(--sun-600); font-size:.82rem; font-style:italic; font-family:"Playfair Display", serif}
+.contact__person span{color:var(--sun-600); font-size:.82rem; font-weight:500}
 
 /* ---------- Form ---------- */
 .form{
@@ -586,7 +655,7 @@ p{margin:0 0 1em}
   margin-bottom:.5rem; transition:color .2s; font-size:.9rem;
 }
 .footer__cols a:hover{color:var(--sun-400)}
-.footer__cols .muted{color:rgba(255,255,255,.4); font-size:.82rem; font-style:italic}
+.footer__cols .muted{color:rgba(255,255,255,.4); font-size:.82rem}
 .footer__bottom{padding:1.3rem 0; background:rgba(0,0,0,.25)}
 .footer__bottom .wrap{
   display:flex; justify-content:space-between; align-items:center;

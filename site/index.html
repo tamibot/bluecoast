@@ -16,7 +16,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/style.css" />
 </head>
@@ -33,11 +33,11 @@
           <linearGradient id="bnw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1e7dbd"/><stop offset="1" stop-color="#0b5b95"/></linearGradient>
           <linearGradient id="bnw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#094d84"/><stop offset="1" stop-color="#002d55"/></linearGradient>
         </defs>
-        <g fill="none" stroke-linecap="round">
-          <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#bnw1)" stroke-width="5"/>
-          <path d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#bnw2)" stroke-width="6"/>
-          <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#bnw3)" stroke-width="8"/>
-          <path d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#bnw4)" stroke-width="7"/>
+        <g fill="none" stroke-linecap="round" class="brand__waves">
+          <path class="bw bw-1" d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#bnw1)" stroke-width="5"/>
+          <path class="bw bw-2" d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#bnw2)" stroke-width="6"/>
+          <path class="bw bw-3" d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#bnw3)" stroke-width="8"/>
+          <path class="bw bw-4" d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#bnw4)" stroke-width="7"/>
         </g>
       </svg>
       <span class="brand__text">BLUE COAST</span>
@@ -55,6 +55,15 @@
     <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
+  </div>
+
+  <!-- animated wave strip under the nav -->
+  <div class="nav__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 14" preserveAspectRatio="none">
+      <path class="nw nw-1" d="M0,8 C240,14 480,2 720,8 C960,14 1200,2 1440,8 L1440,14 L0,14 Z"/>
+      <path class="nw nw-2" d="M0,9 C240,3 480,14 720,8 C960,3 1200,14 1440,9 L1440,14 L0,14 Z"/>
+      <path class="nw nw-3" d="M0,11 C240,8 480,14 720,11 C960,8 1200,14 1440,11 L1440,14 L0,14 Z"/>
+    </svg>
   </div>
 </header>
 
@@ -86,9 +95,18 @@
     <span></span>
   </a>
 
-  <div class="hero__wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-      <path fill="#ffffff" d="M0,64 C240,120 480,10 720,50 C960,90 1200,20 1440,70 L1440,120 L0,120 Z"/>
+  <div class="hero__waves" aria-hidden="true">
+    <svg class="hero__wave hero__wave--1" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,60 C240,120 480,0 720,50 C960,100 1200,10 1440,60 L1440,120 L0,120 Z"/>
+    </svg>
+    <svg class="hero__wave hero__wave--2" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,70 C240,30 480,100 720,65 C960,30 1200,105 1440,70 L1440,120 L0,120 Z"/>
+    </svg>
+    <svg class="hero__wave hero__wave--3" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,85 C240,115 480,45 720,80 C960,115 1200,55 1440,85 L1440,120 L0,120 Z"/>
+    </svg>
+    <svg class="hero__wave hero__wave--4" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,95 C240,75 480,115 720,95 C960,75 1200,115 1440,95 L1440,120 L0,120 Z"/>
     </svg>
   </div>
 </section>
@@ -535,11 +553,11 @@
             <linearGradient id="fw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1e7dbd"/><stop offset="1" stop-color="#0b5b95"/></linearGradient>
             <linearGradient id="fw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#094d84"/><stop offset="1" stop-color="#002d55"/></linearGradient>
           </defs>
-          <g fill="none" stroke-linecap="round">
-            <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#fw1)" stroke-width="5"/>
-            <path d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#fw2)" stroke-width="6"/>
-            <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#fw3)" stroke-width="8"/>
-            <path d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#fw4)" stroke-width="7"/>
+          <g fill="none" stroke-linecap="round" class="brand__waves">
+            <path class="bw bw-1" d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#fw1)" stroke-width="5"/>
+            <path class="bw bw-2" d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#fw2)" stroke-width="6"/>
+            <path class="bw bw-3" d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#fw3)" stroke-width="8"/>
+            <path class="bw bw-4" d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#fw4)" stroke-width="7"/>
           </g>
         </svg>
         <span class="brand__text">BLUE COAST</span>
