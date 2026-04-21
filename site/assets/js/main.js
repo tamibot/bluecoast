@@ -140,6 +140,55 @@
     });
   }
 
+  // Animated counters on stats
+  const counters = $$('[data-count]');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (counters.length && 'IntersectionObserver' in window && !prefersReduced) {
+    const cio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = parseInt(el.dataset.count, 10) || 0;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const start = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        cio.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((c) => cio.observe(c));
+  } else {
+    counters.forEach((c) => {
+      c.textContent = c.dataset.count + (c.dataset.suffix || '');
+    });
+  }
+
+  // Subtle mouse-parallax on hero
+  const hero = $('.hero');
+  const heroImg = $('.hero__media img');
+  if (hero && heroImg && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !prefersReduced) {
+    let raf = 0;
+    hero.addEventListener('mousemove', (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const r = hero.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        heroImg.style.transform = `scale(1.1) translate3d(${dx * -20}px, ${dy * -14}px, 0)`;
+        raf = 0;
+      });
+    });
+    hero.addEventListener('mouseleave', () => {
+      heroImg.style.transform = '';
+    });
+  }
+
   // Smooth scroll offset for fixed nav
   $$('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
