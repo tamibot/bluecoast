@@ -6,14 +6,56 @@
   const yearEl = $('#year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Sticky nav — solid after hero
+  // Sticky nav + scroll progress bar
   const nav = $('#nav');
+  const progress = $('#progress');
   const onScroll = () => {
-    if (!nav) return;
-    nav.classList.toggle('is-solid', window.scrollY > 80);
+    const y = window.scrollY;
+    if (nav) nav.classList.toggle('is-solid', y > 80);
+    if (progress) {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    }
   };
   document.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // Section "in-view" class for heading underline + section__head reveal
+  const sections = $$('.section');
+  if ('IntersectionObserver' in window) {
+    const sio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          sio.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    sections.forEach((s) => sio.observe(s));
+  } else {
+    sections.forEach((s) => s.classList.add('in-view'));
+  }
+
+  // Active nav link based on current section in view
+  const navLinks = $$('.nav__links a');
+  const byHash = new Map(navLinks.map((a) => [a.getAttribute('href'), a]));
+  if ('IntersectionObserver' in window) {
+    const aio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const id = '#' + e.target.id;
+        const link = byHash.get(id);
+        if (!link) return;
+        if (e.isIntersecting) {
+          navLinks.forEach((l) => l.classList.remove('is-active'));
+          link.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    ['proceso', 'productos', 'especies', 'testimonios', 'contacto'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) aio.observe(el);
+    });
+  }
 
   // Mobile nav toggle
   const toggle = $('#navToggle');

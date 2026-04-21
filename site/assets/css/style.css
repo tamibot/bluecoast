@@ -870,3 +870,159 @@ html{-webkit-text-size-adjust:100%}
   }
   .sp__btn:hover, .btn:hover{transform:none}
 }
+
+/* ==========================================================================
+   v5 POLISH — scroll progress, heading underlines, divider waves, CTA shine,
+   decorative orbs, refined mobile scaling
+   ========================================================================== */
+
+/* --- Scroll progress bar --- */
+.scroll-progress{
+  position:fixed; top:0; left:0; height:3px; width:0%; z-index:200;
+  background:linear-gradient(90deg, var(--ocean-200), var(--ocean-400), var(--ocean-700));
+  box-shadow:0 0 10px rgba(123,204,224,.55);
+  transition:width .05s linear;
+  pointer-events:none;
+}
+
+/* --- Animated underline sweep on section headings --- */
+.section__head h2{
+  position:relative; display:inline-block; padding-bottom:.3em;
+}
+.section__head h2::after{
+  content:""; position:absolute; left:50%; bottom:0;
+  width:56px; height:3px; border-radius:3px;
+  transform:translateX(-50%) scaleX(0);
+  transform-origin:center;
+  background:linear-gradient(90deg, var(--ocean-200), var(--ocean-500), var(--ocean-700));
+  transition:transform .9s var(--ease);
+}
+.section__head.is-visible h2::after,
+.section__head .reveal.is-visible h2::after,
+.reveal.is-visible .section__head h2::after,
+.section__head h2.is-visible::after{transform:translateX(-50%) scaleX(1)}
+
+/* Fallback: show underline once the section scrolls in */
+.section.in-view .section__head h2::after{transform:translateX(-50%) scaleX(1)}
+
+/* --- Button shine sweep --- */
+.btn{position:relative; isolation:isolate}
+.btn::after{
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:-1;
+  background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+  transform:translateX(-140%);
+  transition:transform .9s var(--ease);
+}
+.btn:hover::after{transform:translateX(140%)}
+
+/* --- Primary button breathing glow --- */
+@keyframes ctaBreathe{
+  0%,100%{box-shadow:0 10px 28px -8px rgba(11,91,149,.5)}
+  50%    {box-shadow:0 14px 36px -8px rgba(25,120,184,.75), 0 0 0 4px rgba(123,204,224,.18)}
+}
+.btn--primary{animation:ctaBreathe 3.4s ease-in-out infinite}
+
+/* --- Decorative blue orbs in light sections --- */
+.section{position:relative; overflow:hidden}
+.section:not(.hero):not(.section--tinted)::before{
+  content:""; position:absolute;
+  top:-120px; right:-120px;
+  width:340px; height:340px; border-radius:50%;
+  background:radial-gradient(circle, rgba(123,204,224,.18), transparent 65%);
+  pointer-events:none; z-index:0;
+}
+.section.section--tinted::before{
+  content:""; position:absolute;
+  bottom:-120px; left:-120px;
+  width:380px; height:380px; border-radius:50%;
+  background:radial-gradient(circle, rgba(44,140,191,.14), transparent 65%);
+  pointer-events:none; z-index:0;
+}
+.section .wrap{position:relative; z-index:1}
+
+/* --- Image reveal: subtle zoom-out-to-natural on scroll-in --- */
+.product__img img, .process__media img{
+  transform:scale(1.08);
+  transition:transform 1.2s var(--ease);
+}
+.reveal.is-visible .product__img img,
+.reveal.is-visible .process__media img{transform:scale(1)}
+.product:hover .product__img img{transform:scale(1.04)}
+.process__step:hover .process__media img{transform:scale(1.06)}
+
+/* --- Staggered card fade-in in species grid + others --- */
+.species .sp.reveal{transition-duration:.95s}
+
+/* --- Section entrance (scale-y + fade) for section__head --- */
+.section__head{
+  opacity:0; transform:translateY(18px);
+  transition:opacity .85s var(--ease), transform .85s var(--ease);
+}
+.section.in-view .section__head{opacity:1; transform:none}
+
+/* --- Subtle horizontal parallax on process numbers --- */
+.process__num{
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+}
+.process__step:hover .process__num{
+  transform:scale(1.08) rotate(-3deg);
+  box-shadow:0 8px 24px -6px rgba(11,91,149,.6);
+}
+
+/* --- Link arrow micro-interaction --- */
+.contact__list a, .footer__cols a{position:relative}
+.contact__list a:hover, .footer__cols a:hover{letter-spacing:.01em}
+
+/* --- Nav: active link gets persistent underline --- */
+.nav__links a.is-active::after{transform:scaleX(1)}
+
+/* --- FAB: floating contact on mobile --- */
+.fab{
+  position:fixed; z-index:55;
+  bottom:calc(1.1rem + env(safe-area-inset-bottom,0));
+  right:1.1rem;
+  width:54px; height:54px; border-radius:50%;
+  display:none; place-items:center;
+  background:linear-gradient(135deg, var(--ocean-700), var(--ocean-400));
+  color:#fff;
+  box-shadow:0 12px 30px -8px rgba(11,91,149,.55), 0 0 0 4px rgba(123,204,224,.15);
+  animation:fabBob 2.8s ease-in-out infinite;
+  transition:transform .25s var(--ease);
+}
+.fab:hover, .fab:active{transform:scale(1.08)}
+@keyframes fabBob{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-4px)}
+}
+@media (max-width: 960px){
+  .fab{display:grid}
+}
+
+/* --- Tighter section padding on small phones --- */
+@media (max-width: 420px){
+  .section{padding:3.5rem 0}
+  .section__head{margin-bottom:2.5rem}
+  .products, .species, .testimonials, .process{gap:1rem}
+  .product__body, .sp, .tcard{padding:1.3rem}
+  .form{padding:1.3rem}
+  .hero__title-bold{font-size:clamp(2.3rem, 12vw, 3.6rem)}
+  .hero__title-thin{font-size:clamp(1.85rem, 10vw, 3rem)}
+  .hero__sub{font-size:.95rem; margin-bottom:1.8rem}
+  .hero__cta{gap:.6rem}
+  .btn{padding:.85rem 1.3rem; font-size:.9rem}
+  .contact__person{padding:.9rem 1rem}
+  .contact__avatar{width:44px; height:44px; font-size:.9rem}
+}
+
+/* Tablet/landscape phones — 2-column grids instead of 1 */
+@media (min-width: 520px) and (max-width: 960px){
+  .species{grid-template-columns:repeat(2, 1fr)}
+  .testimonials{grid-template-columns:repeat(2, 1fr)}
+  .products{grid-template-columns:repeat(2, 1fr)}
+  .process{grid-template-columns:repeat(2, 1fr); gap:1.2rem}
+}
+
+/* Very tall phones — hero vertical centering */
+@media (min-height: 900px){
+  .hero{padding-top:9rem}
+}
