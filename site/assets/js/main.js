@@ -185,10 +185,11 @@
     });
   }
 
-  // Subtle mouse-parallax on hero
+  // Subtle mouse-parallax on hero — drifts the light rays + sun glow
   const hero = $('.hero');
-  const heroImg = $('.hero__media img');
-  if (hero && heroImg && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !prefersReduced) {
+  const heroRays = $('.hero__rays');
+  const heroSun = $('.hero__sun');
+  if (hero && heroRays && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !prefersReduced) {
     let raf = 0;
     hero.addEventListener('mousemove', (e) => {
       if (raf) return;
@@ -196,12 +197,14 @@
         const r = hero.getBoundingClientRect();
         const dx = (e.clientX - r.left) / r.width - 0.5;
         const dy = (e.clientY - r.top) / r.height - 0.5;
-        heroImg.style.transform = `scale(1.1) translate3d(${dx * -20}px, ${dy * -14}px, 0)`;
+        heroRays.style.transform = `translate3d(${dx * 26}px, ${dy * 12}px, 0)`;
+        if (heroSun) heroSun.style.transform = `translate3d(${dx * 16}px, ${dy * 10}px, 0)`;
         raf = 0;
       });
     });
     hero.addEventListener('mouseleave', () => {
-      heroImg.style.transform = '';
+      heroRays.style.transform = '';
+      if (heroSun) heroSun.style.transform = '';
     });
   }
 
@@ -500,26 +503,31 @@
      until JS upgrades it. Layers carry .dwave / .dwave--N so CSS can parallax
      and the v9 scroll-velocity shift can push the crest. */
   const buildDivider = (div) => {
-    // Three wave silhouettes (different control points) within a 1440x150 box.
+    // Two GENTLE, low-amplitude wave layers in a 1440x80 box — elegant seam,
+    // not a chunky band. The front wave is filled with the colour of the panel
+    // BELOW (the incoming section) so it reads as that panel cresting up; a soft
+    // translucent back layer adds quiet depth.
     const waves = [
-      { cls: 'dwave dwave--1', d: 'M0,70 C240,20 480,120 720,70 C960,20 1200,120 1440,70 L1440,150 L0,150 Z' },
-      { cls: 'dwave dwave--2', d: 'M0,92 C300,50 520,130 760,92 C1000,54 1200,128 1440,92 L1440,150 L0,150 Z' },
-      { cls: 'dwave dwave--3', d: 'M0,112 C360,86 660,140 900,112 C1140,84 1320,132 1440,112 L1440,150 L0,150 Z' }
+      { cls: 'dwave dwave--1', d: 'M0,40 C300,64 560,22 820,40 C1080,58 1280,32 1440,46 L1440,80 L0,80 Z' },
+      { cls: 'dwave dwave--2', d: 'M0,54 C320,36 600,70 880,52 C1120,38 1320,62 1440,50 L1440,80 L0,80 Z' }
     ];
-    // Tone per divider direction (lighter for light seams, deep for dark seams).
     const toDark = div.classList.contains('divider--to-dark');
     const fromDark = div.classList.contains('divider--from-dark');
-    let fills;
-    if (toDark) {
-      fills = ['rgba(11,91,149,.55)', 'rgba(5,33,61,.8)', '#05213d'];
-    } else if (fromDark) {
-      fills = ['#05213d', 'rgba(11,91,149,.7)', 'rgba(123,204,224,.5)'];
-    } else {
-      fills = ['rgba(123,204,224,.45)', 'rgba(91,182,209,.55)', 'rgba(231,244,249,.95)'];
+    const toTint = div.classList.contains('divider--to-tint');
+    let back, front;
+    if (toDark) {            // white → navy testimonios
+      back = 'rgba(11,91,149,.28)'; front = '#002d55';
+    } else if (fromDark) {   // navy testimonios → white certificaciones
+      back = 'rgba(123,204,224,.30)'; front = '#ffffff';
+    } else if (toTint) {     // white porque → foam productos
+      back = 'rgba(123,204,224,.20)'; front = '#eaf5fb';
+    } else {                 // from-tint: foam productos → white especies
+      back = 'rgba(123,204,224,.16)'; front = '#ffffff';
     }
+    const fills = [back, front];
     const ns = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', '0 0 1440 150');
+    svg.setAttribute('viewBox', '0 0 1440 80');
     svg.setAttribute('preserveAspectRatio', 'none');
     svg.setAttribute('aria-hidden', 'true');
     waves.forEach((w, i) => {
