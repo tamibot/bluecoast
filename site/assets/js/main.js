@@ -239,40 +239,21 @@
     setTimeout(fireHero, 600);
   }
 
-  /* --- 2. Scroll velocity → reactive wave dividers ---
-     Track signed scroll velocity (px/frame, smoothed) and push each divider's
-     crest horizontally. Pure transform via a registered custom property, so it
-     runs on the compositor. Eases back to rest when scrolling stops. */
-  const dividerPaths = $$('.divider svg > path');
-  dividerPaths.forEach((p) => p.parentElement.parentElement.setAttribute('data-react', ''));
-  if (dividerPaths.length && !prefersReduced) {
+  /* --- 2. Global scroll-velocity tracking ---
+     Tracks signed, smoothed scroll velocity into --scroll-vel/--scroll-dir on
+     <html> for any velocity-reactive CSS. The per-divider crest push is owned
+     by the v10 cinematic-divider system below (which rebuilds the dividers). */
+  if (!prefersReduced) {
     let lastY = window.scrollY;
-    let vel = 0;          // smoothed velocity
-    let velRaf = 0;
-    const MAXSHIFT = 26;  // px crest push at high speed
-
+    let vel = 0, velRaf = 0;
     const sampleVel = () => {
       const y = window.scrollY;
-      const raw = y - lastY;
+      vel += ((y - lastY) - vel) * 0.18;
       lastY = y;
-      // exponential smoothing toward the raw delta, decay toward 0 when idle
-      vel += (raw - vel) * 0.18;
       root.style.setProperty('--scroll-vel', vel.toFixed(2));
       root.style.setProperty('--scroll-dir', vel >= 0 ? '1' : '-1');
-      const shift = Math.max(-MAXSHIFT, Math.min(MAXSHIFT, vel * 1.6));
-      // alternate direction per divider so adjacent crests feel woven
-      dividerPaths.forEach((p, i) => {
-        const s = (i % 2 === 0 ? shift : -shift);
-        p.style.setProperty('--wave-shift', s.toFixed(1) + 'px');
-      });
-      // keep sampling while there's residual motion, then idle
-      if (Math.abs(vel) > 0.05) {
-        velRaf = requestAnimationFrame(sampleVel);
-      } else {
-        vel = 0;
-        dividerPaths.forEach((p) => p.style.setProperty('--wave-shift', '0px'));
-        velRaf = 0;
-      }
+      if (Math.abs(vel) > 0.05) { velRaf = requestAnimationFrame(sampleVel); }
+      else { vel = 0; velRaf = 0; }
     };
     document.addEventListener('scroll', () => {
       if (!velRaf) velRaf = requestAnimationFrame(sampleVel);
@@ -507,5 +488,135 @@
         card.style.setProperty('--ry', '0deg');
       });
     });
+  }
+
+  /* ======================================================================
+     v10 — SECTION TRANSITION SYSTEM
+     ====================================================================== */
+
+  /* --- 9. Cinematic multi-layer wave dividers ---
+     Rebuild each .divider with three stacked wave paths (back→front) tinted in
+     ocean blues / foam. The existing single <path> stays as the fallback markup
+     until JS upgrades it. Layers carry .dwave / .dwave--N so CSS can parallax
+     and the v9 scroll-velocity shift can push the crest. */
+  const buildDivider = (div) => {
+    // Three wave silhouettes (different control points) within a 1440x150 box.
+    const waves = [
+      { cls: 'dwave dwave--1', d: 'M0,70 C240,20 480,120 720,70 C960,20 1200,120 1440,70 L1440,150 L0,150 Z' },
+      { cls: 'dwave dwave--2', d: 'M0,92 C300,50 520,130 760,92 C1000,54 1200,128 1440,92 L1440,150 L0,150 Z' },
+      { cls: 'dwave dwave--3', d: 'M0,112 C360,86 660,140 900,112 C1140,84 1320,132 1440,112 L1440,150 L0,150 Z' }
+    ];
+    // Tone per divider direction (lighter for light seams, deep for dark seams).
+    const toDark = div.classList.contains('divider--to-dark');
+    const fromDark = div.classList.contains('divider--from-dark');
+    let fills;
+    if (toDark) {
+      fills = ['rgba(11,91,149,.55)', 'rgba(5,33,61,.8)', '#05213d'];
+    } else if (fromDark) {
+      fills = ['#05213d', 'rgba(11,91,149,.7)', 'rgba(123,204,224,.5)'];
+    } else {
+      fills = ['rgba(123,204,224,.45)', 'rgba(91,182,209,.55)', 'rgba(231,244,249,.95)'];
+    }
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 1440 150');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+    waves.forEach((w, i) => {
+      const p = document.createElementNS(ns, 'path');
+      p.setAttribute('class', w.cls);
+      p.setAttribute('d', w.d);
+      p.setAttribute('fill', fills[i]);
+      svg.appendChild(p);
+    });
+    div.textContent = '';
+    div.appendChild(svg);
+  };
+  $$('.divider').forEach(buildDivider);
+  // Re-tag dividers for the v9 velocity loop (it queried at load; now rebuilt).
+  const newDividerPaths = $$('.divider svg > path');
+  if (newDividerPaths.length && !prefersReduced) {
+    newDividerPaths.forEach((p) => {
+      const d = p.closest('.divider');
+      if (d) d.setAttribute('data-react', '');
+    });
+    let lastDY = window.scrollY;
+    let dvel = 0, dRaf = 0;
+    const sample = () => {
+      const y = window.scrollY;
+      dvel += ((y - lastDY) - dvel) * 0.18;
+      lastDY = y;
+      const shift = Math.max(-22, Math.min(22, dvel * 1.5));
+      newDividerPaths.forEach((p, i) => {
+        // front layers move more than back layers for depth
+        const depth = (i + 1) / newDividerPaths.length;
+        p.style.setProperty('--wave-shift', (shift * depth).toFixed(1) + 'px');
+      });
+      if (Math.abs(dvel) > 0.05) { dRaf = requestAnimationFrame(sample); }
+      else { dvel = 0; newDividerPaths.forEach((p) => p.style.setProperty('--wave-shift', '0px')); dRaf = 0; }
+    };
+    document.addEventListener('scroll', () => { if (!dRaf) dRaf = requestAnimationFrame(sample); }, { passive: true });
+  }
+
+  /* --- 10. Scroll-driven background morph ---
+     Map overall scroll progress (0..1) to a CSS var the fixed .bg-morph layer
+     reads. rAF-throttled, transform/paint only, AA-safe (subtle). Skipped under
+     reduced motion (CSS pins a static wash). */
+  if (!prefersReduced) {
+    let bgRaf = 0;
+    const updateBg = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      // ease toward a gentle bell so mid-page (testimonials) deepens most
+      const shaped = Math.sin(p * Math.PI) * 0.6 + p * 0.4;
+      root.style.setProperty('--bg-progress', shaped.toFixed(3));
+      bgRaf = 0;
+    };
+    document.addEventListener('scroll', () => { if (!bgRaf) bgRaf = requestAnimationFrame(updateBg); }, { passive: true });
+    updateBg();
+  }
+
+  /* --- 11. Panel-in fallback (only where view() timelines are unsupported) --- */
+  const supportsView2 =
+    'CSS' in window && CSS.supports && CSS.supports('animation-timeline: view()');
+  if (!prefersReduced && !supportsView2 && 'IntersectionObserver' in window) {
+    const pio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('panel-in'); pio.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    ['productos', 'especies', 'testimonios', 'certificaciones', 'contacto'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) pio.observe(el);
+    });
+  }
+
+  /* --- 12. One-time page-load intro (curtain parts + logo settles) ---
+     Quick (<1.2s), skippable on first interaction, then removed from the DOM so
+     it never blocks clicks. Disabled entirely under reduced motion (CSS hides
+     the node) and only shown once per page load. */
+  const intro = $('#intro');
+  if (intro && !prefersReduced) {
+    let cleaned = false;
+    const finish = () => {
+      if (cleaned) return;
+      cleaned = true;
+      intro.classList.add('is-done');
+      // fully remove so it can never intercept anything
+      if (intro.parentNode) intro.parentNode.removeChild(intro);
+    };
+    requestAnimationFrame(() => intro.classList.add('intro-play'));
+    // Hard stop at 1.2s regardless of animationend reliability.
+    const introTimer = setTimeout(finish, 1200);
+    // Skippable on first interaction.
+    const skip = () => { clearTimeout(introTimer); finish(); };
+    window.addEventListener('wheel', skip, { once: true, passive: true });
+    window.addEventListener('touchstart', skip, { once: true, passive: true });
+    window.addEventListener('keydown', skip, { once: true });
+    window.addEventListener('pointerdown', skip, { once: true });
+  } else if (intro) {
+    // reduced motion: ensure it's gone immediately
+    intro.classList.add('is-done');
+    if (intro.parentNode) intro.parentNode.removeChild(intro);
   }
 })();

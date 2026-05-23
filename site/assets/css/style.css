@@ -1724,30 +1724,31 @@ section[id]{ scroll-margin-top:72px; }
   .trust__item.is-visible .trust__badge{ transform:scale(1); }
 }
 
-/* --- Gradient wave dividers draw in (vertical wipe) as they enter view --- */
-.divider svg{
-  clip-path:inset(0 0 0 0);
-}
+/* --- Gradient wave dividers draw in as they enter view ---
+   v10: a scaleY rise from the seam (transform-origin bottom) + fade. This
+   works with overflow:visible so the continuous wave bob isn't clipped (the
+   old clip-path wipe was replaced because it cut the crests). The bob lives on
+   the child .dwave paths, which transform independently of this svg scale. --- */
+.divider svg{ transform-origin:center bottom; }
 @media (prefers-reduced-motion: no-preference){
-  /* Native scroll-driven draw where supported */
   @supports (animation-timeline: view()){
     .divider svg{
       animation:dividerDraw both linear;
       animation-timeline:view();
-      animation-range:entry 0% entry 70%;
+      animation-range:entry 0% entry 65%;
     }
     @keyframes dividerDraw{
-      from{ clip-path:inset(0 100% 0 0); opacity:.4; }
-      to  { clip-path:inset(0 0 0 0);    opacity:1;  }
+      from{ transform:scaleY(.35); opacity:.25; }
+      to  { transform:scaleY(1);   opacity:1;   }
     }
   }
-  /* JS fallback: .draw-in class triggers the wipe via transition */
+  /* JS fallback: .draw-in class triggers the rise via transition */
   @supports not (animation-timeline: view()){
     .divider svg{
-      clip-path:inset(0 100% 0 0); opacity:.4;
-      transition:clip-path 1s var(--ease), opacity 1s var(--ease);
+      transform:scaleY(.35); opacity:.25;
+      transition:transform 1s var(--ease), opacity 1s var(--ease);
     }
-    .divider.draw-in svg{ clip-path:inset(0 0 0 0); opacity:1; }
+    .divider.draw-in svg{ transform:scaleY(1); opacity:1; }
   }
 }
 
@@ -1815,9 +1816,195 @@ section[id]{ scroll-margin-top:72px; }
   .split-ready .word{ opacity:1 !important; transform:none !important; filter:none !important; }
   .trust__badge::after{ display:none !important; }
   .trust__item .trust__badge{ transform:none !important; animation:none !important; }
-  .divider svg{ clip-path:none !important; opacity:1 !important; animation:none !important; }
+  .divider svg{ transform:none !important; opacity:1 !important; animation:none !important; }
   .why__num{ animation:none !important; }
   .pcard, .pcard.is-tilting{ transform:none !important; }
   .pcard::after{ display:none !important; }
   .pcard.is-tilting .pcard__img img{ transform:none !important; }
+}
+
+/* ==========================================================================
+   v10 — SECTION TRANSITION SYSTEM  (stacking panels + bg morph + cinematic
+   dividers + load intro). One coherent system, consistent tokens, fully
+   reduced-motion safe. Builds on v8/v9; does not alter text or section order.
+   ========================================================================== */
+:root{
+  --panel-radius:36px;          /* shared top radius for every stacking panel */
+  --panel-lift:46px;            /* how far each panel rises over the previous */
+  --panel-shadow:0 -28px 60px -28px rgba(0,45,85,.30);
+  --bg-progress:0;              /* 0..1, written by JS on scroll (rAF) */
+}
+
+/* ---- Fixed background morph layer ----
+   A single fixed gradient that shifts hue with scroll. Sits behind all content
+   (body bg stays white as the AA-safe base; this layer is gentle/translucent so
+   text contrast is preserved). JS updates --bg-progress; we map it to color via
+   color-mix between palette stops. */
+.bg-morph{
+  position:fixed; inset:0; z-index:-3; pointer-events:none;
+  background:
+    radial-gradient(120% 80% at 50% -10%,
+      color-mix(in srgb, var(--foam) 70%, #fff) 0%,
+      transparent 60%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--foam-2) calc(var(--bg-progress) * 100%), #ffffff) 0%,
+      color-mix(in srgb, var(--foam)   calc(var(--bg-progress) * 100%), #ffffff) 55%,
+      color-mix(in srgb, var(--ocean-200) calc(var(--bg-progress) * 38%), var(--foam-2)) 100%);
+  transition:background .25s linear;
+}
+/* Graceful fallback if color-mix is unsupported: a static foam wash. */
+@supports not (background: color-mix(in srgb, red, blue)){
+  .bg-morph{ background:linear-gradient(180deg,#fff 0%, var(--foam-2) 70%, var(--foam) 100%); }
+}
+
+/* ---- Stacking panels ----
+   Each major flow section becomes a rounded panel that rises over the previous
+   one with an upward shadow, building the "card deck" depth they want. We keep
+   the hero flat (full-bleed) and start stacking from the first content section.
+   Backgrounds that were transparent now get an explicit surface so the rounded
+   edge reads cleanly over the panel beneath. */
+.section, .trust{
+  border-top-left-radius:var(--panel-radius);
+  border-top-right-radius:var(--panel-radius);
+  position:relative;
+}
+/* z-index ladder + lift: later panels sit on top and pull up over the prior. */
+#porque        { z-index:2;  background:var(--paper); box-shadow:var(--panel-shadow); }
+#productos     { z-index:3;  margin-top:calc(var(--panel-lift) * -1); box-shadow:var(--panel-shadow); }
+#especies      { z-index:4;  margin-top:calc(var(--panel-lift) * -1); background:var(--paper); box-shadow:var(--panel-shadow); }
+#testimonios   { z-index:5;  margin-top:calc(var(--panel-lift) * -1); box-shadow:var(--panel-shadow); }
+#certificaciones{ z-index:6; margin-top:calc(var(--panel-lift) * -1); box-shadow:var(--panel-shadow); }
+#contacto      { z-index:7;  margin-top:calc(var(--panel-lift) * -1); box-shadow:var(--panel-shadow); }
+.footer        { position:relative; z-index:8; }
+
+/* The first panel rises over the hero, tucking under the hero waves. */
+#porque{ margin-top:-52px; }
+
+/* Dividers become the wave crest that belongs to the panel rising below them.
+   They sit between panels; give them their own stacking context just under the
+   incoming panel and a transparent base so the rounded corner shows through. */
+.divider{ z-index:3; background:transparent !important; }
+.divider--to-dark, .divider--from-dark{ z-index:5; }
+
+/* ---- Scroll-driven panel recede ----
+   As a panel scrolls up and the next covers it, it eases back (scale-down+dim),
+   reinforcing the "passing under" feel. Native scroll-timeline where supported;
+   IO class fallback otherwise. transform/opacity only. */
+@media (prefers-reduced-motion: no-preference){
+  @supports (animation-timeline: view()){
+    #porque, #productos, #especies, #testimonios, #certificaciones{
+      animation:panelRecede both linear;
+      animation-timeline:view();
+      animation-range:exit 0% exit 100%;
+      transform-origin:center top;
+    }
+    @keyframes panelRecede{
+      from{ transform:scale(1);    opacity:1; }
+      to  { transform:scale(.965); opacity:.62; }
+    }
+    /* Incoming panels gently lift in from below as they enter (over and above
+       the in-content reveals), so the seam feels like one surface sliding up. */
+    #productos, #especies, #testimonios, #certificaciones, #contacto{
+      animation:panelRecede both linear, panelEnter both linear;
+      animation-timeline:view(), view();
+      animation-range:exit 0% exit 100%, entry 0% entry 42%;
+      /* compose the two transforms (scale + translate) instead of clobbering */
+      animation-composition:add;
+      transform-origin:center top;
+    }
+    @keyframes panelEnter{
+      from{ transform:translateY(40px); }
+      to  { transform:translateY(0); }
+    }
+  }
+  /* Fallback path (no view() support): IO toggles .panel-in to lift the panel
+     in; recede is skipped (acceptable graceful degradation). */
+  @supports not (animation-timeline: view()){
+    #productos, #especies, #testimonios, #certificaciones, #contacto{
+      opacity:0; transform:translateY(46px);
+      transition:opacity .9s var(--ease), transform .9s var(--ease);
+    }
+    #productos.panel-in, #especies.panel-in, #testimonios.panel-in,
+    #certificaciones.panel-in, #contacto.panel-in{ opacity:1; transform:none; }
+  }
+}
+
+/* ---- Cinematic multi-layer wave dividers ----
+   JS rebuilds each .divider with 3 stacked wave paths. They're taller and the
+   layers parallax/bob continuously, then draw in on entry (v9 logic reused).
+   Heights: dramatic but contained; smaller on mobile. */
+.divider{ overflow:visible; }
+.divider svg{ height:150px; overflow:visible; }
+.divider .dwave{
+  transform-origin:center bottom; will-change:transform;
+  /* scroll-velocity push (JS writes --wave-shift) when no bob animation runs */
+  transform:translate3d(var(--wave-shift,0px),0,0);
+}
+@media (prefers-reduced-motion: no-preference){
+  /* continuous, orderly parallax — three layers at different speeds/phases.
+     --wave-shift is composed into the X so the crest still reacts to scroll. */
+  .divider .dwave--1{ animation:dwaveBob 9s  ease-in-out infinite; }
+  .divider .dwave--2{ animation:dwaveBob 7s  ease-in-out -1.5s infinite; }
+  .divider .dwave--3{ animation:dwaveBob 5.5s ease-in-out -3s infinite; }
+  @keyframes dwaveBob{
+    0%,100%{ transform:translate3d(var(--wave-shift,0px),0,0); }
+    50%    { transform:translate3d(var(--wave-shift,0px),-7px,0); }
+  }
+}
+
+/* ---- One-time page-load intro (ocean curtain + logo settle) ---- */
+.intro{
+  position:fixed; inset:0; z-index:300; pointer-events:none;
+  display:grid; place-items:center;
+}
+.intro__panel{
+  position:absolute; top:0; bottom:0; width:51%;
+  background:linear-gradient(180deg, #053a63 0%, #002d55 100%);
+  will-change:transform;
+}
+.intro__panel--l{ left:0;  transform-origin:left center; }
+.intro__panel--r{ right:0; transform-origin:right center; }
+.intro__logo{
+  position:relative; z-index:1; width:128px; height:auto;
+  filter:drop-shadow(0 8px 26px rgba(0,0,0,.5));
+  opacity:0; transform:translateY(8px) scale(.96);
+}
+@media (prefers-reduced-motion: no-preference){
+  /* Play once on load; <1.2s total. JS adds .intro-play, then removes the
+     node after it finishes (and it's skippable on first interaction). */
+  .intro-play .intro__logo{ animation:introLogo .7s var(--ease) .05s forwards; }
+  .intro-play .intro__panel--l{ animation:introPartL .65s var(--ease-spring) .55s forwards; }
+  .intro-play .intro__panel--r{ animation:introPartR .65s var(--ease-spring) .55s forwards; }
+  @keyframes introLogo{
+    from{ opacity:0; transform:translateY(8px) scale(.96); }
+    60% { opacity:1; }
+    to  { opacity:1; transform:translateY(0) scale(1); }
+  }
+  @keyframes introPartL{ from{ transform:translateX(0); } to{ transform:translateX(-102%); } }
+  @keyframes introPartR{ from{ transform:translateX(0); } to{ transform:translateX(102%); } }
+}
+.intro.is-done{ display:none; }
+
+/* ---- Mobile: gentler stacking, smaller waves, no overflow ---- */
+@media (max-width: 720px){
+  :root{ --panel-radius:26px; --panel-lift:32px; }
+  .divider svg{ height:96px; }
+}
+@media (max-width: 560px){
+  :root{ --panel-radius:22px; --panel-lift:26px; }
+  .divider svg{ height:74px; }
+  .intro__logo{ width:104px; }
+  /* keep recede subtle on small screens to avoid any perceived clipping */
+}
+
+/* ==========================================================================
+   v10 — REDUCED MOTION guarantees (sections just stack statically)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  .bg-morph{ background:linear-gradient(180deg,#fff 0%, var(--foam-2) 70%, var(--foam) 100%) !important; transition:none !important; }
+  #porque, #productos, #especies, #testimonios, #certificaciones, #contacto{
+    animation:none !important; transform:none !important; opacity:1 !important;
+  }
+  .divider .dwave{ animation:none !important; transform:none !important; }
+  .intro{ display:none !important; }
 }
