@@ -213,9 +213,183 @@
         if (el) {
           e.preventDefault();
           const top = el.getBoundingClientRect().top + window.scrollY - 70;
-          window.scrollTo({ top, behavior: 'smooth' });
+          window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
         }
       }
     });
   });
+
+  /* ======================================================================
+     v8 MOTION SYSTEM
+     ====================================================================== */
+  const root = document.documentElement;
+  const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* --- 1. Hero entrance timeline ---
+     Fire the choreographed sequence once the page is painted. The CSS owns the
+     staggered delays; we just flip the switch (and bail gracefully if reduced
+     motion — the elements are forced visible by the reduced-motion guard). */
+  const fireHero = () => document.body.classList.add('hero-ready');
+  if (document.readyState === 'complete') {
+    requestAnimationFrame(fireHero);
+  } else {
+    window.addEventListener('load', () => requestAnimationFrame(fireHero), { once: true });
+    // Safety net so the hero never stays hidden if `load` is delayed.
+    setTimeout(fireHero, 600);
+  }
+
+  /* --- 2. Scroll velocity → reactive wave dividers ---
+     Track signed scroll velocity (px/frame, smoothed) and push each divider's
+     crest horizontally. Pure transform via a registered custom property, so it
+     runs on the compositor. Eases back to rest when scrolling stops. */
+  const dividerPaths = $$('.divider svg > path');
+  dividerPaths.forEach((p) => p.parentElement.parentElement.setAttribute('data-react', ''));
+  if (dividerPaths.length && !prefersReduced) {
+    let lastY = window.scrollY;
+    let vel = 0;          // smoothed velocity
+    let velRaf = 0;
+    const MAXSHIFT = 26;  // px crest push at high speed
+
+    const sampleVel = () => {
+      const y = window.scrollY;
+      const raw = y - lastY;
+      lastY = y;
+      // exponential smoothing toward the raw delta, decay toward 0 when idle
+      vel += (raw - vel) * 0.18;
+      root.style.setProperty('--scroll-vel', vel.toFixed(2));
+      root.style.setProperty('--scroll-dir', vel >= 0 ? '1' : '-1');
+      const shift = Math.max(-MAXSHIFT, Math.min(MAXSHIFT, vel * 1.6));
+      // alternate direction per divider so adjacent crests feel woven
+      dividerPaths.forEach((p, i) => {
+        const s = (i % 2 === 0 ? shift : -shift);
+        p.style.setProperty('--wave-shift', s.toFixed(1) + 'px');
+      });
+      // keep sampling while there's residual motion, then idle
+      if (Math.abs(vel) > 0.05) {
+        velRaf = requestAnimationFrame(sampleVel);
+      } else {
+        vel = 0;
+        dividerPaths.forEach((p) => p.style.setProperty('--wave-shift', '0px'));
+        velRaf = 0;
+      }
+    };
+    document.addEventListener('scroll', () => {
+      if (!velRaf) velRaf = requestAnimationFrame(sampleVel);
+    }, { passive: true });
+  }
+
+  /* --- 3. Lightweight inertia/smooth scrolling (desktop, fine pointer only) ---
+     Wheel-driven lerp that eases the page toward a target offset for a fluid,
+     high-end feel. Deliberately conservative: disabled on touch, on reduced
+     motion, and whenever the mobile nav menu is open. Native keyboard / anchor
+     / scrollbar behaviour is preserved (we only intercept wheel deltas and let
+     the loop converge, then yield). */
+  const canSmooth = finePointer && !prefersReduced &&
+                    typeof window.requestAnimationFrame === 'function';
+  if (canSmooth) {
+    let target = window.scrollY;
+    let current = window.scrollY;
+    let running = false;
+    let raf = 0;
+    const EASE = 0.12;
+
+    const maxScroll = () =>
+      Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+    const loop = () => {
+      const diff = target - current;
+      if (Math.abs(diff) < 0.4) {
+        current = target;
+        window.scrollTo(0, current);
+        running = false;
+        raf = 0;
+        return;
+      }
+      current += diff * EASE;
+      window.scrollTo(0, current);
+      raf = requestAnimationFrame(loop);
+    };
+
+    const onWheel = (e) => {
+      // Respect menus, modifier zoom, and horizontal intent.
+      if (e.ctrlKey || e.metaKey) return;
+      const menuOpen = links && links.classList.contains('is-open');
+      if (menuOpen) return;
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      // line-mode wheels report small deltas; scale them up.
+      const unit = e.deltaMode === 1 ? 32 : (e.deltaMode === 2 ? window.innerHeight : 1);
+      target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * unit));
+      if (!running) {
+        running = true;
+        current = window.scrollY;
+        raf = requestAnimationFrame(loop);
+      }
+    };
+
+    // Keep target in sync when the user scrolls by other means (keys, bar,
+    // anchor jumps, touchpad momentum we didn't drive) so we never fight them.
+    const resync = () => { if (!running) { target = window.scrollY; current = target; } };
+
+    root.classList.add('smooth-scroll');
+    window.addEventListener('wheel', onWheel, { passive: false });
+    document.addEventListener('scroll', resync, { passive: true });
+    window.addEventListener('resize', () => {
+      target = Math.max(0, Math.min(maxScroll(), target));
+    }, { passive: true });
+    // Cancel the lerp the instant a touch starts (hybrid laptops).
+    window.addEventListener('touchstart', () => {
+      if (raf) cancelAnimationFrame(raf);
+      running = false; raf = 0;
+    }, { passive: true });
+  }
+
+  /* --- 4. Magnetic primary buttons (fine pointer only) ---
+     The button drifts a few px toward the cursor, then snaps back. Transform
+     is composed in CSS via --mx/--my so it layers with the hover lift. */
+  if (finePointer && !prefersReduced) {
+    $$('.btn--primary').forEach((btn) => {
+      const STRENGTH = 0.28; // fraction of offset from center
+      const MAX = 10;        // px clamp
+      let mraf = 0;
+      btn.addEventListener('pointermove', (e) => {
+        if (mraf) return;
+        mraf = requestAnimationFrame(() => {
+          const r = btn.getBoundingClientRect();
+          let dx = (e.clientX - (r.left + r.width / 2)) * STRENGTH;
+          let dy = (e.clientY - (r.top + r.height / 2)) * STRENGTH;
+          dx = Math.max(-MAX, Math.min(MAX, dx));
+          dy = Math.max(-MAX, Math.min(MAX, dy));
+          btn.style.setProperty('--mx', dx.toFixed(1) + 'px');
+          btn.style.setProperty('--my', dy.toFixed(1) + 'px');
+          mraf = 0;
+        });
+      });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.setProperty('--mx', '0px');
+        btn.style.setProperty('--my', '0px');
+      });
+    });
+  }
+
+  /* --- 5. Pointer-tracked card glow (fine pointer only) ---
+     Writes --px/--py (percent) so the CSS radial highlight follows the cursor.
+     Paint-only; cards already define the gradient + transition. */
+  if (finePointer && !prefersReduced) {
+    const glowCards = $$('.sp, .tcard, .trust__item');
+    glowCards.forEach((card) => {
+      let graf = 0;
+      card.addEventListener('pointermove', (e) => {
+        if (graf) return;
+        graf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          const px = ((e.clientX - r.left) / r.width) * 100;
+          const py = ((e.clientY - r.top) / r.height) * 100;
+          card.style.setProperty('--px', px.toFixed(1) + '%');
+          card.style.setProperty('--py', py.toFixed(1) + '%');
+          graf = 0;
+        });
+      });
+    });
+  }
 })();

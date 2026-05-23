@@ -336,10 +336,10 @@ p{margin:0 0 1em}
 .bubble--6{left:81%; width:8px;  height:8px;  animation-duration:7s;   animation-delay:.7s}
 .bubble--7{left:93%; width:6px;  height:6px;  animation-duration:6.5s; animation-delay:2.1s}
 @keyframes bubbleRise{
-  0%  {opacity:0; transform:translate3d(0,0,0) scale(.6)}
+  0%  {opacity:0; transform:translate3d(calc(0px + var(--bx,0px)),0,0) scale(.6)}
   10% {opacity:.9}
   70% {opacity:.6}
-  100%{opacity:0; transform:translate3d(18px,-180px,0) scale(1.2)}
+  100%{opacity:0; transform:translate3d(calc(18px + var(--bx,0px)),-180px,0) scale(1.2)}
 }
 
 /* ==========================================================================
@@ -1390,4 +1390,274 @@ html{-webkit-text-size-adjust:100%}
   .divider svg{height:55px}
   .spec{grid-template-columns:1fr; gap:.15rem .9rem}
   .spec dt{margin-top:.5rem}
+}
+
+/* ==========================================================================
+   v8 — COHESIVE MOTION SYSTEM
+   Scroll-driven section depth, hero entrance timeline, scroll-reactive
+   dividers, refined staggering, magnetic CTA, organic ambient motion.
+   Everything degrades fully under prefers-reduced-motion.
+   ========================================================================== */
+
+/* @property registrations let us animate custom props on the compositor and
+   drive scroll-linked gradients/parallax without layout thrash. */
+@property --wave-shift{ syntax:"<length>"; inherits:false; initial-value:0px; }
+@property --depth{ syntax:"<number>"; inherits:false; initial-value:0; }
+@property --bx{ syntax:"<length>"; inherits:false; initial-value:0px; }
+
+/* JS sets these on <html>: --scroll-vel (scroll speed, px/frame, signed) and
+   --scroll-dir (1 down / -1 up). Used for velocity-reactive dividers. */
+:root{ --scroll-vel:0; --scroll-dir:1; }
+
+/* --- Smooth-scroll opt-in flag (JS adds .smooth-scroll to <html> only when
+   the lerp loop is active, so native anchor jump still works as a fallback) --- */
+html.smooth-scroll{ scroll-behavior:auto; }
+
+/* ==========================================================================
+   HERO ENTRANCE TIMELINE  (logo → title → subtitle → CTA, sequenced)
+   The hero reveals share the generic .reveal styles; here we give them an
+   explicit choreographed entrance the moment the page is ready.
+   ========================================================================== */
+.hero__brand.reveal,
+.hero__title-bold.reveal,
+.hero__title-thin.reveal,
+.hero__sub.reveal,
+.hero__cta.reveal{
+  opacity:0;
+  transform:translateY(26px);
+  /* slight blur-in adds depth on capable browsers; harmless if unsupported */
+  filter:blur(6px);
+  transition:opacity .9s var(--ease), transform 1s var(--ease), filter .9s var(--ease);
+}
+/* JS adds .hero-ready to <body> on load to fire the sequence.
+   Staggered transition-delays build the timeline. */
+.hero-ready .hero__brand.reveal      { transition-delay:.10s; }
+.hero-ready .hero__title-bold.reveal { transition-delay:.30s; }
+.hero-ready .hero__title-thin.reveal { transition-delay:.46s; }
+.hero-ready .hero__sub.reveal        { transition-delay:.66s; }
+.hero-ready .hero__cta.reveal        { transition-delay:.84s; }
+.hero-ready .hero__brand.reveal,
+.hero-ready .hero__title-bold.reveal,
+.hero-ready .hero__title-thin.reveal,
+.hero-ready .hero__sub.reveal,
+.hero-ready .hero__cta.reveal{
+  opacity:1; transform:none; filter:blur(0);
+}
+/* The scroll cue fades in last, gently */
+.hero__scroll{
+  opacity:0; transition:opacity 1.1s var(--ease) 1.1s;
+}
+.hero-ready .hero__scroll{ opacity:1; }
+
+/* ==========================================================================
+   SCROLL-DRIVEN SECTION DEPTH  (native, compositor-only)
+   Each section's heading block and grids rise + fade as they enter view,
+   giving a layered "coming forward" feel between sections. This ENHANCES
+   the JS IntersectionObserver reveals — both can coexist, the native one
+   simply takes over the timing where supported.
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference){
+  @supports (animation-timeline: view()){
+
+    /* Section heading: lift from depth as the section scrolls up into view. */
+    .section .section__head,
+    .trust .section__head{
+      animation:sectionRise both linear;
+      animation-timeline:view();
+      animation-range:entry 0% entry 60%;
+    }
+    @keyframes sectionRise{
+      from{ opacity:0; transform:translateY(40px) scale(.985); }
+      to  { opacity:1; transform:none; }
+    }
+
+    /* Grids gain a gentle parallax depth: content drifts up slightly slower
+       than the scroll, then settles. Cheap (transform+opacity only). */
+    .why,
+    .pcards,
+    .species,
+    .testimonials,
+    .trust__grid,
+    .stats__grid{
+      animation:gridDepth both linear;
+      animation-timeline:view();
+      animation-range:entry 0% entry 55%;
+    }
+    @keyframes gridDepth{
+      from{ opacity:.001; transform:translateY(56px); }
+      to  { opacity:1;    transform:none; }
+    }
+
+    /* Per-card scroll-linked stagger using nth-child insets on view().
+       Later cards begin their reveal a touch later in the scroll, producing
+       an organic cascade that's tied to scroll position, not a timer. */
+    .why__card, .pcard, .sp, .tcard, .trust__item{
+      animation:cardIn both linear;
+      animation-timeline:view();
+      animation-range:entry 0% cover 22%;
+    }
+    .why__card:nth-child(2), .pcard:nth-child(2), .sp:nth-child(2),
+    .tcard:nth-child(2), .trust__item:nth-child(2){ animation-range:entry 4% cover 26%; }
+    .why__card:nth-child(3), .pcard:nth-child(3), .sp:nth-child(3),
+    .tcard:nth-child(3), .trust__item:nth-child(3){ animation-range:entry 8% cover 30%; }
+    .why__card:nth-child(4), .pcard:nth-child(4), .sp:nth-child(4),
+    .trust__item:nth-child(4){ animation-range:entry 12% cover 34%; }
+    .sp:nth-child(n+5), .trust__item:nth-child(n+5){ animation-range:entry 14% cover 36%; }
+    @keyframes cardIn{
+      from{ opacity:0; transform:translateY(34px); }
+      to  { opacity:1; transform:none; }
+    }
+
+    /* When the native scroll-driven path is active, neutralise the JS-driven
+       .reveal initial offsets so we don't double-translate or get stuck-hidden
+       elements if JS is slow. The native keyframes own the motion now. */
+    .reveal, .reveal--up, .reveal--left, .reveal--right, .reveal--scale{
+      opacity:1; transform:none;
+    }
+    /* ...but keep the hero entrance choreographed by JS (above), so re-arm it. */
+    .hero__brand.reveal, .hero__title-bold.reveal, .hero__title-thin.reveal,
+    .hero__sub.reveal, .hero__cta.reveal{ opacity:0; }
+    .hero-ready .hero__brand.reveal, .hero-ready .hero__title-bold.reveal,
+    .hero-ready .hero__title-thin.reveal, .hero-ready .hero__sub.reveal,
+    .hero-ready .hero__cta.reveal{ opacity:1; }
+
+    /* Hero background gets a true scroll parallax: drifts down slower than the
+       page, deepening the sense of looking "into" the scene. */
+    .hero__media{
+      animation:heroParallax both linear;
+      animation-timeline:view(block);
+      animation-range:cover 0% cover 100%;
+      will-change:transform;
+    }
+    @keyframes heroParallax{
+      from{ transform:translateY(0) scale(1.06); }
+      to  { transform:translateY(14%) scale(1.14); }
+    }
+  }
+}
+
+/* ==========================================================================
+   SCROLL-REACTIVE WAVE DIVIDERS
+   The crest of each divider shifts horizontally with scroll velocity (driven
+   by --scroll-vel from JS) so the "water" reacts to how fast you move, plus a
+   slow continuous drift so it never feels static.
+   ========================================================================== */
+.divider svg{
+  will-change:transform;
+}
+.divider svg > path{
+  transform:translateX(var(--wave-shift,0));
+  transition:transform .9s cubic-bezier(.16,.84,.44,1);
+}
+@media (prefers-reduced-motion: no-preference){
+  .divider svg{
+    animation:dividerDrift 18s ease-in-out infinite alternate;
+  }
+  /* alternate direction per divider for a woven look */
+  .divider--from-tint svg, .divider--from-dark svg{ animation-direction:alternate-reverse; }
+  @keyframes dividerDrift{
+    from{ transform:translateX(-1.4%); }
+    to  { transform:translateX(1.4%); }
+  }
+  /* JS writes --wave-shift on the inner <path> from scroll velocity, giving a
+     "push" to the crest as you scroll fast, easing back when you stop. */
+  .divider[data-react] svg > path{
+    transform:translateX(var(--wave-shift,0));
+  }
+}
+
+/* ==========================================================================
+   AMBIENT MOTION — make existing waves & bubbles feel more alive/organic
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference){
+  /* Hero waves get a subtle independent skew sway layered onto their scroll,
+     so crests undulate rather than slide rigidly. Applied to a child-safe
+     property; transform list is composed via the wrapper to avoid clobbering
+     the existing waveScroll/waveBob transforms. */
+  .hero__waves{
+    animation:heroWavesSway 14s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes heroWavesSway{
+    0%,100%{ transform:translateX(0) skewX(0deg); }
+    50%    { transform:translateX(-8px) skewX(.6deg); }
+  }
+  /* Bubbles drift sideways organically as they rise. We animate a registered
+     custom property (--bx) on the compositor and compose it into the same
+     transform the rise uses, so it stays GPU-only (no layout/margin thrash). */
+  .bubble{
+    animation:bubbleRise 7s ease-in infinite, bubbleWobble 3.2s ease-in-out infinite;
+  }
+  .bubble--1{ animation-duration:6s,   2.6s; }
+  .bubble--2{ animation-duration:9s,   3.4s; }
+  .bubble--3{ animation-duration:7.5s, 2.9s; }
+  .bubble--4{ animation-duration:5.5s, 2.2s; }
+  .bubble--5{ animation-duration:10s,  3.8s; }
+  .bubble--6{ animation-duration:7s,   3.0s; }
+  .bubble--7{ animation-duration:6.5s, 2.7s; }
+  @keyframes bubbleWobble{
+    0%,100%{ --bx:-4px; }
+    50%    { --bx:6px; }
+  }
+  /* Footer waves: add a slow vertical bob on top of their horizontal scroll
+     via a wrapper so the existing fwave scroll keeps working. */
+  .footer__waves{ animation:footerBob 6s ease-in-out infinite; }
+  @keyframes footerBob{ 0%,100%{transform:translateY(-100%)} 50%{transform:translateY(calc(-100% + 5px))} }
+}
+
+/* ==========================================================================
+   MICRO-INTERACTIONS
+   ========================================================================== */
+/* Magnetic primary button: JS writes --mx/--my (px) on hover; we translate by
+   them on top of the existing :hover lift. Transform-only, GPU friendly. */
+.btn--primary{
+  --mx:0px; --my:0px;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease),
+             background .25s var(--ease), color .25s, border-color .25s;
+}
+@media (hover:hover) and (pointer:fine){
+  .btn--primary{ transform:translate3d(var(--mx),var(--my),0); }
+  .btn--primary:hover{ transform:translate3d(var(--mx),var(--my),0) translateY(-2px); }
+}
+
+/* Card hover depth: a soft inner highlight that follows pointer (--px/--py set
+   by JS as a percentage). Pure paint, no layout. */
+.why__card, .pcard, .sp, .tcard, .trust__item, .product, .process__step{
+  --px:50%; --py:50%;
+}
+@media (hover:hover) and (pointer:fine){
+  .sp, .tcard, .trust__item{ position:relative; }
+  .sp::after, .tcard::after, .trust__item::after{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(420px circle at var(--px) var(--py),
+               rgba(123,204,224,.16), transparent 45%);
+    opacity:0; transition:opacity .4s var(--ease); pointer-events:none; z-index:0;
+  }
+  .sp:hover::after, .tcard:hover::after, .trust__item:hover::after{ opacity:1; }
+  /* keep tcard content above the glow */
+  .tcard > *{ position:relative; z-index:1; }
+}
+
+/* Animated nav underline: upgrade to a centered grow that also subtly tints
+   the link — feels more deliberate than the current left-origin sweep. */
+.nav__links a::after{ transform-origin:center; }
+
+/* Section scroll-snap-ish "settle": give big sections a touch of scroll-margin
+   so anchored navigation lands cleanly under the fixed nav. */
+section[id]{ scroll-margin-top:72px; }
+
+/* ==========================================================================
+   REDUCED MOTION — hard guarantee for everything above
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  .hero__brand.reveal, .hero__title-bold.reveal, .hero__title-thin.reveal,
+  .hero__sub.reveal, .hero__cta.reveal, .hero__scroll{
+    opacity:1 !important; transform:none !important; filter:none !important;
+    transition:none !important;
+  }
+  .divider svg, .hero__waves, .footer__waves, .bubble{ animation:none !important; }
+  .divider svg > path{ transform:none !important; }
+  .btn--primary{ transform:none !important; }
+  .sp::after, .tcard::after, .trust__item::after{ display:none !important; }
+  .hero__media{ animation:none !important; transform:scale(1.05) !important; }
 }
