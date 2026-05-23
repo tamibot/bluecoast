@@ -178,7 +178,7 @@ p{margin:0 0 1em}
 .nav__links a:hover::after{transform:scaleX(1)}
 
 .nav__toggle{
-  display:none; width:40px; height:40px; border:none; background:none;
+  display:none; width:44px; height:44px; border:none; background:none;
   flex-direction:column; gap:5px; justify-content:center; align-items:center; cursor:pointer;
 }
 .nav__toggle span{width:22px; height:2px; background:#fff; transition:transform .25s}
@@ -871,6 +871,8 @@ html{-webkit-text-size-adjust:100%}
     transform:none; box-shadow:var(--shadow-sm);
   }
   .sp__btn:hover, .btn:hover{transform:none}
+  /* Ensure the catalog toggle meets the 44px minimum tap target on touch. */
+  .sp__btn{min-height:44px}
 }
 
 /* ==========================================================================
@@ -1660,4 +1662,162 @@ section[id]{ scroll-margin-top:72px; }
   .btn--primary{ transform:none !important; }
   .sp::after, .tcard::after, .trust__item::after{ display:none !important; }
   .hero__media{ animation:none !important; transform:scale(1.05) !important; }
+}
+
+/* ==========================================================================
+   v9 — RICHER MOTION (builds on v8)
+   Per-word text reveals, badge shimmer, divider draw-in, pcard 3D tilt,
+   idle float on cards/badges. All transform/opacity, all reduced-motion safe.
+   ========================================================================== */
+
+/* --- Split-text scaffolding (JS wraps words in <span class="word"> with a
+   --wi index; the original text stays in the DOM for screen readers). --- */
+.split-ready{ }
+.word{
+  display:inline-block;            /* allows transform without breaking flow */
+  white-space:pre;                 /* preserve the space we keep in the span  */
+  will-change:transform, opacity;  /* hint only while animating; cleared by JS */
+}
+@media (prefers-reduced-motion: no-preference){
+  /* Words start hidden + slightly below and rise into place, staggered by --wi. */
+  .split-ready .word{
+    opacity:0; transform:translateY(0.6em);
+    transition:opacity .7s var(--ease), transform .8s var(--ease-spring);
+    transition-delay:calc(var(--wi) * 0.06s);
+  }
+  /* Section H2 words reveal when the section scrolls in (.in-view from JS).
+     Words only exist because JS split them, so JS is always present here; the
+     true per-word stagger comes from transition-delay:calc(--wi). This is kept
+     as the single source of truth so stagger isn't flattened by a view()
+     timeline (scroll-driven animations can't stagger via animation-delay). */
+  .section.in-view .section__head h2.split-ready .word,
+  .trust.in-view .section__head h2.split-ready .word{
+    opacity:1; transform:none;
+  }
+}
+
+/* --- Certification badge shimmer + pop on entry --- */
+.trust__badge{ position:relative; overflow:hidden; }
+.trust__badge::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%);
+  transform:translateX(-160%);
+  pointer-events:none;
+}
+@media (prefers-reduced-motion: no-preference){
+  /* Shimmer sweeps once when the item reveals; loops gently on hover. */
+  .trust__item.is-visible .trust__badge::after{
+    animation:badgeShimmer 1.2s var(--ease) .15s 1;
+  }
+  .trust__item:hover .trust__badge::after{
+    animation:badgeShimmer 1.4s var(--ease) infinite;
+  }
+  @keyframes badgeShimmer{
+    from{ transform:translateX(-160%); }
+    to  { transform:translateX(160%); }
+  }
+  /* Badge "pops" in scale when the card becomes visible (IO fallback path). */
+  .trust__item .trust__badge{
+    transition:transform .55s var(--ease-spring);
+  }
+  .trust__item:not(.is-visible) .trust__badge{ transform:scale(.82); }
+  .trust__item.is-visible .trust__badge{ transform:scale(1); }
+}
+
+/* --- Gradient wave dividers draw in (vertical wipe) as they enter view --- */
+.divider svg{
+  clip-path:inset(0 0 0 0);
+}
+@media (prefers-reduced-motion: no-preference){
+  /* Native scroll-driven draw where supported */
+  @supports (animation-timeline: view()){
+    .divider svg{
+      animation:dividerDraw both linear;
+      animation-timeline:view();
+      animation-range:entry 0% entry 70%;
+    }
+    @keyframes dividerDraw{
+      from{ clip-path:inset(0 100% 0 0); opacity:.4; }
+      to  { clip-path:inset(0 0 0 0);    opacity:1;  }
+    }
+  }
+  /* JS fallback: .draw-in class triggers the wipe via transition */
+  @supports not (animation-timeline: view()){
+    .divider svg{
+      clip-path:inset(0 100% 0 0); opacity:.4;
+      transition:clip-path 1s var(--ease), opacity 1s var(--ease);
+    }
+    .divider.draw-in svg{ clip-path:inset(0 0 0 0); opacity:1; }
+  }
+}
+
+/* --- Subtle 3D tilt on product spec cards (pointer-driven; fine pointer) ---
+   JS writes --rx/--ry (deg). We layer it under the existing hover lift and the
+   glow. Inner image gets a tiny counter-parallax via translateZ for depth. --- */
+.pcard{ --rx:0deg; --ry:0deg; transform-style:preserve-3d; }
+@media (hover:hover) and (pointer:fine){
+  .pcards{ perspective:1100px; }
+  .pcard{
+    transition:transform .25s var(--ease), box-shadow .4s var(--ease), border-color .3s;
+  }
+  .pcard.is-tilting{
+    transform:rotateX(var(--rx)) rotateY(var(--ry));
+    transition:box-shadow .4s var(--ease), border-color .3s; /* live-follow tilt */
+  }
+  /* keep the existing hover lift feel when not actively tilting */
+  .pcard:hover:not(.is-tilting){ transform:translateY(-6px); }
+  .pcard__img img{ transition:transform .8s var(--ease); transform:translateZ(0); }
+  .pcard.is-tilting .pcard__img img{ transform:translateZ(28px) scale(1.04); }
+  /* soft pointer glow over the spec card too (reuses --px/--py from JS) */
+  .pcard{ position:relative; }
+  .pcard::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; z-index:2;
+    background:radial-gradient(380px circle at var(--px,50%) var(--py,50%),
+               rgba(123,204,224,.18), transparent 46%);
+    opacity:0; transition:opacity .4s var(--ease); pointer-events:none;
+  }
+  .pcard:hover::after{ opacity:1; }
+}
+
+/* --- Gentle idle float on why-cards and certification badges ---
+   NOTE: the why-card WRAPPER already carries the v8 scroll-driven `cardIn`
+   entrance, so we must not put a competing animation on it. Instead we float
+   the decorative number badge inside each card — gives life without touching
+   the entrance reveal or the flip transforms on the inner faces. */
+@media (prefers-reduced-motion: no-preference){
+  .why__num{ animation:idleFloat 6s ease-in-out infinite; will-change:transform; }
+  .why__card:nth-child(2) .why__num{ animation-delay:-1.5s; }
+  .why__card:nth-child(3) .why__num{ animation-delay:-3s; }
+  .why__card:nth-child(4) .why__num{ animation-delay:-4.5s; }
+  .why__card:hover .why__num, .why__card.is-flipped .why__num{ animation-play-state:paused; }
+  @keyframes idleFloat{
+    0%,100%{ transform:translateY(0); }
+    50%    { transform:translateY(-7px); }
+  }
+
+  /* Badges bob softly, offset per item for a "buoyant" row. */
+  .trust__item.is-visible .trust__badge{
+    animation:badgePop .55s var(--ease-spring) both, badgeBob 5s ease-in-out 1s infinite;
+  }
+  .trust__item:nth-child(2) .trust__badge{ animation-delay:0s, 1.4s; }
+  .trust__item:nth-child(3) .trust__badge{ animation-delay:0s, 1.8s; }
+  .trust__item:nth-child(4) .trust__badge{ animation-delay:0s, 2.2s; }
+  .trust__item:nth-child(5) .trust__badge{ animation-delay:0s, 2.6s; }
+  .trust__item:nth-child(6) .trust__badge{ animation-delay:0s, 3s; }
+  @keyframes badgePop{ from{transform:scale(.82)} to{transform:scale(1)} }
+  @keyframes badgeBob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+}
+
+/* ==========================================================================
+   v9 — REDUCED MOTION guarantees
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce){
+  .split-ready .word{ opacity:1 !important; transform:none !important; filter:none !important; }
+  .trust__badge::after{ display:none !important; }
+  .trust__item .trust__badge{ transform:none !important; animation:none !important; }
+  .divider svg{ clip-path:none !important; opacity:1 !important; animation:none !important; }
+  .why__num{ animation:none !important; }
+  .pcard, .pcard.is-tilting{ transform:none !important; }
+  .pcard::after{ display:none !important; }
+  .pcard.is-tilting .pcard__img img{ transform:none !important; }
 }

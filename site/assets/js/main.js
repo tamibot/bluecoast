@@ -20,8 +20,9 @@
   document.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Section "in-view" class for heading underline + section__head reveal
-  const sections = $$('.section');
+  // Section "in-view" class for heading underline + section__head reveal.
+  // Include .trust (certifications) which uses its own class, not .section.
+  const sections = $$('.section, .trust');
   if ('IntersectionObserver' in window) {
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -376,7 +377,7 @@
      Writes --px/--py (percent) so the CSS radial highlight follows the cursor.
      Paint-only; cards already define the gradient + transition. */
   if (finePointer && !prefersReduced) {
-    const glowCards = $$('.sp, .tcard, .trust__item');
+    const glowCards = $$('.sp, .tcard, .trust__item, .pcard');
     glowCards.forEach((card) => {
       let graf = 0;
       card.addEventListener('pointermove', (e) => {
@@ -389,6 +390,121 @@
           card.style.setProperty('--py', py.toFixed(1) + '%');
           graf = 0;
         });
+      });
+    });
+  }
+
+  /* ======================================================================
+     v9 MOTION — richer reveals & interactions (builds on v8)
+     ====================================================================== */
+
+  /* --- 6. Per-word split-text reveals (hero title + section H2s) ---
+     We wrap each word in <span class="word" style="--wi:n"> while preserving
+     the original text node order, so screen readers still read the full phrase
+     (the wrapper keeps the same characters; we mark the H2 as aria-label too
+     for safety). Skipped entirely under reduced motion. */
+  const splitWords = (el) => {
+    if (!el || el.dataset.split === '1') return;
+    const fullText = el.textContent;
+    if (!fullText || !fullText.trim()) return;
+    el.setAttribute('aria-label', fullText.trim());
+
+    // Structure-preserving split: walk top-level child nodes. Text nodes are
+    // tokenised into per-word .word spans; element children (e.g. styled <em>)
+    // are kept intact and become a single animated .word unit, so visible text,
+    // markup and styling are unchanged — only motion is added.
+    const wiRef = { n: 0 };
+    const wrapWords = (node, sink) => {
+      const tokens = node.textContent.split(/(\s+)/);
+      tokens.forEach((tok) => {
+        if (tok === '') return;
+        if (tok.trim() === '') {
+          sink.appendChild(document.createTextNode(tok));
+          return;
+        }
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.setAttribute('aria-hidden', 'true'); // aria-label on parent reads it
+        span.style.setProperty('--wi', String(wiRef.n++));
+        span.textContent = tok;
+        sink.appendChild(span);
+      });
+    };
+
+    const frag = document.createDocumentFragment();
+    Array.from(el.childNodes).forEach((child) => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        wrapWords(child, frag);
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        // Preserve the element (and its styling); animate it as one word.
+        child.classList.add('word');
+        child.setAttribute('aria-hidden', 'true');
+        child.style.setProperty('--wi', String(wiRef.n++));
+        frag.appendChild(child);
+      } else {
+        frag.appendChild(child.cloneNode(true));
+      }
+    });
+    el.textContent = '';
+    el.appendChild(frag);
+    el.classList.add('split-ready');
+    el.dataset.split = '1';
+  };
+
+  if (!prefersReduced) {
+    // Section/trust H2s get per-word reveals. (The hero title words keep their
+    // existing whole-phrase entrance: "Hidrobiológicos" carries a gradient
+    // text-fill that a per-letter/word split would break, and each line is a
+    // single word anyway, so splitting adds no stagger there.)
+    $$('.section__head h2, .trust .section__head h2').forEach(splitWords);
+    // Clear will-change after the longest reveal could have finished, so we
+    // don't keep compositor layers around forever.
+    setTimeout(() => {
+      $$('.word').forEach((w) => { w.style.willChange = 'auto'; });
+    }, 4000);
+  }
+
+  /* --- 7. Divider draw-in fallback (only where view() is unsupported) ---
+     Native browsers handle this via animation-timeline in CSS. */
+  const supportsViewTimeline =
+    'CSS' in window && CSS.supports && CSS.supports('animation-timeline: view()');
+  if (!prefersReduced && !supportsViewTimeline && 'IntersectionObserver' in window) {
+    const dio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('draw-in');
+          dio.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.25 });
+    $$('.divider').forEach((d) => dio.observe(d));
+  }
+
+  /* --- 8. 3D tilt on product spec cards (fine pointer only) ---
+     Pointer position maps to a small rotateX/rotateY. Clamped, rAF-throttled,
+     transform-only. Combines with the existing --px/--py glow (set above). */
+  if (finePointer && !prefersReduced) {
+    $$('.pcard').forEach((card) => {
+      const MAXTILT = 6; // degrees
+      let traf = 0;
+      card.addEventListener('pointerenter', () => card.classList.add('is-tilting'));
+      card.addEventListener('pointermove', (e) => {
+        if (traf) return;
+        traf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          const cx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);  // -1..1
+          const cy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2); // -1..1
+          const ry = Math.max(-1, Math.min(1, cx)) * MAXTILT;
+          const rx = Math.max(-1, Math.min(1, cy)) * -MAXTILT;
+          card.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+          card.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+          traf = 0;
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        card.classList.remove('is-tilting');
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
       });
     });
   }
