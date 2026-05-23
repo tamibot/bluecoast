@@ -51,7 +51,7 @@
         }
       });
     }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-    ['proceso', 'productos', 'especies', 'testimonios', 'contacto'].forEach((id) => {
+    ['porque', 'productos', 'especies', 'certificaciones', 'contacto'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) aio.observe(el);
     });
@@ -118,25 +118,40 @@
     document.head.appendChild(style);
   }
 
-  // Contact form (demo; no backend)
+  // Why-us interactive flip cards (click/tap toggles; hover also flips on desktop)
+  $$('.why__card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const flipped = card.classList.toggle('is-flipped');
+      card.setAttribute('aria-pressed', String(flipped));
+    });
+  });
+
+  // Contact form → composes an email addressed to rodolfo.camino@bluecoastsac.com
+  const CONTACT_TO = 'rodolfo.camino@bluecoastsac.com';
   const form = $('#contactForm');
   const msg = $('#formMsg');
   if (form && msg) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      if (!data.nombre || !data.email || !data.mensaje) {
+      const d = Object.fromEntries(new FormData(form).entries());
+      if (!d.nombre || !d.email || !d.mensaje) {
         msg.textContent = 'Por favor completa nombre, email y mensaje.';
         msg.className = 'form__msg is-err';
         return;
       }
-      msg.textContent = 'Enviando…';
-      msg.className = 'form__msg';
-      setTimeout(() => {
-        msg.textContent = '✓ Recibimos tu propuesta. Te contactaremos pronto.';
-        msg.className = 'form__msg is-ok';
-        form.reset();
-      }, 700);
+      const subject = `Consulta web — ${d.nombre}${d.empresa ? ' (' + d.empresa + ')' : ''}`;
+      const body =
+        `Nombre: ${d.nombre}\n` +
+        `Empresa: ${d.empresa || '-'}\n` +
+        `Email: ${d.email}\n` +
+        `Teléfono: ${d.telefono || '-'}\n` +
+        `Producto de interés: ${d.producto || '-'}\n\n` +
+        `Mensaje:\n${d.mensaje}\n`;
+      const mailto = `mailto:${CONTACT_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+      msg.textContent = '✓ Abriendo tu correo para enviar el mensaje a Blue Coast…';
+      msg.className = 'form__msg is-ok';
+      setTimeout(() => form.reset(), 1200);
     });
   }
 

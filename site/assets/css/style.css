@@ -1189,3 +1189,205 @@ html{-webkit-text-size-adjust:100%}
   .trust__grid{grid-template-columns:1fr; gap:.9rem}
   .trust__item{padding:1.2rem 1.3rem 1.1rem}
 }
+
+/* ==========================================================================
+   v7 — Why-us cards, product spec cards, gradient dividers, footer waves,
+   directional scroll-reveal, richer section transitions
+   ========================================================================== */
+
+/* ---------- Hero: prominent brand logo + watermark ---------- */
+.hero__watermark{
+  position:absolute; z-index:0;
+  width:min(70vw, 620px); top:14%; left:50%;
+  transform:translateX(-50%);
+  opacity:.06;
+  pointer-events:none;
+}
+.hero__brand{
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  margin-bottom:1.6rem;
+}
+.hero__logo{width:120px; height:auto; filter:drop-shadow(0 6px 20px rgba(0,0,0,.35))}
+.hero__brandname{
+  font-weight:800; letter-spacing:.28em; font-size:1rem; color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.hero__brandname em{font-style:normal; opacity:.7; font-weight:600; letter-spacing:.12em}
+
+/* ---------- ¿Por qué Blue Coast? — interactive flip cards ---------- */
+.why{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:1.3rem;
+}
+.why__card{
+  position:relative; height:340px;
+  border:none; padding:0; cursor:pointer;
+  border-radius:var(--radius-lg);
+  background:transparent;
+  font-family:inherit; text-align:left;
+  perspective:1200px;
+  -webkit-tap-highlight-color:transparent;
+}
+.why__media, .why__face, .why__back{
+  position:absolute; inset:0;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  backface-visibility:hidden;
+  transition:transform .7s var(--ease), opacity .5s var(--ease);
+}
+.why__media{z-index:1}
+.why__media img{width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease)}
+.why__card:hover .why__media img{transform:scale(1.07)}
+.why__media::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,45,85,.05) 0%, rgba(0,45,85,.55) 70%, rgba(0,29,55,.85) 100%);
+}
+.why__num{
+  position:absolute; top:1rem; left:1.1rem; z-index:3;
+  font-size:2.4rem; font-weight:800; color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+  opacity:.9;
+}
+.why__face{
+  z-index:2; display:flex; flex-direction:column; justify-content:flex-end;
+  padding:1.4rem; color:#fff;
+  pointer-events:none;
+}
+.why__face h3{color:#fff; font-size:1.2rem; margin:0 0 .3rem; text-shadow:0 2px 10px rgba(0,0,0,.45)}
+.why__hint{
+  font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(255,255,255,.85); display:inline-flex; align-items:center; gap:.35rem;
+}
+.why__hint::before{content:"+"; font-size:1rem; line-height:1}
+.why__back{
+  z-index:0;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:1.6rem;
+  background:linear-gradient(160deg, var(--ocean-700), var(--ocean-900));
+  color:#fff;
+  transform:rotateY(180deg);
+}
+.why__back h3{color:#fff; font-size:1.15rem; margin-bottom:.6rem}
+.why__back p{color:rgba(255,255,255,.88); font-size:.92rem; margin:0; line-height:1.5}
+
+/* flipped state (added by JS on click; also works on hover for desktop) */
+.why__card.is-flipped .why__media,
+.why__card.is-flipped .why__face{transform:rotateY(180deg); opacity:0}
+.why__card.is-flipped .why__back{transform:rotateY(360deg)}
+@media (hover:hover){
+  .why__card:hover .why__media,
+  .why__card:hover .why__face{transform:rotateY(180deg); opacity:0}
+  .why__card:hover .why__back{transform:rotateY(360deg)}
+}
+
+/* ---------- Product spec cards ---------- */
+.pcards{display:grid; grid-template-columns:repeat(2, 1fr); gap:1.6rem}
+.pcard{
+  display:grid; grid-template-columns:minmax(150px, 38%) 1fr;
+  background:#fff; border:1px solid var(--line);
+  border-radius:var(--radius-lg); overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .3s;
+}
+.pcard:hover{transform:translateY(-6px); box-shadow:var(--shadow-lg); border-color:rgba(25,120,184,.28)}
+.pcard__img{position:relative; background:linear-gradient(135deg, var(--foam-2), var(--foam)); overflow:hidden}
+.pcard__img img{width:100%; height:100%; object-fit:cover; transition:transform .8s var(--ease)}
+.pcard:hover .pcard__img img{transform:scale(1.06)}
+.pcard__flag{
+  position:absolute; top:.7rem; left:.7rem;
+  background:rgba(0,45,85,.85); color:#fff;
+  font-size:.62rem; letter-spacing:.1em; font-weight:700;
+  padding:.3rem .6rem; border-radius:999px; backdrop-filter:blur(6px);
+}
+.pcard__body{padding:1.5rem 1.6rem}
+.pcard__body h3{font-size:1.2rem; margin-bottom:.9rem; color:var(--ocean-900)}
+.spec{margin:0; display:grid; grid-template-columns:auto 1fr; gap:.4rem .9rem; font-size:.85rem}
+.spec dt{color:var(--ocean-700); font-weight:700; white-space:nowrap}
+.spec dd{margin:0; color:var(--slate)}
+
+/* ---------- Gradient wave dividers between sections ---------- */
+.divider{line-height:0; margin:0; position:relative; overflow:hidden}
+.divider svg{display:block; width:100%; height:90px}
+.divider--to-tint{background:#fff}
+.divider--from-tint{background:#fff}
+.divider--to-dark{background:var(--paper)}
+.divider--from-dark{background:var(--paper)}
+.divider--to-tint svg, .divider--from-tint svg, .divider--to-dark svg, .divider--from-dark svg{height:90px}
+
+/* ---------- Dark section ---------- */
+.section--dark{
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(25,120,184,.3), transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgba(44,140,191,.22), transparent 55%),
+    linear-gradient(180deg, #002d55 0%, #05213d 100%);
+  color:#e4effa;
+}
+.section--dark h2, .section--dark h3{color:#fff}
+.section--dark em{color:var(--ocean-200)}
+.section--dark .lead{color:rgba(228,239,250,.82)}
+.section--dark .section__head h2::after{
+  background:linear-gradient(90deg, var(--ocean-200), var(--ocean-400));
+}
+.section--dark .tcard{
+  background:rgba(255,255,255,.05);
+  border-color:rgba(255,255,255,.12);
+}
+.section--dark .tcard blockquote{color:#fff}
+.section--dark .tcard figcaption strong{color:#fff}
+.section--dark .tcard figcaption span{color:var(--ocean-200)}
+.section--dark .tcard__q{color:var(--ocean-300)}
+.section--dark::before{display:none}
+
+/* ---------- Contact narrow wrap ---------- */
+.wrap--narrow{width:min(720px, 92%)}
+.section--contact{
+  background:linear-gradient(180deg, var(--foam) 0%, #fff 100%);
+}
+
+/* ---------- Footer animated waves ---------- */
+.footer{position:relative}
+.footer__waves{
+  position:absolute; top:-1px; left:0; right:0; height:60px;
+  overflow:hidden; line-height:0; transform:translateY(-100%);
+  pointer-events:none;
+}
+.footer__waves svg{width:200%; height:60px; display:block}
+.fwave--1{fill:#0a3a63; animation:waveScroll 14s linear infinite}
+.fwave--2{fill:#0d2b46; animation:waveScroll 9s linear infinite reverse; opacity:.7}
+
+/* ==========================================================================
+   Directional scroll-reveal variants
+   ========================================================================== */
+.reveal{opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.reveal.is-visible{opacity:1; transform:none}
+.reveal--up{transform:translateY(44px)}
+.reveal--left{transform:translateX(-46px)}
+.reveal--right{transform:translateX(46px)}
+.reveal--scale{transform:scale(.9); opacity:0}
+.reveal--scale.is-visible{transform:scale(1); opacity:1}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal, .reveal--up, .reveal--left, .reveal--right, .reveal--scale{
+    opacity:1 !important; transform:none !important;
+  }
+  .why__card .why__media, .why__card .why__face, .why__card .why__back{transition:none}
+}
+
+/* ==========================================================================
+   Responsive — new sections
+   ========================================================================== */
+@media (max-width: 960px){
+  .why{grid-template-columns:repeat(2, 1fr); gap:1rem}
+  .why__card{height:300px}
+  .pcards{grid-template-columns:1fr}
+}
+@media (max-width: 560px){
+  .why{grid-template-columns:1fr}
+  .why__card{height:280px}
+  .pcard{grid-template-columns:1fr}
+  .pcard__img{height:200px}
+  .hero__logo{width:92px}
+  .hero__brandname{font-size:.82rem; letter-spacing:.2em}
+  .divider svg{height:55px}
+  .spec{grid-template-columns:1fr; gap:.15rem .9rem}
+  .spec dt{margin-top:.5rem}
+}
