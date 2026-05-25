@@ -31,14 +31,11 @@
 <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,200..900&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/style.css?v=20260519e" />
+<link rel="stylesheet" href="assets/css/style.css?v=20260519f" />
 </head>
 <body>
-
-<!-- Scroll-driven background morph layer (fixed, behind everything) -->
-<div class="bg-morph" aria-hidden="true"></div>
 
 <!-- One-time page-load intro: ocean curtain parts + logo settles -->
 <div class="intro" id="intro" aria-hidden="true">
@@ -84,19 +81,12 @@
       <a href="#productos">Productos</a>
       <a href="#especies">Catálogo</a>
       <a href="#certificaciones">Certificaciones</a>
-      <a href="#contacto">Contáctanos</a>
+      <a href="#contacto" class="nav__cta">Contáctanos</a>
     </nav>
 
     <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-  </div>
-  <div class="nav__wave" aria-hidden="true">
-    <svg viewBox="0 0 1440 14" preserveAspectRatio="none">
-      <path class="nw nw-1" d="M0,8 C240,14 480,2 720,8 C960,14 1200,2 1440,8 L1440,14 L0,14 Z"/>
-      <path class="nw nw-2" d="M0,9 C240,3 480,14 720,8 C960,3 1200,14 1440,9 L1440,14 L0,14 Z"/>
-      <path class="nw nw-3" d="M0,11 C240,8 480,14 720,11 C960,8 1200,14 1440,11 L1440,14 L0,14 Z"/>
-    </svg>
   </div>
 </header>
 
@@ -104,258 +94,206 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero">
-  <div class="hero__media" aria-hidden="true">
-    <div class="hero__sky"></div>
-    <div class="hero__sun"></div>
+  <div class="hero__scene" aria-hidden="true">
+    <div class="hero__deep"></div>
+    <div class="hero__glow"></div>
     <div class="hero__rays"></div>
-    <div class="hero__sea"></div>
-    <div class="hero__overlay"></div>
+    <div class="hero__caustics"></div>
+    <div class="hero__floor"></div>
+    <div class="hero__grain"></div>
+    <div class="hero__vignette"></div>
   </div>
 
-  <!-- big watermark logo behind content -->
-  <svg class="hero__watermark" viewBox="0 0 220 90" fill="none" aria-hidden="true">
-    <g fill="none" stroke-linecap="round" stroke="#ffffff">
-      <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke-width="5"/>
-      <path d="M10 36 Q 55 18, 110 36 T 210 36" stroke-width="6"/>
-      <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke-width="8"/>
-      <path d="M10 78 Q 55 56, 110 78 T 210 78" stroke-width="7"/>
-    </g>
-  </svg>
+  <!-- floating brand marks (parallax depth layers) -->
+  <div class="hero__marks" aria-hidden="true">
+    <svg class="hero__mark hero__mark--far" viewBox="0 0 220 90" fill="none"><g fill="none" stroke-linecap="round" stroke="#7bcce0">
+      <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke-width="5"/><path d="M10 36 Q 55 18, 110 36 T 210 36" stroke-width="6"/>
+      <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke-width="8"/><path d="M10 78 Q 55 56, 110 78 T 210 78" stroke-width="7"/></g></svg>
+    <svg class="hero__mark hero__mark--near" viewBox="0 0 220 90" fill="none"><g fill="none" stroke-linecap="round" stroke="#bfe6f4">
+      <path d="M10 18 Q 55 2, 110 18 T 210 18" stroke-width="5"/><path d="M10 36 Q 55 18, 110 36 T 210 36" stroke-width="6"/>
+      <path d="M10 56 Q 55 34, 110 56 T 210 56" stroke-width="8"/><path d="M10 78 Q 55 56, 110 78 T 210 78" stroke-width="7"/></g></svg>
+  </div>
 
   <div class="wrap hero__inner">
-    <div class="hero__brand reveal">
-      <svg class="hero__logo" viewBox="0 0 220 90" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="hlw1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#cdeefb"/><stop offset="1" stop-color="#8fd9ea"/></linearGradient>
-          <linearGradient id="hlw2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#9bdcf0"/><stop offset="1" stop-color="#5ab6d1"/></linearGradient>
-          <linearGradient id="hlw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#6cc4e0"/><stop offset="1" stop-color="#2c8cbf"/></linearGradient>
-          <linearGradient id="hlw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3f9fd1"/><stop offset="1" stop-color="#1978b8"/></linearGradient>
-        </defs>
-        <g fill="none" stroke-linecap="round" class="brand__waves">
-          <path class="bw bw-1" d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#hlw1)" stroke-width="5"/>
-          <path class="bw bw-2" d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#hlw2)" stroke-width="6"/>
-          <path class="bw bw-3" d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#hlw3)" stroke-width="8"/>
-          <path class="bw bw-4" d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#hlw4)" stroke-width="7"/>
-        </g>
-      </svg>
-      <span class="hero__brandname">BLUE COAST <em>S.A.C.</em></span>
-    </div>
+    <p class="hero__eyebrow reveal">
+      <span class="hero__eyebrow-dot"></span>
+      Blue Coast S.A.C. · Sullana — Piura, Perú
+    </p>
 
-    <h1 class="hero__title">
-      <span class="hero__title-bold reveal">Productos</span>
-      <span class="hero__title-thin reveal">Hidrobiológicos</span>
+    <h1 class="hero__title" data-kinetic>
+      <span class="hero__line hero__line--1">Productos</span>
+      <span class="hero__line hero__line--2">Hidrobiológicos</span>
     </h1>
-    <p class="hero__sub reveal">Tu socio estratégico en productos de alta calidad.</p>
+
+    <p class="hero__sub reveal">Tu socio estratégico en productos de alta calidad del Pacífico peruano — con trazabilidad y estándar de exportación.</p>
+
     <div class="hero__cta reveal">
       <a href="#porque" class="btn btn--primary">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         Conoce Blue Coast
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </a>
-      <a href="#productos" class="btn btn--outline">Ver Productos</a>
+      <a href="#productos" class="btn btn--ghost">Ver Productos</a>
     </div>
+
+    <ul class="hero__facts reveal" aria-label="Datos clave">
+      <li><strong>9</strong><span>Especies</span></li>
+      <li><strong>FAO 87</strong><span>Zona de captura</span></li>
+      <li><strong>100%</strong><span>Trazabilidad</span></li>
+    </ul>
   </div>
 
   <a href="#porque" class="hero__scroll" aria-label="Bajar">
-    <span></span>
+    <span class="hero__scroll-track"><span class="hero__scroll-dot"></span></span>
+    <span class="hero__scroll-label">Scroll</span>
   </a>
-
-  <div class="hero__waves" aria-hidden="true">
-    <svg class="hero__wave hero__wave--1" viewBox="0 0 2880 160" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="hwg1" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="rgba(123,204,224,.35)"/>
-          <stop offset="1" stop-color="rgba(123,204,224,.6)"/>
-        </linearGradient>
-      </defs>
-      <path fill="url(#hwg1)" d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1440,120 1440,80 C1620,40 1800,120 1980,80 C2160,40 2340,120 2520,80 C2700,40 2880,120 2880,80 L2880,160 L0,160 Z"/>
-    </svg>
-    <svg class="hero__wave hero__wave--2" viewBox="0 0 2880 160" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="hwg2" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="rgba(181,236,255,.55)"/>
-          <stop offset="1" stop-color="rgba(231,244,249,.85)"/>
-        </linearGradient>
-      </defs>
-      <path fill="url(#hwg2)" d="M0,100 C240,60 480,140 720,100 C960,60 1200,140 1440,100 C1680,60 1920,140 2160,100 C2400,60 2640,140 2880,100 L2880,160 L0,160 Z"/>
-    </svg>
-    <svg class="hero__wave hero__wave--3" viewBox="0 0 2880 160" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="hwg3" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stop-color="rgba(231,244,249,.9)"/>
-          <stop offset="1" stop-color="#fff"/>
-        </linearGradient>
-      </defs>
-      <path fill="url(#hwg3)" d="M0,120 C180,95 360,145 540,120 C720,95 900,145 1080,120 C1260,95 1440,145 1620,120 C1800,95 1980,145 2160,120 C2340,95 2520,145 2700,120 C2790,108 2880,130 2880,120 L2880,160 L0,160 Z"/>
-    </svg>
-    <svg class="hero__wave hero__wave--4" viewBox="0 0 2880 160" preserveAspectRatio="none">
-      <path fill="#ffffff" d="M0,135 C240,115 480,155 720,135 C960,115 1200,155 1440,135 C1680,115 1920,155 2160,135 C2400,115 2640,155 2880,135 L2880,160 L0,160 Z"/>
-    </svg>
-    <span class="bubble bubble--1"></span>
-    <span class="bubble bubble--2"></span>
-    <span class="bubble bubble--3"></span>
-    <span class="bubble bubble--4"></span>
-    <span class="bubble bubble--5"></span>
-    <span class="bubble bubble--6"></span>
-    <span class="bubble bubble--7"></span>
-  </div>
 </section>
 
 <!-- ============ ¿POR QUÉ BLUE COAST? ============ -->
 <section id="porque" class="section">
   <div class="wrap">
-    <header class="section__head">
+    <header class="section__head section__head--left">
+      <span class="kicker reveal">Cómo trabajamos</span>
       <h2 class="reveal">¿Por qué <em>Blue Coast</em>?</h2>
       <p class="lead reveal">Ofrecemos un proceso transparente y eficiente que conecta tu visión con la realidad de la pesca en el Perú.</p>
     </header>
 
-    <div class="why">
-      <button class="why__card reveal reveal--up" type="button" aria-pressed="false">
-        <div class="why__media">
+    <div class="bento">
+      <button class="bento__card bento__card--lg reveal" type="button" aria-pressed="false">
+        <div class="bento__media">
           <img src="assets/images/process-analysis.jpg" alt="Análisis de requerimientos" loading="lazy" />
-          <span class="why__num">01</span>
         </div>
-        <div class="why__face">
+        <span class="bento__num">01</span>
+        <div class="bento__content">
           <h3>Análisis de Requerimientos</h3>
-          <span class="why__hint">Toca para ver más</span>
-        </div>
-        <div class="why__back">
-          <h3>Análisis de Requerimientos</h3>
-          <p>Estudiamos tus necesidades específicas y definimos los parámetros de calidad, presentación y volumen requeridos.</p>
+          <p class="bento__teaser">Definimos juntos calidad, presentación y volumen.</p>
+          <p class="bento__detail">Estudiamos tus necesidades específicas y definimos los parámetros de calidad, presentación y volumen requeridos.</p>
+          <span class="bento__hint">Toca para ver más</span>
         </div>
       </button>
 
-      <button class="why__card reveal reveal--up" type="button" aria-pressed="false">
-        <div class="why__media">
+      <button class="bento__card bento__card--tall reveal" type="button" aria-pressed="false">
+        <div class="bento__media">
           <img src="assets/images/real-perico-filetes.jpg" alt="Productos de alta calidad" loading="lazy" />
-          <span class="why__num">02</span>
         </div>
-        <div class="why__face">
+        <span class="bento__num">02</span>
+        <div class="bento__content">
           <h3>Productos de Alta Calidad</h3>
-          <span class="why__hint">Toca para ver más</span>
-        </div>
-        <div class="why__back">
-          <h3>Productos de Alta Calidad</h3>
-          <p>Especies del Pacífico peruano seleccionadas y procesadas bajo norma, con frescura y trazabilidad garantizadas.</p>
+          <p class="bento__teaser">Especies seleccionadas y procesadas bajo norma.</p>
+          <p class="bento__detail">Especies del Pacífico peruano seleccionadas y procesadas bajo norma, con frescura y trazabilidad garantizadas.</p>
+          <span class="bento__hint">Toca para ver más</span>
         </div>
       </button>
 
-      <button class="why__card reveal reveal--up" type="button" aria-pressed="false">
-        <div class="why__media">
+      <button class="bento__card reveal" type="button" aria-pressed="false">
+        <div class="bento__media">
           <img src="assets/images/process-coordination.jpg" alt="Coordinación de producción" loading="lazy" />
-          <span class="why__num">03</span>
         </div>
-        <div class="why__face">
+        <span class="bento__num">03</span>
+        <div class="bento__content">
           <h3>Coordinación de Producción</h3>
-          <span class="why__hint">Toca para ver más</span>
-        </div>
-        <div class="why__back">
-          <h3>Coordinación de Producción</h3>
-          <p>Supervisamos el proceso productivo en planta garantizando los más altos estándares sanitarios y de calidad.</p>
+          <p class="bento__teaser">Supervisamos planta y estándares sanitarios.</p>
+          <p class="bento__detail">Supervisamos el proceso productivo en planta garantizando los más altos estándares sanitarios y de calidad.</p>
+          <span class="bento__hint">Toca para ver más</span>
         </div>
       </button>
 
-      <button class="why__card reveal reveal--up" type="button" aria-pressed="false">
-        <div class="why__media">
+      <button class="bento__card reveal" type="button" aria-pressed="false">
+        <div class="bento__media">
           <img src="assets/images/process-delivery.jpg" alt="Entrega y seguimiento" loading="lazy" />
-          <span class="why__num">04</span>
         </div>
-        <div class="why__face">
+        <span class="bento__num">04</span>
+        <div class="bento__content">
           <h3>Entrega y Seguimiento</h3>
-          <span class="why__hint">Toca para ver más</span>
-        </div>
-        <div class="why__back">
-          <h3>Entrega y Seguimiento</h3>
-          <p>Aseguramos entrega puntual y comunicación constante hasta la conformidad en su llegada a destino.</p>
+          <p class="bento__teaser">Entrega puntual y comunicación hasta destino.</p>
+          <p class="bento__detail">Aseguramos entrega puntual y comunicación constante hasta la conformidad en su llegada a destino.</p>
+          <span class="bento__hint">Toca para ver más</span>
         </div>
       </button>
     </div>
   </div>
 </section>
 
-<!-- gradient wave divider -->
-<div class="divider divider--to-tint" aria-hidden="true">
-  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
-    <defs><linearGradient id="dvg1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e7f4f9"/><stop offset="1" stop-color="#d7eef7"/></linearGradient></defs>
-    <path fill="url(#dvg1)" d="M0,50 C360,110 720,0 1080,45 C1260,67 1350,60 1440,50 L1440,110 L0,110 Z"/>
-  </svg>
-</div>
-
 <!-- ============ NUESTROS PRODUCTOS (Perico detail) ============ -->
 <section id="productos" class="section section--tinted">
   <div class="wrap">
-    <header class="section__head">
+    <header class="section__head section__head--left">
+      <span class="kicker reveal">Coryphaena hippurus</span>
       <h2 class="reveal">Nuestros <em>Productos</em></h2>
-      <p class="lead reveal"><strong>Coryphaena hippurus</strong> — Perico · Mahi-mahi · Dorado. Cortes y presentaciones listos para exportación.</p>
+      <p class="lead reveal">Perico · Mahi-mahi · Dorado. Cortes y presentaciones listos para exportación.</p>
     </header>
 
     <div class="pcards">
-      <article class="pcard reveal reveal--left">
+      <article class="pcard pcard--feature reveal">
         <div class="pcard__img">
           <img src="assets/images/real-perico-filetes.jpg" alt="Filete de Perico Congelado" loading="lazy" />
           <span class="pcard__flag">PERÚ · FAO 87</span>
         </div>
         <div class="pcard__body">
+          <span class="pcard__index">01 / 04</span>
           <h3>Filete de Perico Congelado</h3>
           <dl class="spec">
-            <dt>Presentación</dt><dd>Con poca espina, con piel o sin piel; normal o tratado con CO, IWP o IVP.</dd>
-            <dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd>
-            <dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10, 30 y 50 lb</dd>
-            <dt>Zona de captura</dt><dd>FAO 87</dd>
-            <dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd>
-            <dt>Origen</dt><dd>Perú</dd>
+            <div><dt>Presentación</dt><dd>Con poca espina, con piel o sin piel; normal o tratado con CO, IWP o IVP.</dd></div>
+            <div><dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd></div>
+            <div><dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10, 30 y 50 lb</dd></div>
+            <div><dt>Zona de captura</dt><dd>FAO 87</dd></div>
+            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd></div>
+            <div><dt>Origen</dt><dd>Perú</dd></div>
           </dl>
         </div>
       </article>
 
-      <article class="pcard reveal reveal--right">
+      <article class="pcard reveal">
         <div class="pcard__img">
           <img src="assets/images/real-perico-porciones.jpg" alt="Porciones de Perico Congelado" loading="lazy" />
           <span class="pcard__flag">PERÚ · FAO 87</span>
         </div>
         <div class="pcard__body">
+          <span class="pcard__index">02 / 04</span>
           <h3>Porciones de Perico Congelado</h3>
           <dl class="spec">
-            <dt>Presentación</dt><dd>Sin piel, sin grasa, sin vena de sangre.</dd>
-            <dt>Códigos</dt><dd>8, 6 y 4 oz (IVP) · 2–4 oz y 1–3 oz en bolsas de 5 lb · trozos y palitos en bolsas de 5 lb</dd>
-            <dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10 y 20 lb</dd>
-            <dt>Zona de captura</dt><dd>FAO 87</dd>
-            <dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd>
-            <dt>Origen</dt><dd>Perú</dd>
+            <div><dt>Presentación</dt><dd>Sin piel, sin grasa, sin vena de sangre.</dd></div>
+            <div><dt>Códigos</dt><dd>8, 6 y 4 oz (IVP) · 2–4 oz y 1–3 oz en bolsas de 5 lb · trozos y palitos en bolsas de 5 lb</dd></div>
+            <div><dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10 y 20 lb</dd></div>
+            <div><dt>Zona de captura</dt><dd>FAO 87</dd></div>
+            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd></div>
+            <div><dt>Origen</dt><dd>Perú</dd></div>
           </dl>
         </div>
       </article>
 
-      <article class="pcard reveal reveal--left">
+      <article class="pcard reveal">
         <div class="pcard__img">
           <img src="assets/images/real-perico-filetes.jpg" alt="Lomos de Perico Congelado" loading="lazy" />
           <span class="pcard__flag">PERÚ · FAO 87</span>
         </div>
         <div class="pcard__body">
+          <span class="pcard__index">03 / 04</span>
           <h3>Lomos de Perico Congelado</h3>
           <dl class="spec">
-            <dt>Presentación</dt><dd>Sin piel, sin grasa, sin vena de sangre.</dd>
-            <dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd>
-            <dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 30 y 50 lb</dd>
-            <dt>Zona de captura</dt><dd>FAO 87</dd>
-            <dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd>
-            <dt>Origen</dt><dd>Perú</dd>
+            <div><dt>Presentación</dt><dd>Sin piel, sin grasa, sin vena de sangre.</dd></div>
+            <div><dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd></div>
+            <div><dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 30 y 50 lb</dd></div>
+            <div><dt>Zona de captura</dt><dd>FAO 87</dd></div>
+            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd></div>
+            <div><dt>Origen</dt><dd>Perú</dd></div>
           </dl>
         </div>
       </article>
 
-      <article class="pcard reveal reveal--right">
+      <article class="pcard reveal">
         <div class="pcard__img">
           <img src="assets/images/real-perico-porciones.jpg" alt="Medallones de Perico Congelado" loading="lazy" />
           <span class="pcard__flag">PERÚ · FAO 87</span>
         </div>
         <div class="pcard__body">
+          <span class="pcard__index">04 / 04</span>
           <h3>Medallones de Perico Congelado</h3>
           <dl class="spec">
-            <dt>Presentación</dt><dd>A partir de perico entero eviscerado.</dd>
-            <dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10 kg</dd>
-            <dt>Zona de captura</dt><dd>FAO 87</dd>
-            <dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd>
-            <dt>Origen</dt><dd>Perú</dd>
+            <div><dt>Presentación</dt><dd>A partir de perico entero eviscerado.</dd></div>
+            <div><dt>Empaque</dt><dd>Cajas de cartón corrugado blanco — 10 kg</dd></div>
+            <div><dt>Zona de captura</dt><dd>FAO 87</dd></div>
+            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas de pesca</dd></div>
+            <div><dt>Origen</dt><dd>Perú</dd></div>
           </dl>
         </div>
       </article>
@@ -363,25 +301,18 @@
   </div>
 </section>
 
-<!-- gradient wave divider -->
-<div class="divider divider--from-tint" aria-hidden="true">
-  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
-    <defs><linearGradient id="dvg2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#d7eef7"/><stop offset="1" stop-color="#e7f4f9"/></linearGradient></defs>
-    <path fill="url(#dvg2)" d="M0,55 C360,0 720,105 1080,60 C1260,38 1350,45 1440,55 L1440,0 L0,0 Z"/>
-  </svg>
-</div>
-
 <!-- ============ CATÁLOGO COMPLETO ============ -->
 <section id="especies" class="section">
   <div class="wrap">
-    <header class="section__head">
+    <header class="section__head section__head--left">
+      <span class="kicker reveal">Nueve especies del Pacífico</span>
       <h2 class="reveal">Catálogo <em>completo</em></h2>
       <p class="lead reveal">Nueve especies del Pacífico peruano. Selecciona una para ver todas sus presentaciones.</p>
     </header>
 
     <div class="species">
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Coryphaena hippurus</span>
           <h3>Perico <em>· Mahi-mahi</em></h3>
           <p class="sp__count"><strong>13</strong> presentaciones</p>
@@ -407,7 +338,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Dosidicus gigas</span>
           <h3>Pota <em>· Calamar gigante</em></h3>
           <p class="sp__count"><strong>13</strong> presentaciones</p>
@@ -433,7 +364,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Octopus mimus</span>
           <h3>Pulpo</h3>
           <p class="sp__count"><strong>2</strong> presentaciones</p>
@@ -448,7 +379,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Loligo gahi</span>
           <h3>Calamar</h3>
           <p class="sp__count"><strong>3</strong> presentaciones</p>
@@ -464,7 +395,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Cynoscion phoxocephalus</span>
           <h3>Cherela <em>· Cachema</em></h3>
           <p class="sp__count"><strong>4</strong> presentaciones</p>
@@ -481,7 +412,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Odontesthes regia regia</span>
           <h3>Pejerrey</h3>
           <p class="sp__count"><strong>3</strong> presentaciones</p>
@@ -497,7 +428,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Sarda chiliensis chiliensis</span>
           <h3>Bonito</h3>
           <p class="sp__count"><strong>3</strong> presentaciones</p>
@@ -513,7 +444,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Trachurus murphyi</span>
           <h3>Jurel</h3>
           <p class="sp__count"><strong>3</strong> presentaciones</p>
@@ -529,7 +460,7 @@
       </article>
 
       <article class="sp reveal">
-        <header>
+        <header class="sp__head">
           <span class="sp__kicker">Scomber japonicus</span>
           <h3>Caballa</h3>
           <p class="sp__count"><strong>2</strong> presentaciones</p>
@@ -546,34 +477,27 @@
   </div>
 </section>
 
-<!-- gradient wave divider into dark testimonials -->
-<div class="divider divider--to-dark" aria-hidden="true">
-  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
-    <defs><linearGradient id="dvg3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#05213d"/><stop offset="1" stop-color="#002d55"/></linearGradient></defs>
-    <path fill="url(#dvg3)" d="M0,55 C360,110 720,5 1080,50 C1260,72 1350,65 1440,55 L1440,110 L0,110 Z"/>
-  </svg>
-</div>
-
 <!-- ============ TESTIMONIOS ============ -->
 <section id="testimonios" class="section section--dark">
   <div class="wrap">
     <header class="section__head">
+      <span class="kicker reveal">Lo que dicen</span>
       <h2 class="reveal">Testimonios de <em>Nuestros Clientes</em></h2>
       <p class="lead reveal">Descubre lo que dicen nuestros socios comerciales sobre su experiencia trabajando con Blue Coast.</p>
     </header>
 
     <div class="testimonials">
-      <figure class="tcard reveal reveal--scale">
+      <figure class="tcard reveal">
         <svg class="tcard__q" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Blue Coast entendió nuestras especificaciones desde la primera reunión. La trazabilidad de cada lote nos simplifica muchísimo la gestión con aduanas.</blockquote>
         <figcaption><strong>Carla Méndez</strong><span>Distribuidora Marina SA</span></figcaption>
       </figure>
-      <figure class="tcard reveal reveal--scale">
+      <figure class="tcard reveal">
         <svg class="tcard__q" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Cumplieron plazos ajustados en temporada alta y mantuvieron la calidad que nuestros clientes finales esperan. Son un equipo en el que confiamos.</blockquote>
         <figcaption><strong>Jorge Paredes</strong><span>Exportaciones del Pacífico</span></figcaption>
       </figure>
-      <figure class="tcard reveal reveal--scale">
+      <figure class="tcard reveal">
         <svg class="tcard__q" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 34c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4zm18 0c-4 0-7-3-7-7 0-6 5-12 12-15l2 4c-5 2-8 6-8 9 3 0 5 2 5 5s-2 4-4 4z" fill="currentColor"/></svg>
         <blockquote>Trabajar con Blue Coast redujo nuestro tiempo de respuesta con proveedores. Comunicación clara, documentación ordenada y precios competitivos.</blockquote>
         <figcaption><strong>Emma Liu</strong><span>Ocean Table — Shanghái</span></figcaption>
@@ -582,28 +506,21 @@
   </div>
 </section>
 
-<!-- gradient wave divider out of dark -->
-<div class="divider divider--from-dark" aria-hidden="true">
-  <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
-    <defs><linearGradient id="dvg4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#002d55"/><stop offset="1" stop-color="#05213d"/></linearGradient></defs>
-    <path fill="url(#dvg4)" d="M0,55 C360,0 720,105 1080,60 C1260,38 1350,45 1440,55 L1440,0 L0,0 Z"/>
-  </svg>
-</div>
-
 <!-- ============ CERTIFICACIONES ============ -->
-<section id="certificaciones" class="trust" aria-label="Certificaciones">
+<section id="certificaciones" class="section trust" aria-label="Certificaciones">
   <div class="wrap">
-    <header class="section__head">
+    <header class="section__head section__head--left">
+      <span class="kicker reveal">Calidad garantizada</span>
       <h2 class="reveal">Nuestras <em>Certificaciones</em></h2>
       <p class="lead reveal">Trabajamos únicamente con plantas auditadas y habilitadas para mercados exigentes, con documentación sanitaria completa y cadena de frío verificable.</p>
     </header>
     <ul class="trust__grid" role="list">
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">HACCP</span><p>Análisis de peligros y puntos críticos de control.</p></li>
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">BRCGS</span><p>Norma global de seguridad alimentaria.</p></li>
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">SANIPES</span><p>Habilitación del organismo sanitario peruano.</p></li>
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">FDA</span><p>Aptas para importación en Estados Unidos.</p></li>
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">UE</span><p>Autorizadas para exportación a la Unión Europea.</p></li>
-      <li class="trust__item reveal reveal--up"><span class="trust__badge">Cadena&nbsp;de&nbsp;frío</span><p>Trazabilidad por lote, embarcación y planta.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">HACCP</span><p>Análisis de peligros y puntos críticos de control.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">BRCGS</span><p>Norma global de seguridad alimentaria.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">SANIPES</span><p>Habilitación del organismo sanitario peruano.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">FDA</span><p>Aptas para importación en Estados Unidos.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">UE</span><p>Autorizadas para exportación a la Unión Europea.</p></li>
+      <li class="trust__item reveal"><span class="trust__badge">Cadena&nbsp;de&nbsp;frío</span><p>Trazabilidad por lote, embarcación y planta.</p></li>
     </ul>
   </div>
 </section>
@@ -612,11 +529,12 @@
 <section id="contacto" class="section section--contact">
   <div class="wrap wrap--narrow">
     <header class="section__head">
+      <span class="kicker reveal">Hablemos</span>
       <h2 class="reveal">Contáctanos</h2>
       <p class="lead reveal">¿Listo para ser parte de nuestra red de proveedores y distribuidores? Escríbenos y exploremos oportunidades de negocio juntos.</p>
     </header>
 
-    <form class="form reveal reveal--scale" id="contactForm" novalidate>
+    <form class="form reveal" id="contactForm" novalidate>
       <div class="form__row form__row--2">
         <label class="field">
           <span>Nombre</span>
@@ -658,12 +576,6 @@
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
-  <div class="footer__waves" aria-hidden="true">
-    <svg viewBox="0 0 2880 120" preserveAspectRatio="none">
-      <path class="fwave fwave--1" d="M0,60 C360,20 720,100 1080,60 C1440,20 1800,100 2160,60 C2520,20 2880,100 2880,60 L2880,120 L0,120 Z"/>
-      <path class="fwave fwave--2" d="M0,75 C360,45 720,105 1080,75 C1440,45 1800,105 2160,75 C2520,45 2880,105 2880,75 L2880,120 L0,120 Z"/>
-    </svg>
-  </div>
   <div class="wrap footer__inner">
     <div class="footer__brand">
       <a href="#top" class="brand">
@@ -723,6 +635,6 @@
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8v.5z"/></svg>
 </a>
 
-<script src="assets/js/main.js?v=20260519e" defer></script>
+<script src="assets/js/main.js?v=20260519f" defer></script>
 </body>
 </html>

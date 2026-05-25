@@ -1,17 +1,22 @@
 (() => {
+  'use strict';
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
-  // Footer year
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const root = document.documentElement;
+
+  /* ---------- Footer year ---------- */
   const yearEl = $('#year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Sticky nav + scroll progress bar
+  /* ---------- Sticky nav + scroll progress ---------- */
   const nav = $('#nav');
   const progress = $('#progress');
   const onScroll = () => {
     const y = window.scrollY;
-    if (nav) nav.classList.toggle('is-solid', y > 80);
+    if (nav) nav.classList.toggle('is-solid', y > 70);
     if (progress) {
       const h = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
@@ -20,45 +25,40 @@
   document.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Section "in-view" class for heading underline + section__head reveal.
-  // Include .trust (certifications) which uses its own class, not .section.
-  const sections = $$('.section, .trust');
+  /* ---------- Section "in-view" (heading underline + word reveals) ---------- */
+  const sections = $$('.section');
   if ('IntersectionObserver' in window) {
     const sio = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in-view');
-          sio.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('in-view'); sio.unobserve(e.target); }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12 });
     sections.forEach((s) => sio.observe(s));
   } else {
     sections.forEach((s) => s.classList.add('in-view'));
   }
 
-  // Active nav link based on current section in view
+  /* ---------- Active nav link ---------- */
   const navLinks = $$('.nav__links a');
   const byHash = new Map(navLinks.map((a) => [a.getAttribute('href'), a]));
   if ('IntersectionObserver' in window) {
     const aio = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        const id = '#' + e.target.id;
-        const link = byHash.get(id);
+        const link = byHash.get('#' + e.target.id);
         if (!link) return;
         if (e.isIntersecting) {
           navLinks.forEach((l) => l.classList.remove('is-active'));
           link.classList.add('is-active');
         }
       });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
     ['porque', 'productos', 'especies', 'certificaciones', 'contacto'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) aio.observe(el);
     });
   }
 
-  // Mobile nav toggle
+  /* ---------- Mobile nav toggle ---------- */
   const toggle = $('#navToggle');
   const links = $('.nav__links');
   if (toggle && links) {
@@ -74,32 +74,41 @@
     });
   }
 
-  // Scroll-reveal
+  /* ---------- Scroll-reveal (IO) with stagger ---------- */
   const reveals = $$('.reveal');
-  if ('IntersectionObserver' in window) {
+  if ('IntersectionObserver' in window && !prefersReduced) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          io.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     reveals.forEach((el) => {
+      if (el.closest('.hero')) return; // hero handled by the entrance timeline
       const parent = el.parentElement;
       const idx = parent ? Array.from(parent.children).indexOf(el) : 0;
-      el.style.transitionDelay = `${Math.min(idx * 80, 400)}ms`;
+      el.style.transitionDelay = `${Math.min(idx * 80, 420)}ms`;
       io.observe(el);
     });
   } else {
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
 
-  // Species cards: expand/collapse
+  /* ---------- Generic visibility flag for badge shimmer etc. ---------- */
+  if ('IntersectionObserver' in window) {
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); vio.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    $$('.trust__item').forEach((el) => vio.observe(el));
+  } else {
+    $$('.trust__item').forEach((el) => el.classList.add('is-visible'));
+  }
+
+  /* ---------- Catalog expand/collapse ---------- */
   $$('.sp__btn').forEach((btn) => {
     btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('aria-controls');
-      const list = document.getElementById(targetId);
+      const list = document.getElementById(btn.getAttribute('aria-controls'));
       if (!list) return;
       const isOpen = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!isOpen));
@@ -107,27 +116,26 @@
         list.hidden = true;
       } else {
         list.hidden = false;
-        list.style.animation = 'slideIn .3s ease forwards';
+        if (!prefersReduced) list.style.animation = 'slideIn .35s ease forwards';
       }
     });
   });
-
   if (!document.getElementById('sp-keyframes')) {
     const style = document.createElement('style');
     style.id = 'sp-keyframes';
-    style.textContent = `@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}`;
+    style.textContent = '@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}';
     document.head.appendChild(style);
   }
 
-  // Why-us interactive flip cards (click/tap toggles; hover also flips on desktop)
-  $$('.why__card').forEach((card) => {
+  /* ---------- Bento tap/click reveal ---------- */
+  $$('.bento__card').forEach((card) => {
     card.addEventListener('click', () => {
-      const flipped = card.classList.toggle('is-flipped');
-      card.setAttribute('aria-pressed', String(flipped));
+      const open = card.classList.toggle('is-open');
+      card.setAttribute('aria-pressed', String(open));
     });
   });
 
-  // Contact form → composes an email addressed to rodolfo.camino@bluecoastsac.com
+  /* ---------- Contact form → mailto rodolfo.camino@bluecoastsac.com ---------- */
   const CONTACT_TO = 'rodolfo.camino@bluecoastsac.com';
   const form = $('#contactForm');
   const msg = $('#formMsg');
@@ -148,67 +156,15 @@
         `Teléfono: ${d.telefono || '-'}\n` +
         `Producto de interés: ${d.producto || '-'}\n\n` +
         `Mensaje:\n${d.mensaje}\n`;
-      const mailto = `mailto:${CONTACT_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      window.location.href =
+        `mailto:${CONTACT_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       msg.textContent = '✓ Abriendo tu correo para enviar el mensaje a Blue Coast…';
       msg.className = 'form__msg is-ok';
       setTimeout(() => form.reset(), 1200);
     });
   }
 
-  // Animated counters on stats
-  const counters = $$('[data-count]');
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (counters.length && 'IntersectionObserver' in window && !prefersReduced) {
-    const cio = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        const target = parseInt(el.dataset.count, 10) || 0;
-        const suffix = el.dataset.suffix || '';
-        const duration = 1400;
-        const start = performance.now();
-        const step = (now) => {
-          const t = Math.min(1, (now - start) / duration);
-          const eased = 1 - Math.pow(1 - t, 3);
-          el.textContent = Math.round(target * eased) + suffix;
-          if (t < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-        cio.unobserve(el);
-      });
-    }, { threshold: 0.5 });
-    counters.forEach((c) => cio.observe(c));
-  } else {
-    counters.forEach((c) => {
-      c.textContent = c.dataset.count + (c.dataset.suffix || '');
-    });
-  }
-
-  // Subtle mouse-parallax on hero — drifts the light rays + sun glow
-  const hero = $('.hero');
-  const heroRays = $('.hero__rays');
-  const heroSun = $('.hero__sun');
-  if (hero && heroRays && window.matchMedia('(hover:hover) and (pointer:fine)').matches && !prefersReduced) {
-    let raf = 0;
-    hero.addEventListener('mousemove', (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        const r = hero.getBoundingClientRect();
-        const dx = (e.clientX - r.left) / r.width - 0.5;
-        const dy = (e.clientY - r.top) / r.height - 0.5;
-        heroRays.style.transform = `translate3d(${dx * 26}px, ${dy * 12}px, 0)`;
-        if (heroSun) heroSun.style.transform = `translate3d(${dx * 16}px, ${dy * 10}px, 0)`;
-        raf = 0;
-      });
-    });
-    hero.addEventListener('mouseleave', () => {
-      heroRays.style.transform = '';
-      if (heroSun) heroSun.style.transform = '';
-    });
-  }
-
-  // Smooth scroll offset for fixed nav
+  /* ---------- Smooth anchor scroll with nav offset ---------- */
   $$('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -216,7 +172,7 @@
         const el = document.querySelector(id);
         if (el) {
           e.preventDefault();
-          const top = el.getBoundingClientRect().top + window.scrollY - 70;
+          const top = el.getBoundingClientRect().top + window.scrollY - 76;
           window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
         }
       }
@@ -224,118 +180,76 @@
   });
 
   /* ======================================================================
-     v8 MOTION SYSTEM
+     HERO entrance timeline
      ====================================================================== */
-  const root = document.documentElement;
-  const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-
-  /* --- 1. Hero entrance timeline ---
-     Fire the choreographed sequence once the page is painted. The CSS owns the
-     staggered delays; we just flip the switch (and bail gracefully if reduced
-     motion — the elements are forced visible by the reduced-motion guard). */
   const fireHero = () => document.body.classList.add('hero-ready');
   if (document.readyState === 'complete') {
     requestAnimationFrame(fireHero);
   } else {
     window.addEventListener('load', () => requestAnimationFrame(fireHero), { once: true });
-    // Safety net so the hero never stays hidden if `load` is delayed.
     setTimeout(fireHero, 600);
   }
 
-  /* --- 2. Global scroll-velocity tracking ---
-     Tracks signed, smoothed scroll velocity into --scroll-vel/--scroll-dir on
-     <html> for any velocity-reactive CSS. The per-divider crest push is owned
-     by the v10 cinematic-divider system below (which rebuilds the dividers). */
-  if (!prefersReduced) {
-    let lastY = window.scrollY;
-    let vel = 0, velRaf = 0;
-    const sampleVel = () => {
-      const y = window.scrollY;
-      vel += ((y - lastY) - vel) * 0.18;
-      lastY = y;
-      root.style.setProperty('--scroll-vel', vel.toFixed(2));
-      root.style.setProperty('--scroll-dir', vel >= 0 ? '1' : '-1');
-      if (Math.abs(vel) > 0.05) { velRaf = requestAnimationFrame(sampleVel); }
-      else { vel = 0; velRaf = 0; }
+  /* ======================================================================
+     KINETIC HERO TYPE — weight/translate shift on scroll
+     ====================================================================== */
+  const heroTitle = $('[data-kinetic]');
+  const heroLines = $$('.hero__line');
+  const hero = $('.hero');
+  if (heroTitle && heroLines.length && !prefersReduced) {
+    let kraf = 0;
+    const onKinetic = () => {
+      kraf = 0;
+      const h = hero ? hero.offsetHeight : window.innerHeight;
+      const p = Math.min(1, Math.max(0, window.scrollY / (h * 0.9))); // 0..1 through hero
+      heroLines.forEach((line, i) => {
+        const dir = i === 0 ? -1 : 1;
+        line.style.transform = `translateX(${(p * 36 * dir).toFixed(1)}px)`;
+        line.style.opacity = String(1 - p * 0.5);
+      });
     };
     document.addEventListener('scroll', () => {
-      if (!velRaf) velRaf = requestAnimationFrame(sampleVel);
+      if (!kraf && window.scrollY < (hero ? hero.offsetHeight : window.innerHeight)) {
+        kraf = requestAnimationFrame(onKinetic);
+      }
     }, { passive: true });
   }
 
-  /* --- 3. Lightweight inertia/smooth scrolling (desktop, fine pointer only) ---
-     Wheel-driven lerp that eases the page toward a target offset for a fluid,
-     high-end feel. Deliberately conservative: disabled on touch, on reduced
-     motion, and whenever the mobile nav menu is open. Native keyboard / anchor
-     / scrollbar behaviour is preserved (we only intercept wheel deltas and let
-     the loop converge, then yield). */
-  const canSmooth = finePointer && !prefersReduced &&
-                    typeof window.requestAnimationFrame === 'function';
-  if (canSmooth) {
-    let target = window.scrollY;
-    let current = window.scrollY;
-    let running = false;
-    let raf = 0;
-    const EASE = 0.12;
-
-    const maxScroll = () =>
-      Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-    const loop = () => {
-      const diff = target - current;
-      if (Math.abs(diff) < 0.4) {
-        current = target;
-        window.scrollTo(0, current);
-        running = false;
-        raf = 0;
-        return;
-      }
-      current += diff * EASE;
-      window.scrollTo(0, current);
-      raf = requestAnimationFrame(loop);
-    };
-
-    const onWheel = (e) => {
-      // Respect menus, modifier zoom, and horizontal intent.
-      if (e.ctrlKey || e.metaKey) return;
-      const menuOpen = links && links.classList.contains('is-open');
-      if (menuOpen) return;
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-      e.preventDefault();
-      // line-mode wheels report small deltas; scale them up.
-      const unit = e.deltaMode === 1 ? 32 : (e.deltaMode === 2 ? window.innerHeight : 1);
-      target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * unit));
-      if (!running) {
-        running = true;
-        current = window.scrollY;
-        raf = requestAnimationFrame(loop);
-      }
-    };
-
-    // Keep target in sync when the user scrolls by other means (keys, bar,
-    // anchor jumps, touchpad momentum we didn't drive) so we never fight them.
-    const resync = () => { if (!running) { target = window.scrollY; current = target; } };
-
-    root.classList.add('smooth-scroll');
-    window.addEventListener('wheel', onWheel, { passive: false });
-    document.addEventListener('scroll', resync, { passive: true });
-    window.addEventListener('resize', () => {
-      target = Math.max(0, Math.min(maxScroll(), target));
-    }, { passive: true });
-    // Cancel the lerp the instant a touch starts (hybrid laptops).
-    window.addEventListener('touchstart', () => {
-      if (raf) cancelAnimationFrame(raf);
-      running = false; raf = 0;
-    }, { passive: true });
+  /* ======================================================================
+     HERO mouse parallax — light layers + floating marks
+     ====================================================================== */
+  const glow = $('.hero__glow');
+  const rays = $('.hero__rays');
+  const caustics = $('.hero__caustics');
+  const markFar = $('.hero__mark--far');
+  const markNear = $('.hero__mark--near');
+  if (hero && finePointer && !prefersReduced) {
+    let praf = 0;
+    hero.addEventListener('mousemove', (e) => {
+      if (praf) return;
+      praf = requestAnimationFrame(() => {
+        const r = hero.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        if (rays) rays.style.transform = `translate3d(${dx * 28}px, ${dy * 14}px, 0)`;
+        if (glow) glow.style.transform = `translate3d(${dx * 20}px, ${dy * 12}px, 0)`;
+        if (caustics) caustics.style.transform = `translate3d(${dx * -16}px, ${dy * -10}px, 0)`;
+        if (markNear) markNear.style.transform = `translate3d(${dx * 34}px, ${dy * 22}px, 0)`;
+        if (markFar) markFar.style.transform = `translate3d(${dx * -18}px, ${dy * -12}px, 0)`;
+        praf = 0;
+      });
+    });
+    hero.addEventListener('mouseleave', () => {
+      [rays, glow, caustics, markNear, markFar].forEach((el) => { if (el) el.style.transform = ''; });
+    });
   }
 
-  /* --- 4. Magnetic primary buttons (fine pointer only) ---
-     The button drifts a few px toward the cursor, then snaps back. Transform
-     is composed in CSS via --mx/--my so it layers with the hover lift. */
+  /* ======================================================================
+     MAGNETIC primary buttons
+     ====================================================================== */
   if (finePointer && !prefersReduced) {
     $$('.btn--primary').forEach((btn) => {
-      const STRENGTH = 0.28; // fraction of offset from center
-      const MAX = 10;        // px clamp
+      const STRENGTH = 0.28, MAX = 10;
       let mraf = 0;
       btn.addEventListener('pointermove', (e) => {
         if (mraf) return;
@@ -357,21 +271,18 @@
     });
   }
 
-  /* --- 5. Pointer-tracked card glow (fine pointer only) ---
-     Writes --px/--py (percent) so the CSS radial highlight follows the cursor.
-     Paint-only; cards already define the gradient + transition. */
+  /* ======================================================================
+     POINTER-TRACKED card glow (paint-only --px/--py)
+     ====================================================================== */
   if (finePointer && !prefersReduced) {
-    const glowCards = $$('.sp, .tcard, .trust__item, .pcard');
-    glowCards.forEach((card) => {
+    $$('.sp, .tcard, .trust__item, .pcard').forEach((card) => {
       let graf = 0;
       card.addEventListener('pointermove', (e) => {
         if (graf) return;
         graf = requestAnimationFrame(() => {
           const r = card.getBoundingClientRect();
-          const px = ((e.clientX - r.left) / r.width) * 100;
-          const py = ((e.clientY - r.top) / r.height) * 100;
-          card.style.setProperty('--px', px.toFixed(1) + '%');
-          card.style.setProperty('--py', py.toFixed(1) + '%');
+          card.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 100).toFixed(1) + '%');
+          card.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 100).toFixed(1) + '%');
           graf = 0;
         });
       });
@@ -379,48 +290,58 @@
   }
 
   /* ======================================================================
-     v9 MOTION — richer reveals & interactions (builds on v8)
+     3D tilt on product spec cards
      ====================================================================== */
+  if (finePointer && !prefersReduced) {
+    $$('.pcard').forEach((card) => {
+      const MAXTILT = 5;
+      let traf = 0;
+      card.addEventListener('pointerenter', () => card.classList.add('is-tilting'));
+      card.addEventListener('pointermove', (e) => {
+        if (traf) return;
+        traf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          const cx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+          const cy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+          card.style.setProperty('--ry', (Math.max(-1, Math.min(1, cx)) * MAXTILT).toFixed(2) + 'deg');
+          card.style.setProperty('--rx', (Math.max(-1, Math.min(1, cy)) * -MAXTILT).toFixed(2) + 'deg');
+          traf = 0;
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        card.classList.remove('is-tilting');
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+  }
 
-  /* --- 6. Per-word split-text reveals (hero title + section H2s) ---
-     We wrap each word in <span class="word" style="--wi:n"> while preserving
-     the original text node order, so screen readers still read the full phrase
-     (the wrapper keeps the same characters; we mark the H2 as aria-label too
-     for safety). Skipped entirely under reduced motion. */
+  /* ======================================================================
+     SPLIT-TEXT word reveals on section H2s
+     ====================================================================== */
   const splitWords = (el) => {
     if (!el || el.dataset.split === '1') return;
     const fullText = el.textContent;
     if (!fullText || !fullText.trim()) return;
     el.setAttribute('aria-label', fullText.trim());
-
-    // Structure-preserving split: walk top-level child nodes. Text nodes are
-    // tokenised into per-word .word spans; element children (e.g. styled <em>)
-    // are kept intact and become a single animated .word unit, so visible text,
-    // markup and styling are unchanged — only motion is added.
     const wiRef = { n: 0 };
     const wrapWords = (node, sink) => {
-      const tokens = node.textContent.split(/(\s+)/);
-      tokens.forEach((tok) => {
+      node.textContent.split(/(\s+)/).forEach((tok) => {
         if (tok === '') return;
-        if (tok.trim() === '') {
-          sink.appendChild(document.createTextNode(tok));
-          return;
-        }
+        if (tok.trim() === '') { sink.appendChild(document.createTextNode(tok)); return; }
         const span = document.createElement('span');
         span.className = 'word';
-        span.setAttribute('aria-hidden', 'true'); // aria-label on parent reads it
+        span.setAttribute('aria-hidden', 'true');
         span.style.setProperty('--wi', String(wiRef.n++));
         span.textContent = tok;
         sink.appendChild(span);
       });
     };
-
     const frag = document.createDocumentFragment();
     Array.from(el.childNodes).forEach((child) => {
       if (child.nodeType === Node.TEXT_NODE) {
         wrapWords(child, frag);
       } else if (child.nodeType === Node.ELEMENT_NODE) {
-        // Preserve the element (and its styling); animate it as one word.
         child.classList.add('word');
         child.setAttribute('aria-hidden', 'true');
         child.style.setProperty('--wi', String(wiRef.n++));
@@ -434,175 +355,31 @@
     el.classList.add('split-ready');
     el.dataset.split = '1';
   };
-
   if (!prefersReduced) {
-    // Section/trust H2s get per-word reveals. (The hero title words keep their
-    // existing whole-phrase entrance: "Hidrobiológicos" carries a gradient
-    // text-fill that a per-letter/word split would break, and each line is a
-    // single word anyway, so splitting adds no stagger there.)
-    $$('.section__head h2, .trust .section__head h2').forEach(splitWords);
-    // Clear will-change after the longest reveal could have finished, so we
-    // don't keep compositor layers around forever.
-    setTimeout(() => {
-      $$('.word').forEach((w) => { w.style.willChange = 'auto'; });
-    }, 4000);
+    $$('.section__head h2').forEach(splitWords);
+    setTimeout(() => { $$('.word').forEach((w) => { w.style.willChange = 'auto'; }); }, 4500);
   }
 
-  /* --- 7. Divider draw-in fallback (only where view() is unsupported) ---
-     Native browsers handle this via animation-timeline in CSS. */
-  const supportsViewTimeline =
-    'CSS' in window && CSS.supports && CSS.supports('animation-timeline: view()');
-  if (!prefersReduced && !supportsViewTimeline && 'IntersectionObserver' in window) {
-    const dio = new IntersectionObserver((entries) => {
+  /* ======================================================================
+     Scroll-driven fallbacks for browsers without animation-timeline: view()
+     ====================================================================== */
+  const supportsView = 'CSS' in window && CSS.supports && CSS.supports('animation-timeline: view()');
+  if (!supportsView && !prefersReduced && 'IntersectionObserver' in window) {
+    // mark grids/cards visible via .reveal-style so they don't stay hidden
+    const fio = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('draw-in');
-          dio.unobserve(e.target);
-        }
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); fio.unobserve(e.target); }
       });
-    }, { threshold: 0.25 });
-    $$('.divider').forEach((d) => dio.observe(d));
-  }
-
-  /* --- 8. 3D tilt on product spec cards (fine pointer only) ---
-     Pointer position maps to a small rotateX/rotateY. Clamped, rAF-throttled,
-     transform-only. Combines with the existing --px/--py glow (set above). */
-  if (finePointer && !prefersReduced) {
-    $$('.pcard').forEach((card) => {
-      const MAXTILT = 6; // degrees
-      let traf = 0;
-      card.addEventListener('pointerenter', () => card.classList.add('is-tilting'));
-      card.addEventListener('pointermove', (e) => {
-        if (traf) return;
-        traf = requestAnimationFrame(() => {
-          const r = card.getBoundingClientRect();
-          const cx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);  // -1..1
-          const cy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2); // -1..1
-          const ry = Math.max(-1, Math.min(1, cx)) * MAXTILT;
-          const rx = Math.max(-1, Math.min(1, cy)) * -MAXTILT;
-          card.style.setProperty('--ry', ry.toFixed(2) + 'deg');
-          card.style.setProperty('--rx', rx.toFixed(2) + 'deg');
-          traf = 0;
-        });
-      });
-      card.addEventListener('pointerleave', () => {
-        card.classList.remove('is-tilting');
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    $$('.bento__card, .pcard, .sp, .tcard').forEach((el) => {
+      el.classList.add('reveal');
+      fio.observe(el);
     });
   }
 
   /* ======================================================================
-     v10 — SECTION TRANSITION SYSTEM
+     ONE-TIME load intro
      ====================================================================== */
-
-  /* --- 9. Cinematic multi-layer wave dividers ---
-     Rebuild each .divider with three stacked wave paths (back→front) tinted in
-     ocean blues / foam. The existing single <path> stays as the fallback markup
-     until JS upgrades it. Layers carry .dwave / .dwave--N so CSS can parallax
-     and the v9 scroll-velocity shift can push the crest. */
-  const buildDivider = (div) => {
-    // Two GENTLE, low-amplitude wave layers in a 1440x80 box — elegant seam,
-    // not a chunky band. The front wave is filled with the colour of the panel
-    // BELOW (the incoming section) so it reads as that panel cresting up; a soft
-    // translucent back layer adds quiet depth.
-    const waves = [
-      { cls: 'dwave dwave--1', d: 'M0,40 C300,64 560,22 820,40 C1080,58 1280,32 1440,46 L1440,80 L0,80 Z' },
-      { cls: 'dwave dwave--2', d: 'M0,54 C320,36 600,70 880,52 C1120,38 1320,62 1440,50 L1440,80 L0,80 Z' }
-    ];
-    const toDark = div.classList.contains('divider--to-dark');
-    const fromDark = div.classList.contains('divider--from-dark');
-    const toTint = div.classList.contains('divider--to-tint');
-    let back, front;
-    if (toDark) {            // white → navy testimonios
-      back = 'rgba(11,91,149,.28)'; front = '#002d55';
-    } else if (fromDark) {   // navy testimonios → white certificaciones
-      back = 'rgba(123,204,224,.30)'; front = '#ffffff';
-    } else if (toTint) {     // white porque → foam productos
-      back = 'rgba(123,204,224,.20)'; front = '#eaf5fb';
-    } else {                 // from-tint: foam productos → white especies
-      back = 'rgba(123,204,224,.16)'; front = '#ffffff';
-    }
-    const fills = [back, front];
-    const ns = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(ns, 'svg');
-    svg.setAttribute('viewBox', '0 0 1440 80');
-    svg.setAttribute('preserveAspectRatio', 'none');
-    svg.setAttribute('aria-hidden', 'true');
-    waves.forEach((w, i) => {
-      const p = document.createElementNS(ns, 'path');
-      p.setAttribute('class', w.cls);
-      p.setAttribute('d', w.d);
-      p.setAttribute('fill', fills[i]);
-      svg.appendChild(p);
-    });
-    div.textContent = '';
-    div.appendChild(svg);
-  };
-  $$('.divider').forEach(buildDivider);
-  // Re-tag dividers for the v9 velocity loop (it queried at load; now rebuilt).
-  const newDividerPaths = $$('.divider svg > path');
-  if (newDividerPaths.length && !prefersReduced) {
-    newDividerPaths.forEach((p) => {
-      const d = p.closest('.divider');
-      if (d) d.setAttribute('data-react', '');
-    });
-    let lastDY = window.scrollY;
-    let dvel = 0, dRaf = 0;
-    const sample = () => {
-      const y = window.scrollY;
-      dvel += ((y - lastDY) - dvel) * 0.18;
-      lastDY = y;
-      const shift = Math.max(-22, Math.min(22, dvel * 1.5));
-      newDividerPaths.forEach((p, i) => {
-        // front layers move more than back layers for depth
-        const depth = (i + 1) / newDividerPaths.length;
-        p.style.setProperty('--wave-shift', (shift * depth).toFixed(1) + 'px');
-      });
-      if (Math.abs(dvel) > 0.05) { dRaf = requestAnimationFrame(sample); }
-      else { dvel = 0; newDividerPaths.forEach((p) => p.style.setProperty('--wave-shift', '0px')); dRaf = 0; }
-    };
-    document.addEventListener('scroll', () => { if (!dRaf) dRaf = requestAnimationFrame(sample); }, { passive: true });
-  }
-
-  /* --- 10. Scroll-driven background morph ---
-     Map overall scroll progress (0..1) to a CSS var the fixed .bg-morph layer
-     reads. rAF-throttled, transform/paint only, AA-safe (subtle). Skipped under
-     reduced motion (CSS pins a static wash). */
-  if (!prefersReduced) {
-    let bgRaf = 0;
-    const updateBg = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-      // ease toward a gentle bell so mid-page (testimonials) deepens most
-      const shaped = Math.sin(p * Math.PI) * 0.6 + p * 0.4;
-      root.style.setProperty('--bg-progress', shaped.toFixed(3));
-      bgRaf = 0;
-    };
-    document.addEventListener('scroll', () => { if (!bgRaf) bgRaf = requestAnimationFrame(updateBg); }, { passive: true });
-    updateBg();
-  }
-
-  /* --- 11. Panel-in fallback (only where view() timelines are unsupported) --- */
-  const supportsView2 =
-    'CSS' in window && CSS.supports && CSS.supports('animation-timeline: view()');
-  if (!prefersReduced && !supportsView2 && 'IntersectionObserver' in window) {
-    const pio = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('panel-in'); pio.unobserve(e.target); }
-      });
-    }, { threshold: 0.08 });
-    ['productos', 'especies', 'testimonios', 'certificaciones', 'contacto'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) pio.observe(el);
-    });
-  }
-
-  /* --- 12. One-time page-load intro (curtain parts + logo settles) ---
-     Quick (<1.2s), skippable on first interaction, then removed from the DOM so
-     it never blocks clicks. Disabled entirely under reduced motion (CSS hides
-     the node) and only shown once per page load. */
   const intro = $('#intro');
   if (intro && !prefersReduced) {
     let cleaned = false;
@@ -610,20 +387,16 @@
       if (cleaned) return;
       cleaned = true;
       intro.classList.add('is-done');
-      // fully remove so it can never intercept anything
       if (intro.parentNode) intro.parentNode.removeChild(intro);
     };
     requestAnimationFrame(() => intro.classList.add('intro-play'));
-    // Hard stop at 1.2s regardless of animationend reliability.
-    const introTimer = setTimeout(finish, 1200);
-    // Skippable on first interaction.
+    const introTimer = setTimeout(finish, 1300);
     const skip = () => { clearTimeout(introTimer); finish(); };
     window.addEventListener('wheel', skip, { once: true, passive: true });
     window.addEventListener('touchstart', skip, { once: true, passive: true });
     window.addEventListener('keydown', skip, { once: true });
     window.addEventListener('pointerdown', skip, { once: true });
   } else if (intro) {
-    // reduced motion: ensure it's gone immediately
     intro.classList.add('is-done');
     if (intro.parentNode) intro.parentNode.removeChild(intro);
   }
