@@ -768,15 +768,17 @@ p{margin:0 0 1em}
 /* ==========================================================================
    REVEAL SYSTEM
    ========================================================================== */
-.reveal{opacity:0; transform:translateY(30px); transition:opacity .8s var(--ease), transform .9s var(--ease)}
+/* Progressive enhancement: hidden initial state ONLY when JS is active
+   (html.js). Without JS — or if anything fails — content stays visible. */
+html.js .reveal{opacity:0; transform:translateY(30px); transition:opacity .8s var(--ease), transform .9s var(--ease)}
 .reveal.is-visible{opacity:1; transform:none}
 
 /* ---------- Kinetic hero entrance (choreographed) ---------- */
-.hero__eyebrow.reveal, .hero__sub.reveal, .hero__cta.reveal, .hero__facts.reveal{
+html.js .hero__eyebrow.reveal, html.js .hero__sub.reveal, html.js .hero__cta.reveal, html.js .hero__facts.reveal{
   opacity:0; transform:translateY(26px); filter:blur(6px);
   transition:opacity .9s var(--ease), transform 1s var(--ease), filter .9s var(--ease);
 }
-.hero__line{opacity:0; transform:translateY(.5em) scaleY(1.4); transform-origin:bottom; filter:blur(8px)}
+html.js .hero__line{opacity:0; transform:translateY(.5em) scaleY(1.4); transform-origin:bottom; filter:blur(8px)}
 .hero-ready .hero__line{
   animation:lineRise 1.1s var(--ease) both;
 }
@@ -794,7 +796,7 @@ p{margin:0 0 1em}
 .hero-ready .hero__sub.reveal,
 .hero-ready .hero__cta.reveal,
 .hero-ready .hero__facts.reveal{opacity:1; transform:none; filter:blur(0)}
-.hero__scroll{opacity:0; transition:opacity 1.1s var(--ease) 1.2s}
+html.js .hero__scroll{opacity:0; transition:opacity 1.1s var(--ease) 1.2s}
 .hero-ready .hero__scroll{opacity:1}
 
 /* ==========================================================================
@@ -803,12 +805,13 @@ p{margin:0 0 1em}
 @media (prefers-reduced-motion: no-preference){
   @supports (animation-timeline: view()){
     .section__head{animation:sectionRise both linear; animation-timeline:view(); animation-range:entry 0% entry 55%}
-    @keyframes sectionRise{from{opacity:0; transform:translateY(38px)} to{opacity:1; transform:none}}
+    /* transform-only: content is ALWAYS visible; scroll only adds subtle rise */
+    @keyframes sectionRise{from{opacity:.4; transform:translateY(30px)} 60%{opacity:1} to{opacity:1; transform:none}}
 
     .bento, .pcards, .species, .testimonials, .trust__grid{
       animation:gridDepth both linear; animation-timeline:view(); animation-range:entry 0% entry 50%;
     }
-    @keyframes gridDepth{from{opacity:.001; transform:translateY(48px)} to{opacity:1; transform:none}}
+    @keyframes gridDepth{from{transform:translateY(36px)} to{transform:none}}
 
     .bento__card, .pcard, .sp, .tcard, .trust__item{
       animation:cardIn both linear; animation-timeline:view(); animation-range:entry 2% cover 24%;
@@ -817,7 +820,8 @@ p{margin:0 0 1em}
     .bento__card:nth-child(3),.pcard:nth-child(3),.sp:nth-child(3),.tcard:nth-child(3),.trust__item:nth-child(3){animation-range:entry 8% cover 30%}
     .bento__card:nth-child(4),.pcard:nth-child(4),.sp:nth-child(4),.trust__item:nth-child(4){animation-range:entry 11% cover 33%}
     .sp:nth-child(n+5),.trust__item:nth-child(n+5){animation-range:entry 13% cover 35%}
-    @keyframes cardIn{from{opacity:0; transform:translateY(34px)} to{opacity:1; transform:none}}
+    /* transform-only + a gentle fade that never fully hides (min .55 opacity) */
+    @keyframes cardIn{from{opacity:.55; transform:translateY(28px)} 70%{opacity:1} to{opacity:1; transform:none}}
 
     /* neutralize JS reveal offsets where native owns motion (except hero) */
     .reveal:not(.hero__eyebrow):not(.hero__sub):not(.hero__cta):not(.hero__facts){opacity:1; transform:none}

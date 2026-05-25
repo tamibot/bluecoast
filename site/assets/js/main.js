@@ -3,7 +3,20 @@
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
+  // Progressive enhancement flag: CSS only hides content for reveal when this
+  // class is present. If JS fails to load, content stays fully visible.
+  document.documentElement.classList.add('js');
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // FAILSAFE: never leave content invisible. After load (or 2.5s max), force
+  // every reveal element visible even if its IntersectionObserver never fired.
+  const revealAllFailsafe = () => {
+    $$('.reveal').forEach((el) => el.classList.add('is-visible'));
+    document.body.classList.add('hero-ready');
+  };
+  window.addEventListener('load', () => setTimeout(revealAllFailsafe, 2500), { once: true });
+  setTimeout(revealAllFailsafe, 4000);
   const finePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   const root = document.documentElement;
 
