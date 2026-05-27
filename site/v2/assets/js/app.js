@@ -33,9 +33,7 @@
     ['nosotros', 'productos', 'catalogo', 'certificaciones', 'contacto'].forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
 
-  // reveal on scroll. Anything already in view on load reveals immediately
-  // (no blank above-the-fold); the rest animate in as they enter; a short
-  // failsafe guarantees nothing ever stays hidden.
+  // reveal on scroll
   const reveals = $$('.reveal');
   if ('IntersectionObserver' in window && !reduce) {
     const inView = (el) => { const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; };
@@ -43,11 +41,9 @@
       const p = el.parentElement, idx = p ? [...p.children].indexOf(el) : 0;
       el.style.transitionDelay = Math.min(idx * 70, 350) + 'ms';
     });
-    // immediate pass: reveal what's already on screen
     reveals.forEach((el) => { if (inView(el)) el.classList.add('in'); });
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12, rootMargin: '0px 0px -50px 0px' });
     reveals.forEach((el) => { if (!el.classList.contains('in')) io.observe(el); });
-    // failsafe: never leave anything hidden
     const revealAll = () => reveals.forEach(el => el.classList.add('in'));
     addEventListener('load', () => setTimeout(revealAll, 1500), { once: true });
     setTimeout(revealAll, 2600);
@@ -55,15 +51,55 @@
     reveals.forEach(el => el.classList.add('in'));
   }
 
-  // catalog accordion
+  // ¿Por qué? cards — click toggles the info panel (hover handles desktop via CSS)
+  $$('.whyc').forEach(c => c.addEventListener('click', () => {
+    c.setAttribute('aria-expanded', c.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+  }));
+
+  // catalog accordion — recalc height once inner images load so galleries never clip
   $$('.cat__head').forEach(btn => {
     const panel = btn.nextElementSibling;
+    const setH = () => { panel.style.maxHeight = panel.scrollHeight + 'px'; };
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
-      panel.style.maxHeight = open ? '0' : panel.scrollHeight + 'px';
+      if (open) { panel.style.maxHeight = '0'; return; }
+      setH();
+      $$('img', panel).forEach(img => {
+        if (!img.complete) img.addEventListener('load', () => { if (btn.getAttribute('aria-expanded') === 'true') setH(); }, { once: true });
+      });
     });
   });
+
+  // lightbox / ficha técnica
+  const lb = $('#lb');
+  if (lb) {
+    const lbImg = $('#lbImg'), lbTitle = $('#lbTitle'), lbDesc = $('#lbDesc'), lbKv = $('#lbKv');
+    const FIELDS = [
+      ['codigos', 'Códigos'], ['empaque', 'Empaque'], ['zona', 'Zona de captura'],
+      ['metodo', 'Método de captura'], ['arte', 'Arte de pesca'], ['origen', 'País de origen'],
+    ];
+    let lastFocus = null;
+    const openLb = (d) => {
+      lbImg.src = d.img || ''; lbImg.alt = d.title || '';
+      lbTitle.textContent = d.title || '';
+      lbDesc.textContent = d.desc || '';
+      lbKv.innerHTML = '';
+      FIELDS.forEach(([k, label]) => {
+        if (!d[k]) return;
+        const div = document.createElement('div');
+        const dt = document.createElement('dt'); dt.textContent = label;
+        const dd = document.createElement('dd'); dd.textContent = d[k];
+        div.append(dt, dd); lbKv.append(div);
+      });
+      lb.hidden = false; document.body.style.overflow = 'hidden';
+      const x = $('.lb__x', lb); if (x) x.focus();
+    };
+    const closeLb = () => { lb.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); };
+    $$('.thumb').forEach(t => t.addEventListener('click', () => { lastFocus = t; openLb(t.dataset); }));
+    $$('[data-close]', lb).forEach(el => el.addEventListener('click', closeLb));
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+  }
 
   // contact form → mailto rodolfo
   const TO = 'rodolfo.camino@bluecoastsac.com';

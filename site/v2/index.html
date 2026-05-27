@@ -6,18 +6,18 @@
 <title>Blue Coast S.A.C. — Productos Hidrobiológicos del Pacífico Peruano</title>
 <meta name="description" content="Exportadora peruana de productos hidrobiológicos: perico, pota, pulpo, calamar y más. Calidad de exportación, trazabilidad y zona de captura FAO 87." />
 <meta name="author" content="Blue Coast S.A.C." />
-<meta name="theme-color" content="#001b35" />
+<meta name="theme-color" content="#a9def0" />
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
 <link rel="canonical" href="https://tamibot.github.io/bluecoast/v2/" />
 <meta property="og:title" content="Blue Coast S.A.C. — Productos Hidrobiológicos del Pacífico Peruano" />
-<meta property="og:description" content="Tu socio estratégico en productos marítimos de alta calidad." />
+<meta property="og:description" content="Tu socio estratégico en productos de alta calidad." />
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="es_PE" />
 <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/app.css?v=2" />
+<link rel="stylesheet" href="assets/css/app.css?v=3" />
 </head>
 <body>
 
@@ -34,7 +34,7 @@
       <span class="logo__txt">Blue&nbsp;Coast<small>S.A.C.</small></span>
     </a>
     <nav class="nav__links" aria-label="Principal">
-      <a href="#nosotros">Nosotros</a>
+      <a href="#nosotros">¿Por qué?</a>
       <a href="#productos">Productos</a>
       <a href="#catalogo">Catálogo</a>
       <a href="#certificaciones">Certificaciones</a>
@@ -47,25 +47,39 @@
 <main id="main">
 <span id="top"></span>
 
-<!-- ============ HERO (split · duotone) ============ -->
+<!-- ============ HERO — mar + cielo celeste, logo + nombre ============ -->
 <section class="hero">
-  <div class="hero__left">
-    <p class="eyebrow reveal">Sullana — Piura · Perú</p>
-    <h1 class="hero__title reveal">Del Pacífico peruano <span>al mundo.</span></h1>
-    <p class="hero__lead reveal">Tu socio estratégico en productos hidrobiológicos de alta calidad, con trazabilidad y estándar de exportación.</p>
-    <div class="hero__actions reveal">
+  <div class="hero__inner">
+    <svg class="hero__logo" viewBox="0 0 220 90" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="hw1" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3aa0cf"/><stop offset="1" stop-color="#1978b8"/></linearGradient>
+        <linearGradient id="hw2" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1e7dbd"/><stop offset="1" stop-color="#0b5b95"/></linearGradient>
+        <linearGradient id="hw3" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0b5b95"/><stop offset="1" stop-color="#073f6e"/></linearGradient>
+        <linearGradient id="hw4" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#073f6e"/><stop offset="1" stop-color="#002d55"/></linearGradient>
+      </defs>
+      <g fill="none" stroke-linecap="round" class="hero__waves-logo">
+        <path class="hbw hbw-1" d="M10 18 Q 55 2, 110 18 T 210 18" stroke="url(#hw1)" stroke-width="5"/>
+        <path class="hbw hbw-2" d="M10 36 Q 55 18, 110 36 T 210 36" stroke="url(#hw2)" stroke-width="6"/>
+        <path class="hbw hbw-3" d="M10 56 Q 55 34, 110 56 T 210 56" stroke="url(#hw3)" stroke-width="8"/>
+        <path class="hbw hbw-4" d="M10 78 Q 55 56, 110 78 T 210 78" stroke="url(#hw4)" stroke-width="7"/>
+      </g>
+    </svg>
+    <h1 class="hero__name">BLUE COAST</h1>
+    <p class="hero__sub">Tu socio estratégico en productos de alta calidad.</p>
+    <div class="hero__actions">
       <a href="#productos" class="btn btn--solid">Ver productos</a>
       <a href="#contacto" class="btn btn--line">Contáctanos</a>
     </div>
-    <dl class="hero__stats reveal">
-      <div><dt>9</dt><dd>Especies</dd></div>
-      <div><dt>FAO&nbsp;87</dt><dd>Zona de captura</dd></div>
-      <div><dt>100%</dt><dd>Trazabilidad</dd></div>
-    </dl>
   </div>
-  <div class="hero__media" aria-hidden="true">
-    <img src="../assets/images/real-perico-filetes.jpg" alt="" />
-    <figcaption><span>Perico · Mahi-mahi</span><em>Coryphaena hippurus</em></figcaption>
+
+  <!-- animated sea waves + bubbles -->
+  <div class="hero__sea" aria-hidden="true">
+    <span class="bubble bubble--1"></span><span class="bubble bubble--2"></span>
+    <span class="bubble bubble--3"></span><span class="bubble bubble--4"></span>
+    <span class="bubble bubble--5"></span><span class="bubble bubble--6"></span>
+    <svg class="wave wave--1" viewBox="0 0 2880 160" preserveAspectRatio="none"><path fill="rgba(255,255,255,.5)" d="M0,80 C180,40 360,120 540,80 C720,40 900,120 1080,80 C1260,40 1440,120 1440,80 C1620,40 1800,120 1980,80 C2160,40 2340,120 2520,80 C2700,40 2880,120 2880,80 L2880,160 L0,160 Z"/></svg>
+    <svg class="wave wave--2" viewBox="0 0 2880 160" preserveAspectRatio="none"><path fill="rgba(123,204,224,.6)" d="M0,100 C240,60 480,140 720,100 C960,60 1200,140 1440,100 C1680,60 1920,140 2160,100 C2400,60 2640,140 2880,100 L2880,160 L0,160 Z"/></svg>
+    <svg class="wave wave--3" viewBox="0 0 2880 160" preserveAspectRatio="none"><path fill="#00101f" d="M0,120 C180,95 360,145 540,120 C720,95 900,145 1080,120 C1260,95 1440,145 1620,120 C1800,95 1980,145 2160,120 C2340,95 2520,145 2700,120 C2790,108 2880,130 2880,120 L2880,160 L0,160 Z"/></svg>
   </div>
 </section>
 
@@ -77,100 +91,160 @@
   </div>
 </div>
 
-<!-- ============ ¿POR QUÉ? ============ -->
+<!-- ============ ¿POR QUÉ BLUE COAST? — 4 cuadros interactivos ============ -->
 <section class="section" id="nosotros">
   <div class="shell">
     <header class="head">
       <p class="eyebrow reveal">¿Por qué Blue Coast?</p>
-      <h2 class="reveal">Un proceso transparente que conecta tu visión con la realidad de la pesca en el Perú.</h2>
+      <h2 class="reveal">Ofrecemos un proceso transparente y eficiente que conecta tu visión con la realidad de la pesca en el Perú.</h2>
     </header>
-    <ol class="steps">
-      <li class="step reveal"><span class="step__n">01</span><h3>Análisis de Requerimientos</h3><p>Estudiamos tus necesidades específicas y definimos los parámetros de calidad, presentación y volumen.</p></li>
-      <li class="step reveal"><span class="step__n">02</span><h3>Productos de Alta Calidad</h3><p>Especies del Pacífico peruano seleccionadas y procesadas bajo norma, con frescura garantizada.</p></li>
-      <li class="step reveal"><span class="step__n">03</span><h3>Coordinación de Producción</h3><p>Supervisamos el proceso productivo en planta con los más altos estándares sanitarios.</p></li>
-      <li class="step reveal"><span class="step__n">04</span><h3>Entrega y Seguimiento</h3><p>Aseguramos entrega puntual y comunicación constante hasta la conformidad en destino.</p></li>
-    </ol>
+    <ul class="why">
+      <li class="reveal">
+        <button class="whyc" type="button" aria-expanded="false">
+          <img src="../assets/images/process-analysis.jpg" alt="Análisis de requerimientos" loading="lazy" />
+          <span class="whyc__grad" aria-hidden="true"></span>
+          <span class="whyc__n">01</span>
+          <span class="whyc__title">Análisis de Requerimientos</span>
+          <span class="whyc__panel">Estudiamos tus necesidades específicas y definimos los parámetros de calidad, presentación y volumen.</span>
+        </button>
+      </li>
+      <li class="reveal">
+        <button class="whyc" type="button" aria-expanded="false">
+          <img src="../assets/images/real-perico-filetes.jpg" alt="Productos de alta calidad" loading="lazy" />
+          <span class="whyc__grad" aria-hidden="true"></span>
+          <span class="whyc__n">02</span>
+          <span class="whyc__title">Productos de Alta Calidad</span>
+          <span class="whyc__panel">Especies del Pacífico peruano seleccionadas y procesadas bajo norma, con frescura y trazabilidad garantizadas.</span>
+        </button>
+      </li>
+      <li class="reveal">
+        <button class="whyc" type="button" aria-expanded="false">
+          <img src="../assets/images/process-coordination.jpg" alt="Coordinación de producción" loading="lazy" />
+          <span class="whyc__grad" aria-hidden="true"></span>
+          <span class="whyc__n">03</span>
+          <span class="whyc__title">Coordinación de Producción</span>
+          <span class="whyc__panel">Supervisamos el proceso productivo en planta con los más altos estándares sanitarios.</span>
+        </button>
+      </li>
+      <li class="reveal">
+        <button class="whyc" type="button" aria-expanded="false">
+          <img src="../assets/images/process-delivery.jpg" alt="Entrega y seguimiento" loading="lazy" />
+          <span class="whyc__grad" aria-hidden="true"></span>
+          <span class="whyc__n">04</span>
+          <span class="whyc__title">Entrega y Seguimiento</span>
+          <span class="whyc__panel">Aseguramos entrega puntual y comunicación constante hasta la conformidad en destino.</span>
+        </button>
+      </li>
+    </ul>
+    <p class="why__hint">Toca cada cuadro para ver el detalle.</p>
   </div>
 </section>
 
-<!-- ============ PRODUCTOS (Perico) ============ -->
+<!-- ============ NUESTROS PRODUCTOS — destacados ============ -->
 <section class="section section--panel" id="productos">
   <div class="shell">
     <header class="head">
       <p class="eyebrow reveal">Nuestros productos</p>
-      <h2 class="reveal">Perico <span class="hl">· Mahi-mahi · Dorado</span></h2>
-      <p class="head__sci reveal">Coryphaena hippurus · Zona FAO 87 · Pesca con espinel · Origen Perú</p>
+      <h2 class="reveal">Especies peruanas, procesadas bajo especificación</h2>
+      <p class="head__sci reveal">Conoce nuestros productos de exportación. Selecciónalos en el catálogo para ver todos sus cortes y fichas técnicas.</p>
     </header>
-    <div class="prod">
-      <article class="prod__item reveal">
-        <figure class="prod__img"><img src="../assets/images/real-perico-filetes.jpg" alt="Filete de perico congelado" loading="lazy" /></figure>
-        <div class="prod__body">
-          <h3>Filete de Perico Congelado</h3>
-          <p class="prod__desc">Con poca espina, con piel o sin piel; normal o tratado con CO, IWP o IVP.</p>
-          <dl class="kv">
-            <div><dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd></div>
-            <div><dt>Empaque</dt><dd>Caja cartón corrugado blanco — 10 / 30 / 50 lb</dd></div>
-            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas</dd></div>
-          </dl>
+    <div class="feat">
+      <article class="feat__card reveal">
+        <figure class="feat__img"><img src="../assets/images/real-perico-filetes.jpg" alt="Perico · Mahi-mahi" loading="lazy" /></figure>
+        <div class="feat__body">
+          <span class="feat__kicker">Coryphaena hippurus</span>
+          <h3>Perico · Mahi-mahi</h3>
+          <p>Filetes, porciones, lomos y medallones — frescos o congelados, en múltiples cortes.</p>
+          <a class="feat__link" href="#catalogo">Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </article>
-      <article class="prod__item prod__item--rev reveal">
-        <figure class="prod__img"><img src="../assets/images/real-perico-porciones.jpg" alt="Porciones de perico congelado" loading="lazy" /></figure>
-        <div class="prod__body">
-          <h3>Porciones de Perico Congelado</h3>
-          <p class="prod__desc">Sin piel, sin grasa, sin vena de sangre.</p>
-          <dl class="kv">
-            <div><dt>Códigos</dt><dd>8 / 6 / 4 oz (IVP) · 2–4 oz y 1–3 oz en bolsas 5 lb · trozos y palitos</dd></div>
-            <div><dt>Empaque</dt><dd>Caja cartón corrugado blanco — 10 / 20 lb</dd></div>
-            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas</dd></div>
-          </dl>
+      <article class="feat__card reveal">
+        <figure class="feat__img"><img src="../assets/images/real-pota-anillas.png" alt="Anillas de Pota" loading="lazy" /></figure>
+        <div class="feat__body">
+          <span class="feat__kicker">Dosidicus gigas</span>
+          <h3>Anillas de Pota</h3>
+          <p>Anillas crudas, con o sin tratamiento, congeladas y procesadas bajo especificación.</p>
+          <a class="feat__link" href="#catalogo">Ver cortes <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </article>
-      <article class="prod__item reveal">
-        <figure class="prod__img"><img src="../assets/images/real-perico-filetes.jpg" alt="Lomos de perico congelado" loading="lazy" /></figure>
-        <div class="prod__body">
-          <h3>Lomos de Perico Congelado</h3>
-          <p class="prod__desc">Sin piel, sin grasa, sin vena de sangre.</p>
-          <dl class="kv">
-            <div><dt>Códigos</dt><dd>1–3 lb · 3–5 lb · 5–7 lb</dd></div>
-            <div><dt>Empaque</dt><dd>Caja cartón corrugado blanco — 30 / 50 lb</dd></div>
-            <div><dt>Método</dt><dd>Espinel · anzuelos y líneas</dd></div>
-          </dl>
-        </div>
-      </article>
-      <article class="prod__item prod__item--rev reveal">
-        <figure class="prod__img"><img src="../assets/images/real-perico-porciones.jpg" alt="Medallones de perico congelado" loading="lazy" /></figure>
-        <div class="prod__body">
-          <h3>Medallones de Perico Congelado</h3>
-          <p class="prod__desc">A partir de perico entero eviscerado.</p>
-          <dl class="kv">
-            <div><dt>Empaque</dt><dd>Caja cartón corrugado blanco — 10 kg</dd></div>
-            <div><dt>Zona</dt><dd>FAO 87</dd></div>
-            <div><dt>Origen</dt><dd>Perú</dd></div>
-          </dl>
-        </div>
-      </article>
+      <!-- TODO: reemplazar por la 3ª especie destacada cuando el cliente envíe la foto -->
+      <a class="feat__card feat__card--bridge reveal" href="#catalogo">
+        <span class="feat__big">9</span>
+        <h3>Especies del Pacífico</h3>
+        <p>Pulpo, calamar, cherela, pejerrey, bonito, jurel, caballa y más.</p>
+        <span class="feat__link">Explorar catálogo completo <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ============ CATÁLOGO ============ -->
+<!-- ============ CATÁLOGO — especies → galería de cortes → ficha ============ -->
 <section class="section" id="catalogo">
   <div class="shell">
     <header class="head">
       <p class="eyebrow reveal">Catálogo completo</p>
       <h2 class="reveal">Nueve especies del Pacífico peruano</h2>
+      <p class="head__sci reveal">Abre cada especie y haz clic en una foto para ver su ficha técnica completa.</p>
     </header>
     <ul class="cat">
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">01</span><span class="cat__name">Perico <em>Coryphaena hippurus</em></span><span class="cat__count">13</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Filete con/sin piel · porciones IQF/IVP · fletches · trozos · cortes GG/HG/HGT · medallones · cabeza · minced · huevera — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">02</span><span class="cat__name">Pota <em>Dosidicus gigas</em></span><span class="cat__count">13</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Entera · tubo limpio · filete laminado · tabletas · aleta · tentáculos · rodajas · nucas · anillas · botones/tiras/rabas · recortes · minced · huevera — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">03</span><span class="cat__name">Pulpo <em>Octopus mimus</em></span><span class="cat__count">2</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Entero eviscerado tipo roseta · entero con/sin ojos, pico y baba — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">04</span><span class="cat__name">Calamar <em>Loligo gahi</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Entero con/sin víscera · tubo con/sin piel · entero pelado — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">05</span><span class="cat__name">Cherela <em>Cynoscion phoxocephalus</em></span><span class="cat__count">4</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Filete con/sin piel · trozos · porciones · porciones al vacío — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">06</span><span class="cat__name">Pejerrey <em>Odontesthes regia regia</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Filete corte mariposa · entero con/sin vísceras · filete con piel — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">07</span><span class="cat__name">Bonito <em>Sarda chiliensis chiliensis</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>HG / HGT / GG · filete con piel sin espinas · entero con/sin vísceras — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">08</span><span class="cat__name">Jurel <em>Trachurus murphyi</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Corte HG / HGT / GG · filete con piel sin espinas · entero con/sin vísceras — congelado.</p></div></li>
-      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">09</span><span class="cat__name">Caballa <em>Scomber japonicus</em></span><span class="cat__count">2</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p>Filete con piel sin espinas · filete con piel — congelado.</p></div></li>
+
+      <!-- PERICO — ejemplo trabajado, con galería + fichas -->
+      <li class="cat__item reveal">
+        <button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">01</span><span class="cat__name">Perico <em>Coryphaena hippurus</em></span><span class="cat__count">13</span><span class="cat__plus" aria-hidden="true"></span></button>
+        <div class="cat__panel">
+          <div class="shelf">
+            <button class="thumb"
+              data-title="Filete de Perico Congelado"
+              data-img="../assets/images/perico-filete.jpg"
+              data-desc="Con poca espina, con piel o sin piel; normal o tratado con CO, IWP o IVP."
+              data-codigos="1–3 lb · 3–5 lb · 5–7 lb"
+              data-empaque="Caja de cartón corrugado blanco — 10 / 30 / 50 lb"
+              data-zona="FAO 87" data-metodo="Espinel" data-arte="Anzuelos y líneas de pesca" data-origen="Perú">
+              <img src="../assets/images/perico-filete.jpg" alt="Filete de perico congelado" loading="lazy" />
+              <span>Filete</span>
+            </button>
+            <button class="thumb"
+              data-title="Porciones de Perico Congelado"
+              data-img="../assets/images/perico-porciones-cong.jpg"
+              data-desc="Sin piel, sin grasa, sin vena de sangre."
+              data-codigos="8 / 6 / 4 oz (IVP) · 2–4 oz y 1–3 oz en bolsas de 5 lb · trozos y palitos en bolsas de 5 lb"
+              data-empaque="Caja de cartón corrugado blanco — 10 / 20 lb"
+              data-zona="FAO 87" data-metodo="Espinel" data-arte="Anzuelos y líneas de pesca" data-origen="Perú">
+              <img src="../assets/images/perico-porciones-cong.jpg" alt="Porciones de perico congelado" loading="lazy" />
+              <span>Porciones</span>
+            </button>
+            <button class="thumb"
+              data-title="Lomos de Perico Congelado"
+              data-img="../assets/images/perico-lomos.jpg"
+              data-desc="Sin piel, sin grasa, sin vena de sangre."
+              data-codigos="1–3 lb · 3–5 lb · 5–7 lb"
+              data-empaque="Caja de cartón corrugado blanco — 30 / 50 lb"
+              data-zona="FAO 87" data-metodo="Espinel" data-arte="Anzuelos y líneas de pesca" data-origen="Perú">
+              <img src="../assets/images/perico-lomos.jpg" alt="Lomos de perico congelado" loading="lazy" />
+              <span>Lomos</span>
+            </button>
+            <button class="thumb"
+              data-title="Medallones de Perico Congelado"
+              data-img="../assets/images/perico-medallones.jpg"
+              data-desc="A partir de perico entero eviscerado."
+              data-empaque="Caja de cartón corrugado blanco — 10 kg"
+              data-zona="FAO 87" data-metodo="Espinel" data-arte="Anzuelos y líneas de pesca" data-origen="Perú">
+              <img src="../assets/images/perico-medallones.jpg" alt="Medallones de perico congelado" loading="lazy" />
+              <span>Medallones</span>
+            </button>
+          </div>
+          <p class="shelf__more">Otros cortes: fletches · trozos · GG · HG · HGT · cabeza · minced · huevera — congelados.</p>
+        </div>
+      </li>
+
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">02</span><span class="cat__name">Pota <em>Dosidicus gigas</em></span><span class="cat__count">13</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Entera · tubo limpio · filete laminado · tabletas · aleta · tentáculos · rodajas · nucas · anillas · botones/tiras/rabas · recortes · minced · huevera — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">03</span><span class="cat__name">Pulpo <em>Octopus mimus</em></span><span class="cat__count">2</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Entero eviscerado tipo roseta · entero con/sin ojos, pico y baba — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">04</span><span class="cat__name">Calamar <em>Loligo gahi</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Entero con/sin víscera · tubo con/sin piel · entero pelado — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">05</span><span class="cat__name">Cherela <em>Cynoscion phoxocephalus</em></span><span class="cat__count">4</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Filete con/sin piel · trozos · porciones · porciones al vacío — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">06</span><span class="cat__name">Pejerrey <em>Odontesthes regia regia</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Filete corte mariposa · entero con/sin vísceras · filete con piel — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">07</span><span class="cat__name">Bonito <em>Sarda chiliensis chiliensis</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">HG / HGT / GG · filete con piel sin espinas · entero con/sin vísceras — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">08</span><span class="cat__name">Jurel <em>Trachurus murphyi</em></span><span class="cat__count">3</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Corte HG / HGT / GG · filete con piel sin espinas · entero con/sin vísceras — congelado.</p></div></li>
+      <li class="cat__item reveal"><button class="cat__head" type="button" aria-expanded="false"><span class="cat__idx">09</span><span class="cat__name">Caballa <em>Scomber japonicus</em></span><span class="cat__count">2</span><span class="cat__plus" aria-hidden="true"></span></button><div class="cat__panel"><p class="cat__txt">Filete con piel sin espinas · filete con piel — congelado.</p></div></li>
     </ul>
   </div>
 </section>
@@ -190,7 +264,7 @@
   </div>
 </section>
 
-<!-- ============ CERTIFICACIONES ============ -->
+<!-- ============ CERTIFICACIONES — tipo logo ============ -->
 <section class="section" id="certificaciones">
   <div class="shell">
     <header class="head">
@@ -198,18 +272,19 @@
       <h2 class="reveal">Estándares que viajan contigo</h2>
       <p class="head__sci reveal">Plantas auditadas y habilitadas para mercados exigentes, con documentación sanitaria completa y cadena de frío verificable.</p>
     </header>
+    <!-- TODO: reemplazar cada .cert__mark (SVG/acrónimo) por el logo oficial cuando el cliente lo envíe -->
     <ul class="certs">
-      <li class="reveal"><strong>HACCP</strong><span>Análisis de peligros y puntos críticos</span></li>
-      <li class="reveal"><strong>BRCGS</strong><span>Norma global de seguridad alimentaria</span></li>
-      <li class="reveal"><strong>SANIPES</strong><span>Habilitación sanitaria — Perú</span></li>
-      <li class="reveal"><strong>FDA</strong><span>Apto para Estados Unidos</span></li>
-      <li class="reveal"><strong>Unión Europea</strong><span>Autorizado para exportación</span></li>
-      <li class="reveal"><strong>Cadena de frío</strong><span>Trazabilidad por lote y embarcación</span></li>
+      <li class="reveal"><span class="cert__mark">HACCP</span><strong>HACCP</strong><span class="cert__d">Análisis de peligros y puntos críticos</span></li>
+      <li class="reveal"><span class="cert__mark">BRC</span><strong>BRCGS</strong><span class="cert__d">Norma global de seguridad alimentaria</span></li>
+      <li class="reveal"><span class="cert__mark">SNP</span><strong>SANIPES</strong><span class="cert__d">Habilitación sanitaria — Perú</span></li>
+      <li class="reveal"><span class="cert__mark">FDA</span><strong>FDA</strong><span class="cert__d">Apto para Estados Unidos</span></li>
+      <li class="reveal"><span class="cert__mark">UE</span><strong>Unión Europea</strong><span class="cert__d">Autorizado para exportación</span></li>
+      <li class="reveal"><span class="cert__mark">❄</span><strong>Cadena de frío</strong><span class="cert__d">Trazabilidad por lote y embarcación</span></li>
     </ul>
   </div>
 </section>
 
-<!-- ============ CONTACTO ============ -->
+<!-- ============ CONTACTO — solo formulario ============ -->
 <section class="section section--contact" id="contacto">
   <div class="shell contact">
     <div class="contact__intro">
@@ -232,6 +307,15 @@
   </div>
 </section>
 
+<!-- ============ CIERRE / CTA FINAL ============ -->
+<section class="endcta">
+  <div class="shell endcta__inner">
+    <h2 class="reveal">Hablemos de tu próximo pedido.</h2>
+    <p class="reveal">Del Pacífico peruano al mundo, con trazabilidad y estándar de exportación.</p>
+    <a href="#contacto" class="btn btn--solid reveal">Escríbenos hoy</a>
+  </div>
+</section>
+
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -246,9 +330,14 @@
         <span class="logo__txt">Blue&nbsp;Coast<small>S.A.C.</small></span>
       </span>
       <p>Productos hidrobiológicos del mar peruano para el mundo.</p>
+      <div class="soc">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 3h-3a4 4 0 00-4 4v3H5v4h3v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 014 0v4M11 11v6"/></svg></a>
+      </div>
     </div>
     <div class="footer__cols">
-      <div><h4>Navegar</h4><a href="#nosotros">Nosotros</a><a href="#productos">Productos</a><a href="#catalogo">Catálogo</a><a href="#certificaciones">Certificaciones</a></div>
+      <div><h4>Navegar</h4><a href="#nosotros">¿Por qué Blue Coast?</a><a href="#productos">Productos</a><a href="#catalogo">Catálogo</a><a href="#certificaciones">Certificaciones</a></div>
       <div><h4>Empresa</h4><span>Sullana — Piura, Perú</span><span>Zona FAO 87</span><a href="#contacto">Escríbenos</a></div>
       <div><h4>Certificaciones</h4><span>HACCP · BRCGS</span><span>SANIPES · FDA · UE</span></div>
     </div>
@@ -256,10 +345,27 @@
   <div class="footer__base shell"><small>© <span id="year"></span> Blue Coast S.A.C.</small><small>Hecho en Perú</small></div>
 </footer>
 
+<!-- ============ LIGHTBOX / FICHA ============ -->
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+  <div class="lb__backdrop" data-close></div>
+  <div class="lb__panel" role="document">
+    <button class="lb__x" type="button" data-close aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <figure class="lb__media"><img id="lbImg" src="" alt="" /></figure>
+    <div class="lb__body">
+      <p class="eyebrow" id="lbKicker">Perico · Coryphaena hippurus</p>
+      <h3 id="lbTitle"></h3>
+      <p class="lb__desc" id="lbDesc"></p>
+      <dl class="kv" id="lbKv"></dl>
+    </div>
+  </div>
+</div>
+
 <a href="#contacto" class="fab" aria-label="Contactar">
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8v.5z"/></svg>
 </a>
 
-<script src="assets/js/app.js?v=2" defer></script>
+<script src="assets/js/app.js?v=3" defer></script>
 </body>
 </html>
